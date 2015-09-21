@@ -2,8 +2,8 @@
 " Colours {{{
 syntax enable
 filetype plugin indent on
-set background=dark
-colorscheme solarized
+" set background=dark
+colorscheme molokai
 " }}}
 " Performance {{{
 set ttyfast       " improves smoothness
@@ -34,7 +34,11 @@ nnoremap <TAB> za
 set foldlevelstart=10    " start with fold level of 1
 set modelines=1
 " }}}
-" Launch Config {{{
+" Key Mapping {{{
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+" }}} 
+"   Launch Config {{{
 runtime! debian.vim
 set nocompatible
 call pathogen#infect()

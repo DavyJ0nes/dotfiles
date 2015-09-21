@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/var/lib/gems/2.1.0/gems/trello_cli-0.4.1/lib/trello_cli/requests'
+let g:netrw_dirhist_2='/home/umo/CODE/Sinatra/SinatraSongs/views'
+let g:netrw_dirhist_3='/home/umo/Documents/Personal/usefulbits/.git'
+let g:netrw_dirhist_4='/home/umo/Documents/Personal/usefulbits/.git/objects'
+let g:netrw_dirhist_5='/home/umo/Documents/Personal/usefulbits/.git/objects/af'
+let g:netrw_dirhist_6='/home/umo/Documents/LiveLink/projects/RemoteBackups'
+let g:netrw_dirhist_7='/home/umo/Documents/LiveLink/projects/CostcoWK/kiosksyncissue/install_files'
+let g:netrw_dirhist_8='/home/umo/Documents/LiveLink/projects/ZabbixConfiguration'

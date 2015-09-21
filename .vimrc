@@ -1,7 +1,9 @@
 " Davy Jones vimrc
 " Colours {{{
 syntax enable
-colorscheme badwolf
+filetype plugin indent on
+set background=dark
+colorscheme solarized
 " }}}
 " Performance {{{
 set ttyfast       " improves smoothness
@@ -35,6 +37,7 @@ set modelines=1
 " Launch Config {{{
 runtime! debian.vim
 set nocompatible
+call pathogen#infect()
 " }}}
 " Backups {{{
 set backup 
@@ -47,8 +50,6 @@ set writebackup
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
-    "autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md,*.rb :call <SID>StripTrailingWhitespaces()
-    autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter *.zsh-theme setlocal filetype=zsh
     autocmd BufEnter Makefile setlocal noexpandtab
     autocmd BufEnter *.sh setlocal tabstop=2

@@ -3,8 +3,8 @@
 set t_Co=256
 syntax enable
 filetype plugin indent on
-" set background=dark
-colorscheme industry
+set background=dark
+colorscheme solarized
 " }}}
 " Basic Commands {{{
 set number        " show line number
@@ -66,7 +66,7 @@ augroup END
 :cmap w!! w !sudo tee > /dev/null %  
 " }}}
 " Airline {{{
-let g:airline_theme = 'bubblegum'
+let g:airline_theme = 'solarized'
 let g:airline_powerline_fonts = 1
 " }}}
 " Performance {{{

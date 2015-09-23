@@ -1,18 +1,10 @@
 " Davy Jones vimrc
 " Colours {{{
+set t_Co=256
 syntax enable
 filetype plugin indent on
 " set background=dark
-colorscheme molokai
-" }}}
-" Performance {{{
-set ttyfast       " improves smoothness
-set lazyredraw    " stops screen redrawing
-" }}}
-" Tab {{{
-set tabstop=2     " tab == 2 spaces
-set softtabstop=2
-set expandtab     " tabs are spaces
+colorscheme industry
 " }}}
 " Basic Commands {{{
 set number        " show line number
@@ -21,6 +13,11 @@ set cursorline    " underline current line
 set wildmenu      " helpful command completion with <TAB>
 set showmatch     " show matching brackets etc
 set ignorecase		" Do case insensitive matching
+" }}}
+" Tab {{{
+set tabstop=2     " tab == 2 spaces
+set softtabstop=2
+set expandtab     " tabs are spaces
 " }}}
 " Searching {{{
 set incsearch     " highlight when searching
@@ -61,10 +58,20 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
 " }}}
-" Command Substitution {{{
+" Custom Commands {{{
 :command WQ wq
 :command Wq wq
 :command W w
 :command Q q 
+:cmap w!! w !sudo tee > /dev/null %  
+" }}}
+" Airline {{{
+let g:airline_theme = 'bubblegum'
+let g:airline_powerline_fonts = 1
+" }}}
+" Performance {{{
+set noshowmode      " don't show insert at bottom
+set ttyfast         " improves smoothness
+set laststatus=2    " allow another status line so that airline will work
 " }}}
 " vim:foldmethod=marker:foldlevel=0

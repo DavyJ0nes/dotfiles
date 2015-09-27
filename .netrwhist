@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/Users/davyjones/Personal/Blog/DavyJ0nes.github.io/_sass'
+let g:netrw_dirhist_2='/Users/davyjones/Personal/Blog/DavyJ0nes.github.io/_posts'
+let g:netrw_dirhist_3='/Users/davyjones/Personal/Blog/DavyJ0nes.github.io/.sass-cache'
+let g:netrw_dirhist_4='/Users/davyjones/Personal/Blog/DavyJ0nes.github.io/css'
+let g:netrw_dirhist_5='/Users/davyjones/.vim'
+let g:netrw_dirhist_6='/Users/davyjones/.vim/bundle/vim-markdown/ftplugin'
+let g:netrw_dirhist_7='/Users/davyjones/.vim/bundle/vim-markdown/ftdetect'
+let g:netrw_dirhist_8='/Users/davyjones/.vim/bundle/vim-markdown/ftplugin'
+let g:netrw_dirhist_9='/Users/davyjones/.vim/bundle/ag.vim/doc'

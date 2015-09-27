@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/umo/.oh-my-zsh
+export ZSH=/Users/davyjones/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -12,15 +12,24 @@ ZSH_THEME="gianu"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-# User configuration
+# PATH export
+export PATH="/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/usr/local/games:/usr/games"
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+# Custom env exports
+export EDITOR='vim'
 
+# Other scripts to source
 source $ZSH/oh-my-zsh.sh
+source ~/.tmux/tmuxinator.zsh
+source /Users/davyjones/.rvm/scripts/rvm
 
+# Custom aliases
 alias pse='ps -eo pid,ppid,pcpu,args'
-alias gpom="git push origin master"
+alias gpom="git push origin $(gb | grep  '*' | awk '{print $2}')"
 alias sagi="sudo apt-get install"
-alias g st="git status"
+alias gst="git status"
 alias gl="git log"
-alias ping g="ping 8.8.8.8"
+alias pingg="ping 8.8.8.8"
+alias rgrep="grep -r"
+

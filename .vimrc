@@ -1,12 +1,24 @@
 " Davy Jones vimrc
+" Plugins Used {{{
+" NERD Commenter - for code commenting
+" CTRL P         - for fuzzy searching
+" Nerd Tree      - for Directory Viewing
+" Airline        - For cool status bar
+" }}}
+" Launch Config {{{
+runtime! debian.vim
+set nocompatible           " make vim act like vim, not vi
+call pathogen#infect()     " use pathogen package manager
+" }}}
 " Colours {{{
 set t_Co=256
 syntax enable
 filetype plugin indent on
-set background=dark
-colorscheme solarized
+"set background=dark
+colorscheme jellybeans
 " }}}
 " Basic Commands {{{
+let mapleader="," " change leader key to comma
 set number        " show line number
 set showcmd       " show command at bottom of screen
 set cursorline    " underline current line
@@ -21,25 +33,20 @@ set expandtab     " tabs are spaces
 " }}}
 " Searching {{{
 set incsearch     " highlight when searching
-set hlsearch      " highlight all matches on search
+"set hlsearch      " highlight all matches on search
 " }}} 
 " Folding {{{
 set foldmethod=indent   " fold based on indent level
 set foldnestmax=10      " max 10 depth
 set foldenable          " don't fold files by default on open
-nnoremap <TAB> za
-set foldlevelstart=10    " start with fold level of 1
+nnoremap <TAB> za       
+set foldlevelstart=10   " start with fold level of 1
 set modelines=1
 " }}}
 " Key Mapping {{{
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_map = '<c-p>'  " map CTRL+P to ctrlP for fuzzy searching
+let g:ctrlp_cmd = 'CtrlP'  " map CTRL+P to ctrlP for fuzzy searching
 " }}} 
-"   Launch Config {{{
-runtime! debian.vim
-set nocompatible
-call pathogen#infect()
-" }}}
 " Backups {{{
 set backup 
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp 
@@ -59,19 +66,20 @@ augroup configgroup
 augroup END
 " }}}
 " Custom Commands {{{
-:command WQ wq
-:command Wq wq
-:command W w
-:command Q q 
-:cmap w!! w !sudo tee > /dev/null %  
+:command WQ wq          " stop fighting spelling mistakes
+:command Wq wq          " stop fighting spelling mistakes
+:command W w            " stop fighting spelling mistakes
+:command Q q            " stop fighting spelling mistakes 
+:cmap w!! w !sudo tee > /dev/null   
 " }}}
-" Airline {{{
-let g:airline_theme = 'solarized'
+" Airline {{{ 
+let g:airline_theme = 'bubblegum'
 let g:airline_powerline_fonts = 1
 " }}}
-" Performance {{{
-set noshowmode      " don't show insert at bottom
-set ttyfast         " improves smoothness
-set laststatus=2    " allow another status line so that airline will work
+" Performance   {{{
+set noshowmode            " don't show insert at bottom
+set ttyfast               " improves smoothness
+set laststatus=2          " allow another status line so that airline will work
+set wrap linebreak nolist " wrap on words so their not broken
 " }}}
 " vim:foldmethod=marker:foldlevel=0

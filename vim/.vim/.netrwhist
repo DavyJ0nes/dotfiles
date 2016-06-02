@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/davyjones/CODE/Ruby'
-let g:netrw_dirhist_2='/Users/davyjones/CODE/Ruby/zendesksearch'
-let g:netrw_dirhist_3='/home/umo/.vim/bundle/ctrlp.vim'
-let g:netrw_dirhist_4='/home/umo/dotfiles/.vim/bundle/ctrlp.vim'
-let g:netrw_dirhist_5='/home/umo/dotfiles/.vim/bundle/nerdtree'
-let g:netrw_dirhist_6='/home/umo/.vim/bundle/vim-airline'
-let g:netrw_dirhist_7='/home/umo/.vim/bundle/vim-airline/autoload'

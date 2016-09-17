@@ -2,20 +2,23 @@
 " Plugins Used {{{
 " NERD Commenter - for code commenting
 " CTRL P         - for fuzzy searching
-" Nerd Tree      - for Directory Viewing
-" Airline        - For cool status bar
+" NerdTree       - for Directory Viewing
+" Syntastic      - for Syntactic checking
+" Lightline      - For cool status bar
 " }}}
 " Launch Config {{{
 runtime! debian.vim
 set nocompatible           " make vim act like vim, not vi
 call pathogen#infect()     " use pathogen package manager
+autocmd VimEnter * NERDTree
+autocmd VimEnter * wincmd p
 " }}}
 " Colours {{{
 set t_Co=256
 syntax enable
 filetype plugin indent on
 set background=dark
-colorscheme hybrid
+colorscheme tender
 " }}}
 " Basic Commands {{{
 let mapleader="," " change leader key to comma
@@ -47,6 +50,8 @@ set modelines=1
 " Key Mapping {{{
 let g:ctrlp_map = '<c-p>'  " map CTRL+P to ctrlP for fuzzy searching
 let g:ctrlp_cmd = 'CtrlP'  " map CTRL+P to ctrlP for fuzzy searching
+:nnoremap å <C-a>
+:nnoremap ≈ <C-x>
 " }}} 
 " Backups {{{
 set backup 
@@ -73,9 +78,115 @@ augroup END
 :command Q q            " stop fighting spelling mistakes 
 :cmap w!! w !sudo tee > /dev/null   
 " }}}
-" Airline {{{ 
-let g:airline_theme = 'bubblegum'
-let g:airline_powerline_fonts = 1
+" NerdTree {{{
+let g:NERDTreeWinSize=18 
+" }}}
+" Lightline {{{ 
+" let g:tender_lightline=1
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_function': {
+      \   'fugitive': 'LightLineFugitive',
+      \   'filename': 'LightLineFilename',
+      \   'fileformat': 'LightLineFileformat',
+      \   'filetype': 'LightLineFiletype',
+      \   'fileencoding': 'LightLineFileencoding',
+      \   'mode': 'LightLineMode',
+      \   'ctrlpmark': 'CtrlPMark',
+      \ },
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag',
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'error',
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
+
+function! LightLineModified()
+  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! LightLineReadonly()
+  return &ft !~? 'help' && &readonly ? 'RO' : ''
+endfunction
+
+function! LightLineFilename()
+  let fname = expand('%:t')
+  return fname == 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
+        \ fname =~ '__Gundo\|NERD_tree' ? '' :
+        \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+        \ ('' != fname ? fname : '[No Name]') .
+        \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+endfunction
+
+function! LightLineFugitive()
+  if exists("*fugitive#head")
+    let branch = fugitive#head()
+    return branch !=# '' ? '  '.branch : ''
+  endif
+  return ''
+endfunction
+
+function! LightLineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightLineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+function! LightLineFileencoding()
+  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+endfunction
+
+function! LightLineMode()
+  let fname = expand('%:t')
+  return fname == 'ControlP' ? 'CtrlP' :
+        \ fname =~ 'NERD_tree' ? 'NERDTree' :
+        \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+function! CtrlPMark()
+  if expand('%:t') =~ 'ControlP' && has_key(g:lightline, 'ctrlp_item')
+    call lightline#link('iR'[g:lightline.ctrlp_regex])
+    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+          \ , g:lightline.ctrlp_next], 0)
+  else
+    return ''
+  endif
+endfunction
+
+let g:ctrlp_status_func = {
+      \ 'main': 'CtrlPStatusFunc_1',
+      \ 'prog': 'CtrlPStatusFunc_2',
+      \ }
+
+function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
+  let g:lightline.ctrlp_regex = a:regex
+  let g:lightline.ctrlp_prev = a:prev
+  let g:lightline.ctrlp_item = a:item
+  let g:lightline.ctrlp_next = a:next
+  return lightline#statusline(0)
+endfunction
+
+function! CtrlPStatusFunc_2(str)
+  return lightline#statusline(0)
+endfunction
+
+augroup AutoSyntastic
+  autocmd!
+  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+augroup END
+function! s:syntastic()
+  SyntasticCheck
+  call lightline#update()
+endfunction
 " }}}
 " NerdCommenter {{{
 let g:NERDSpaceDelims = 1       " Add 1 space after comment delimiter
@@ -95,7 +206,10 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
+let g:syntastic_loc_list_height = 3 
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_html_tidy_exec = 'tidy5' " use tidy5 html linter
+let g:syntastic_javascript_checkers = ['standard'] " use standard js linter
 " }}}
 " vim:foldmethod=marker:foldlevel=0

@@ -8,9 +8,10 @@
 " }}}
 " Launch Config {{{
 runtime! debian.vim
+runtime macros/matchit.vim
 set nocompatible           " make vim act like vim, not vi
 call pathogen#infect()     " use pathogen package manager
-autocmd VimEnter * NERDTree
+" autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 " }}}
 " Colours {{{
@@ -19,16 +20,60 @@ syntax enable
 filetype plugin indent on
 set background=dark
 colorscheme tender
+set colorcolumn=+1
+hi ColorColumn ctermbg=yellow 
 " }}}
-" Basic Commands {{{
-let mapleader="," " change leader key to comma
-set number        " show line number
-set showcmd       " show command at bottom of screen
-set cursorline    " underline current line
-set wildmenu      " helpful command completion with <TAB>
-set showmatch     " show matching brackets etc
-set ignorecase		" Do case insensitive matching
+" Basic Options {{{
+let mapleader=","   " change leader key to comma
+set number          " enable line numbers
+set relativenumber  " use relative line numbers
+set showcmd         " show command at bottom of screen
+set cursorline      " underline current line
+set wildmenu        " helpful command completion with <TAB>
+set showmatch       " show matching brackets etc
+set ignorecase		  " Do case insensitive matching
 " }}}
+" Key Mapping {{{
+let g:ctrlp_map = '<c-p>'  " map CTRL+P to ctrlP for fuzzy searching
+let g:ctrlp_cmd = 'CtrlP'  " map CTRL+P to ctrlP for fuzzy searching
+" paste from clipboard on new line
+map <leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr> 
+" set spellcheck on/off
+map <leader>son :setlocal spell spelllang=en_gb<cr>
+map <leader>soff :set nospell<cr>
+" goto file in new window
+map gf <c-w>gf
+map <leader>nt :tabnew<cr>
+" remap increment and decrement numbers to Alt
+:nnoremap å <C-a>
+:nnoremap ≈ <C-x>
+" stop fighting spelling mistakes
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q
+" move around panes faster
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+" save faster  
+map <leader>q :q<cr>
+noremap Z <Esc>:w<CR>
+noremap ZZ <Esc>:wq<CR>
+" Go-Vim commands
+au FileType go nmap <Leader>gd <Plug>(go-doc-tab)
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+au FileType go nmap <Leader>gi <Plug>(go-imports)
+" Custom Stuff
+:command Date pu=strftime('%d-%m-%Y %H:%M')
+:command DDiff w !diff % -
+:cmap w!! w !sudo tee > /dev/null   
+" }}} 
 " Tab {{{
 set tabstop=2     " tab == 2 spaces
 set softtabstop=2
@@ -37,28 +82,14 @@ set expandtab     " tabs are spaces
 " }}}
 " Searching {{{
 set incsearch     " highlight when searching
-"set hlsearch      " highlight all matches on search
+set hlsearch      " highlight all matches on search
+nmap <leader>h :nohlsearch<cr>
 " }}} 
-" Folding {{{
-set foldmethod=indent   " fold based on indent level
-set foldnestmax=10      " max 10 depth
-set foldenable          " don't fold files by default on open
-nnoremap <TAB> za       
-set foldlevelstart=10   " start with fold level of 1
-set modelines=1
-" }}}
-" Key Mapping {{{
-let g:ctrlp_map = '<c-p>'  " map CTRL+P to ctrlP for fuzzy searching
-let g:ctrlp_cmd = 'CtrlP'  " map CTRL+P to ctrlP for fuzzy searching
-:nnoremap å <C-a>
-:nnoremap ≈ <C-x>
-" }}} 
-" Backups {{{
-set backup 
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp 
-set backupskip=/tmp/*,/private/tmp/* 
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp 
-set writebackup
+" Windows {{{
+set winwidth=84
+set winheight=5
+set winminheight=5
+set winheight=999
 " }}}
 " AutoGroups {{{
 augroup configgroup
@@ -71,12 +102,20 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
 " }}}
-" Custom Commands {{{
-:command WQ wq          " stop fighting spelling mistakes
-:command Wq wq          " stop fighting spelling mistakes
-:command W w            " stop fighting spelling mistakes
-:command Q q            " stop fighting spelling mistakes 
-:cmap w!! w !sudo tee > /dev/null   
+" Folding {{{
+set foldmethod=indent   " fold based on indent level
+set foldnestmax=10      " max 10 depth
+set foldenable          " don't fold files by default on open
+nnoremap <TAB> za       
+set foldlevelstart=10   " start with fold level of 1
+set modelines=1
+" }}}
+" Performance   {{{
+set noshowmode            " don't show insert at bottom
+set ttyfast               " improves smoothness
+set laststatus=2          " allow another status line so that airline will work
+set wrap linebreak nolist " wrap on words so their not broken
+set ttimeoutlen=0          " Improve mode shifting speed
 " }}}
 " NerdTree {{{
 let g:NERDTreeWinSize=18 
@@ -193,12 +232,6 @@ let g:NERDSpaceDelims = 1       " Add 1 space after comment delimiter
 let g:NERDCompactSexyComs = 1   " Use compact style for multi lines
 let g:NERDDefaultAlign = 'left' " Don't follow TABS when commenting
 " }}}
-" Performance   {{{
-set noshowmode            " don't show insert at bottom
-set ttyfast               " improves smoothness
-set laststatus=2          " allow another status line so that airline will work
-set wrap linebreak nolist " wrap on words so their not broken
-" }}}
 " JS Syntastic {{{
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -210,6 +243,23 @@ let g:syntastic_loc_list_height = 3
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_html_tidy_exec = 'tidy5' " use tidy5 html linter
-let g:syntastic_javascript_checkers = ['standard'] " use standard js linter
+let g:syntastic_javascript_checkers = ['eslint'] " use standard js linter
+" GO
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+" }}}
+" Go Syntastic {{{
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+" }}}
+" Backups {{{
+set backup 
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp 
+set backupskip=/tmp/*,/private/tmp/* 
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp 
+set writebackup
 " }}}
 " vim:foldmethod=marker:foldlevel=0

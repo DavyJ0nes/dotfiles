@@ -1,0 +1,62 @@
+#!/bin/bash
+
+###
+# Davy Jones June 2015
+# https://github.com/DavyJ0nes
+# Really janky script that checks predefined IPs from
+# local interface to full DNS address resolution and 
+# simply reports status with colour! yay!
+#
+# NEEDS REFACTORING!!!!!
+###
+
+#COLOUR VARS
+red='tput setaf 1'
+green='tput setaf 2'
+reset='tput sgr0'
+
+#PING COMMAND VARS
+COMP='ping -c 1 -t 2 127.0.0.1'
+# LOCAL='ping -c 1 192.168.88.1'
+GW='ping -c 1 -t 2 192.168.1.254'
+INET='ping -c 1 -t 2 8.8.8.8'
+DNS='ping -c 1 -t 2 google.com'
+
+COUTPUT='NIC:'
+$COMP >> /dev/null 2>&1
+if [ $? != 0 ]; then
+    echo -e "$COUTPUT             `$red` ERROR `$reset`"
+else
+    echo -e "$COUTPUT             `$green` OK `$reset`"
+fi
+# LOUTPUT='LOCAL ROUTER:'
+# $LOCAL > /dev/null
+# if [ $? != 0 ]; then
+#     echo -e "$LOUTPUT    `$red` ERROR `$reset`"
+# else
+#     echo -e "$LOUTPUT    `$green` OK `$reset`"
+# fi
+
+GOUTPUT='INTERNET GW:'
+$GW >> /dev/null 2>&1
+if [ $? != 0 ]; then
+    echo -e "$GOUTPUT     `$red` ERROR `$reset`"
+else
+    echo -e "$GOUTPUT     `$green` OK `$reset`"
+fi
+
+IOUTPUT='GOOGLE DNS:'
+$INET >> /dev/null 2>&1
+if [ $? != 0 ]; then
+    echo -e "$IOUTPUT       `$red` ERROR `$reset`"
+else
+    echo -e "$IOUTPUT      `$green` OK `$reset`"
+fi
+
+DOUTPUT='GOOGLE.COM:'
+$DNS >> /dev/null 2>&1
+if [ $? != 0 ]; then
+    echo -e "$DOUTPUT       `$red` ERROR `$reset`"
+else 
+    echo -e "$DOUTPUT      `$green` OK `$reset`"
+fi

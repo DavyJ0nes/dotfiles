@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+
+exposure_pg_running=$(docker ps -q -f name=web_postgres)
+if test -z $exposure_pg_running; then
+  echo "nope"
+  exit 1
+fi
+
+echo "starting up psql"
+echo "useful commands:"
+echo "  \c exposure_development"
+docker run -it --rm --link web_postgres:postgres postgres psql -h postgres -U postgres

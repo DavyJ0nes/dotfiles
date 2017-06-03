@@ -48,6 +48,7 @@ alias rgrep="grep -r"
 alias pse='ps -eo pid,ppid,pcpu,args'
 alias pingg="ping 8.8.8.8"
 alias here="pwd | pbcopy"
+alias grepip="grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'"
 # vim links
 alias vim="/usr/local/Cellar/vim/7.4.2210/bin/vim"
 alias vi="/usr/local/Cellar/vim/7.4.2210/bin/vim"
@@ -56,7 +57,7 @@ alias gpom="git push origin $(gb | grep '^*' | sed 's/* //')"
 alias gst="git status"
 alias gl="git log"
 # Ansible
-alias a="ansible"
+alias a="ansible -i hosts"
 alias play="ansible-playbook"
 # Docker
 alias dm="docker-machine"
@@ -64,6 +65,7 @@ alias dps="docker ps"
 alias drm="docker rm"
 alias dkill="docker kill"
 alias dco="docker-compose"
+alias des="cd ~/Personal/CODE/docker-es/v5.2"
 # Golang
 alias mango="open http://localhost:6060 && godoc -http=:6060"
 # Kubenetes
@@ -94,7 +96,7 @@ function ssh-sensor() {
 }
 
 function ssh-list() {
-  ssh bm-collector 'hostname; sudo netstat -4plunt | grep blue'
+  ssh bm-collector "hostname; ss -nltup|grep 127.0.0.1:22"
 }
 
 function ex-flush() {

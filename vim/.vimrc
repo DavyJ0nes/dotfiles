@@ -32,6 +32,7 @@ set cursorline      " underline current line
 set wildmenu        " helpful command completion with <TAB>
 set showmatch       " show matching brackets etc
 set ignorecase		  " Do case insensitive matching
+set list            " Adds $ at end of lines
 " }}}
 " Key Mapping {{{
 let g:ctrlp_map = '<c-p>'  " map CTRL+P to ctrlP for fuzzy searching
@@ -254,6 +255,15 @@ let g:go_highlight_methods = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
+" }}}
+" Ansible-vim {{{
+let g:ansible_unindent_after_newline = 1
+let g:ansible_extra_keywords_highlight = 1
+" }}}
+" Chef-Key-Mapping {{{
+nmap <leader>co :ChefFindAnyVsplit<cr>
+
+
 " }}}
 " Backups {{{
 set backup 

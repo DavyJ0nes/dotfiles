@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/davidjones/Forge/CODE/Repos/aws_lambda/avg-mean-calculator'
+let g:netrw_dirhist_2='/Users/davidjones/Forge/CODE/Repos/aws_lambda/avg-mean-calculator/node_modules'
+let g:netrw_dirhist_3='/Users/davidjones/.vim/bundle/vim-airline/doc'
+let g:netrw_dirhist_4='/Users/davidjones/Forge/CODE/Repos/forge-tools/vike'

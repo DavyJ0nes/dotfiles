@@ -6,13 +6,15 @@
 export ZSH=/Users/davidjones/.oh-my-zsh
 ZSH_THEME="miloshadzic"
 plugins=(git zsh-syntax-highlighting jira docker)
-# plugins=(git zsh-syntax-highlighting)
 
 
 #### PATH export ####
+# Ruby version with rbenv
+eval "$(rbenv init -)"
+
 export GOPATH=/Users/davidjones/go
 export PATH="/sbin:/usr/local/bin:/usr/sbin:/bin:/usr/bin:/usr/local/games:/usr/games:/usr/local/go/bin:$HOME/bin:$GOPATH/bin"
-
+export PATH="/opt/chefdk/bin:$PATH"
 
 #### Custom env exports ####
 export EDITOR='vim'
@@ -28,13 +30,13 @@ source '/Users/davidjones/google-cloud-sdk/path.zsh.inc'
 source '/Users/davidjones/google-cloud-sdk/completion.zsh.inc'
 # Kubectl completion
 source <(kubectl completion zsh)
+# SensorAudit Tool Related
+source $GOPATH/src/Forge/sensor_audit/.env
 
 # Custom CD path
 setopt auto_cd
 cdpath=($HOME/Forge/CODE/Repos/* $HOME/Forge/CODE/* $HOME/Personal)
 
-# Ruby version with rbenv
-eval "$(rbenv init -)"
 
 
 #### Aliases ####
@@ -70,6 +72,9 @@ alias des="cd ~/Personal/CODE/docker-es/v5.2"
 alias mango="open http://localhost:6060 && godoc -http=:6060"
 # Kubenetes
 alias kb="kubectl"
+# IF FIRE DELETE THIS
+# alias vi="code"
+# alias vim="code"
 
 
 #### Custom Functions ####

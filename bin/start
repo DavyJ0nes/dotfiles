@@ -1,5 +1,8 @@
 #!/bin/bash
-
+# start
+# start is a helper script that helps to get focused for the day
+# DavyJ0nes 2016
+ 
 DATE=$(date "+%d-%m-%Y %H:%M")
 
 cp ~/Personal/checklists/.template ~/Personal/checklists/checklist_"$DATE"

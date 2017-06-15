@@ -233,7 +233,7 @@ let g:NERDSpaceDelims = 1       " Add 1 space after comment delimiter
 let g:NERDCompactSexyComs = 1   " Use compact style for multi lines
 let g:NERDDefaultAlign = 'left' " Don't follow TABS when commenting
 " }}}
-" JS Syntastic {{{
+" Syntastic {{{
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -248,15 +248,14 @@ let g:syntastic_javascript_checkers = ['eslint'] " use standard js linter
 " GO
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-" Ruby
-let g:syntastic_ruby_checkers = ['rubocop', 'cookstyle']
-" }}}
-" Go Syntastic {{{
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
+" Ruby
+let g:syntastic_ruby_checkers = ['cookstyle', 'rubocop']
+let g:syntastic_ruby_rubocop_exec = '/usr/local/bin/cookstyle'
 " }}}
 " Ansible-vim {{{
 let g:ansible_unindent_after_newline = 1

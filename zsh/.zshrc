@@ -9,12 +9,13 @@ plugins=(git zsh-syntax-highlighting jira docker)
 
 
 #### PATH export ####
-# Ruby version with rbenv
-eval "$(rbenv init -)"
 
 export GOPATH=/Users/davidjones/go
 export PATH="/sbin:/usr/local/bin:/usr/sbin:/bin:/usr/bin:/usr/local/games:/usr/games:/usr/local/go/bin:$HOME/bin:$GOPATH/bin"
 export PATH="/opt/chefdk/bin:$PATH"
+
+# Ruby version with rbenv
+eval "$(rbenv init -)"
 
 #### Custom env exports ####
 export EDITOR='vim'
@@ -36,8 +37,6 @@ source $GOPATH/src/Forge/sensor_audit/.env
 # Custom CD path
 setopt auto_cd
 cdpath=($HOME/Forge/CODE/Repos/* $HOME/Forge/CODE/* $HOME/Personal)
-
-
 
 #### Aliases ####
 alias cp="cp -iv"
@@ -72,6 +71,8 @@ alias des="cd ~/Personal/CODE/docker-es/v5.2"
 alias mango="open http://localhost:6060 && godoc -http=:6060"
 # Kubenetes
 alias kb="kubectl"
+# Helpers
+alias getip="wget http://ipinfo.io/ip -qO -"
 # IF FIRE DELETE THIS
 # alias vi="code"
 # alias vim="code"

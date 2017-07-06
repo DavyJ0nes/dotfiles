@@ -14,6 +14,10 @@ osascript -e 'quit app "HipChat"'
 # Close open finder windows
 osascript -e 'tell application "Finder" to close every window'
 
+echo "$fg[blue] Applying dnd Hosts file"
+sudo mv /etc/hosts /etc/hosts.normal
+sudo mv /etc/hosts.dnd /etc/hosts
+
 # echo "$fg[blue] Opening Music"
 # osascript -e 'tell application "Google Chrome"
 #     tell (make new window)

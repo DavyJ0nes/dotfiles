@@ -25,7 +25,7 @@ export JIRA_URL='https://forgesp.atlassian.net'
 #### Other scripts to source ####
 source $ZSH/oh-my-zsh.sh
 source ~/.tmux/tmuxinator.zsh
-source $GOPATH/src/Forge/sensorStatus/.env
+# source $GOPATH/src/Forge/sensorStatus/.env
 # GCLOUD related stuff
 source '/Users/davidjones/google-cloud-sdk/path.zsh.inc'
 source '/Users/davidjones/google-cloud-sdk/completion.zsh.inc'
@@ -69,6 +69,9 @@ alias dco="docker-compose"
 alias des="cd ~/Personal/CODE/docker-es/v5.2"
 # Golang
 alias mango="open http://localhost:6060 && godoc -http=:6060"
+# Python
+# alias python="python3"
+# alias pip="pip3"
 # Kubenetes
 alias kb="kubectl"
 # Helpers
@@ -110,10 +113,6 @@ function ex-flush() {
   echo " ***** flushed cache for event $1 *****"
 }
 
-function bm-login() {
-  ssh bm-collector "sudo netstat -4plunt | grep blue"
-}
-
 function 4g-ip() {
   ssh fspsupport@192.168.101.1 "cat /status/dhcpd/leases/*" | jq '.[] | {name: .hostname, mac: .mac, ip: .ip_address}'
 }
@@ -147,3 +146,17 @@ function rant() {
 function note() {
   echo "$1 \n" >> ~/.notes
 }
+
+func venvproject() {
+  echo "going to $1"
+  cd $1 && source .lpvenv/bin/activate
+}
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
+clear

@@ -256,10 +256,15 @@ let g:go_highlight_operators = 1
 " Ruby
 let g:syntastic_ruby_checkers = ['cookstyle', 'rubocop']
 let g:syntastic_ruby_rubocop_exec = '/usr/local/bin/cookstyle'
+" Python
+
 " }}}
 " Ansible-vim {{{
 let g:ansible_unindent_after_newline = 1
 let g:ansible_extra_keywords_highlight = 1
+" }}}
+" Python {{{
+let g:pymode_python = 'python'
 " }}}
 " Chef-Key-Mapping {{{
 nmap <leader>co :ChefFindAnyVsplit<cr>

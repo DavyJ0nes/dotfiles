@@ -31,8 +31,8 @@ source '/Users/davidjones/google-cloud-sdk/path.zsh.inc'
 source '/Users/davidjones/google-cloud-sdk/completion.zsh.inc'
 # Kubectl completion
 source <(kubectl completion zsh)
-# SensorAudit Tool Related
-source $GOPATH/src/Forge/sensor_audit/.env
+# AWS CLI completion
+source /usr/local/bin/aws_zsh_completer.sh
 
 # Custom CD path
 setopt auto_cd
@@ -51,8 +51,10 @@ alias pingg="ping 8.8.8.8"
 alias here="pwd | pbcopy"
 alias grepip="grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'"
 # vim links
-alias vim="/usr/local/Cellar/vim/7.4.2210/bin/vim"
-alias vi="/usr/local/Cellar/vim/7.4.2210/bin/vim"
+# alias vim="/usr/local/Cellar/vim/7.4.2210/bin/vim"
+# alias vi="/usr/local/Cellar/vim/7.4.2210/bin/vim"
+alias vim=nvim
+alias vi=nvim
 # git
 alias gpom="git push origin $(gb | grep '^*' | sed 's/* //')"
 alias gst="git status"

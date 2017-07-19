@@ -1,0 +1,1 @@
+/home/umo/.vimrc

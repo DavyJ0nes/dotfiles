@@ -7,7 +7,7 @@ FileCopyFunc() {
   shift # remove $1 from args list
   ARRAY=($@)
   for f in "${ARRAY[@]}"; do
-    rsync -avq --copy-links "$HOME/$DIR/$f" "$DIR/$f"
+    rsync -avq --copy-links "$HOME/CODE/$DIR/$f" "$DIR/$f"
     echo "----- Copied $f"
   done
   return 0
@@ -24,9 +24,10 @@ echo "-- Finished Copying Vim Files"
 # Copy tmux Files
 echo "-- Copying Tmux Files"
 cp "$HOME/.tmux.conf" tmux/.tmux.conf
-cp "$HOME/.tmux-powerlinerc" tmux/.tmux-powerlinerc
-rsync -avq "$HOME/.tmux" tmux/.tmux --exclude .git
-rsync -avq "$HOME/.tmuxinator" tmux/.tmuxinator --exclude .git
+cp "$HOME/.tmux.conf.local" tmux/.tmux.conf.local
+# cp "$HOME/.tmux-powerlinerc" tmux/.tmux-powerlinerc
+# rsync -avq "$HOME/.tmux" tmux/.tmux --exclude .git
+# rsync -avq "$HOME/.tmuxinator" tmux/.tmuxinator --exclude .git
 echo "-- Finished Copying Tmux Files"
 
 # Copy ZSH Files
@@ -37,13 +38,13 @@ echo "-- Finished Copying ZSH Files"
 
 # Copy Bin Files
 echo "-- Copying bin files"
-files=(backup dnd dpg ex-pg exenv gitql ip4 json-csv pingtime start timeconv)
+files=(backup dnd dpg ex-pg exenv gitql ip4 json-csv pingtime start timeconv mux)
 FileCopyFunc "bin" "${files[@]}"
 echo "-- Finished bin files"
 
-echo "-- Copying checklist-template"
-cp "$HOME/Personal/checklists/.template" checklist/.template
-echo "-- Finished Copying checklist-template"
+# echo "-- Copying checklist-template"
+# cp "$HOME/Personal/checklists/.template" checklist/.template
+# echo "-- Finished Copying checklist-template"
 
 echo "FINISHED COPY"
 exit 0

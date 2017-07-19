@@ -9,8 +9,10 @@
 " Launch Config {{{
 runtime! debian.vim
 runtime macros/matchit.vim
+filetype off
 set nocompatible           " make vim act like vim, not vi
 call pathogen#infect()     " use pathogen package manager
+call pathogen#helptags()
 " autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 " }}}
@@ -22,6 +24,12 @@ set background=dark
 colorscheme tender
 set colorcolumn=+1
 hi ColorColumn ctermbg=yellow 
+if &term =~ '256color'
+  " disable Background Color Erase (BCE) so that color schemes
+  " render properly when inside 256-color tmux and GNU screen.
+  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+  set t_ut=
+endif
 " }}}
 " Basic Options {{{
 let mapleader=","   " change leader key to comma
@@ -122,7 +130,7 @@ set ttimeoutlen=0          " Improve mode shifting speed
 let g:NERDTreeWinSize=18 
 " }}}
 " Lightline {{{ 
-" let g:tender_lightline=1
+let g:tender_lightline=1
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -264,12 +272,15 @@ let g:ansible_unindent_after_newline = 1
 let g:ansible_extra_keywords_highlight = 1
 " }}}
 " Python {{{
-let g:pymode_python = 'python'
+let g:pymode_python = 'python3'
 " }}}
 " Chef-Key-Mapping {{{
 nmap <leader>co :ChefFindAnyVsplit<cr>
-
-
+" }}}
+" Terraform {{{
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
+autocmd FileType terraform setlocal commentstring=#%s
 " }}}
 " Backups {{{
 set backup 

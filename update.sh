@@ -38,7 +38,7 @@ echo "-- Finished Copying ZSH Files"
 
 # Copy Bin Files
 echo "-- Copying bin files"
-files=(backup dnd dpg ex-pg exenv gitql ip4 json-csv pingtime start timeconv mux)
+files=(aop backup dnd dpg ex-pg exenv gitql ip4 json-csv pingtime start timeconv mux docker-terraform)
 FileCopyFunc "bin" "${files[@]}"
 echo "-- Finished bin files"
 

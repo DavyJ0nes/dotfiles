@@ -49,7 +49,9 @@ alias pse='ps -eo pid,ppid,pcpu,args'
 alias pingg="ping 8.8.8.8"
 alias here="pwd | pbcopy"
 alias grepip="grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'"
+# linux related
 alias pbcopy="xclip -sel clip"
+alias open="xdg-open"
 # vim links
 alias vim=nvim
 alias vi=nvim

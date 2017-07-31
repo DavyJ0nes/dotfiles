@@ -8,14 +8,13 @@ Sweep
 [ ] How are you today?
 [ ] Process personal email inbox (remember 2-minute rule)
 [ ] Process work email inbox (remember 2-minute rule)
-[ ] Process HipChat notifications
+[ ] Process HipChat/Slack notifications
 [ ] Check work calendar, anything pressing?
-[ ] Check live events (create task if issues)
 
 Process
 -------
+[ ] List out the top 3 tasks that will produce the most value
 [ ] Review outstanding PRs (create tasks if longer than 5 mins)
-[ ] Process Jira inbox (top to bottom)
 
 Let's Do This!
 --------------

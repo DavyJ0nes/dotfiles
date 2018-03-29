@@ -13,10 +13,11 @@ filetype off
 set nocompatible           " make vim act like vim, not vi
 call pathogen#infect()     " use pathogen package manager
 call pathogen#helptags()
-" autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 " }}}
 " Colours {{{
+set laststatus=2      " allow another status line so that airline will work
 set t_Co=256
 syntax enable
 filetype plugin indent on
@@ -30,13 +31,16 @@ if &term =~ '256color'
   " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
   set t_ut=
 endif
+au BufRead,BufNewFile Packerfile setfiletype Jenkinsfile
+au BufRead,BufNewFile Terraformfile setfiletype Jenkinsfile
+au BufRead,BufNewFile *.libsonnet setfiletype .json
 " }}}
 " Basic Options {{{
 let mapleader=","   " change leader key to comma
 set number          " enable line numbers
 set relativenumber  " use relative line numbers
 set showcmd         " show command at bottom of screen
-set cursorline      " underline current line
+" set cursorline      " underline current line
 set wildmenu        " helpful command completion with <TAB>
 set showmatch       " show matching brackets etc
 set ignorecase		  " Do case insensitive matching
@@ -122,7 +126,6 @@ set modelines=1
 " Performance   {{{
 set noshowmode            " don't show insert at bottom
 set ttyfast               " improves smoothness
-set laststatus=2          " allow another status line so that airline will work
 set wrap linebreak nolist " wrap on words so their not broken
 set ttimeoutlen=0          " Improve mode shifting speed
 " }}}
@@ -130,9 +133,9 @@ set ttimeoutlen=0          " Improve mode shifting speed
 let g:NERDTreeWinSize=18 
 " }}}
 " Lightline {{{ 
-let g:tender_lightline=1
+" let g:tender_lightline=1
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'one',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
       \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
@@ -265,6 +268,8 @@ let g:go_highlight_operators = 1
 let g:syntastic_ruby_checkers = ['cookstyle', 'rubocop']
 let g:syntastic_ruby_rubocop_exec = '/usr/local/bin/cookstyle'
 " Python
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_pylint_exe = 'python3 -m pylint'
 
 " }}}
 " Ansible-vim {{{
@@ -272,7 +277,7 @@ let g:ansible_unindent_after_newline = 1
 let g:ansible_extra_keywords_highlight = 1
 " }}}
 " Python {{{
-let g:pymode_python = 'python3'
+let g:pymode_python = 'python'
 " }}}
 " Chef-Key-Mapping {{{
 nmap <leader>co :ChefFindAnyVsplit<cr>

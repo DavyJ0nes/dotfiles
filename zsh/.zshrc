@@ -4,32 +4,36 @@
 
 #### ZSH Config ####
 export ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="miloshadzic"
-plugins=(git zsh-syntax-highlighting docker)
-
+export LC_ALL="en_US.UTF-8"
+ZSH_THEME="kolo"
+plugins=(git zsh-syntax-highlighting docker docker-compose golang kubectl terraform)
 
 #### PATH export ####
 
-export GOPATH=/home/umo/CODE/go
-export PATH="/sbin:/usr/local/bin:/usr/sbin:/bin:/usr/bin:/usr/local/games:/usr/games:/usr/local/go/bin:$HOME/CODE/bin:$GOPATH/bin"
+export GOPATH=$HOME/go
+export PATH="/sbin:/usr/local/bin:/usr/sbin:/bin:/usr/bin:/usr/local/games:/usr/games:/usr/local/go/bin:$HOME/bin:$GOPATH/bin"
 export PATH="/opt/chefdk/bin:$PATH"
+export PATH="$HOME/Library/Python/2.7/bin:$PATH"
+export PATH="$HOME/Library/Python/3.6/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="/usr/X11/bin:$PATH"
 export TERM="xterm-256color"
+export TEMPLATE_DIR="$HOME/bin/templates"
 
 # Ruby version with rbenv
-# eval "$(rbenv init -)"
+eval "$(rbenv init -)"
 
 #### Custom env exports ####
 export EDITOR='vim'
-
 
 #### Other scripts to source ####
 source $ZSH/oh-my-zsh.sh
 # source ~/.tmux/tmuxinator.zsh
 # GCLOUD related stuff
-# source '/Users/davidjones/google-cloud-sdk/path.zsh.inc'
-# source '/Users/davidjones/google-cloud-sdk/completion.zsh.inc'
+source '/Users/Davy/.google-cloud-sdk/path.zsh.inc'
+source '/Users/Davy/.google-cloud-sdk/completion.zsh.inc'
 # Kubectl completion
-# source <(kubectl completion zsh)
+source <(kubectl completion zsh)
 # AWS CLI completion
 source /usr/local/bin/aws_zsh_completer.sh
 
@@ -38,24 +42,32 @@ source /usr/local/bin/aws_zsh_completer.sh
 # cdpath=($HOME/Forge/CODE/Repos/* $HOME/Forge/CODE/* $HOME/Personal)
 
 #### Aliases ####
+alias c="pygmentize -O style=native -f console256 -g"
 alias cp="cp -iv"
 alias rm="rm -iv"
 alias mv="mv -iv"
 alias ls="ls -FGh"
+alias l="exa -abghl --git --color=automatic"
 alias du="du -cksh"
 alias df="df -h"
+alias gsed="sed"
 alias rgrep="grep -r"
 alias pse='ps -eo pid,ppid,pcpu,args'
 alias pingg="ping 8.8.8.8"
 alias here="pwd | pbcopy"
 alias grepip="grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'"
+alias tree="tree -L 4"
+alias jq="jq -C"
+alias less="less -r"
+alias htop="top"
+alias glances="top"
+alias topcmds="history | awk '{CMD[\$2]++;count++;}END { for (a in CMD)print CMD[a] \" \" CMD[a]/count*100 \"% \" a;}' | grep -v \"./\" | column -c3 -s \" \" -t | sort -nr | nl |  head -n10"
+# alias curl="curl 2>/dev/null"
 # linux related
-alias pbcopy="xclip -sel clip"
-alias open="xdg-open"
-# vim links
-alias vim=nvim
-alias vi=nvim
+# alias pbcopy="xclip -sel clip"
+# alias open="xdg-open"
 # git
+alias gitdock="docker run -v "$PWD":/srv/app davyj0nes/git"
 alias gpom="git push origin $(gb | grep '^*' | sed 's/* //')"
 alias gst="git status"
 alias gl="git log"
@@ -68,16 +80,27 @@ alias dps="docker ps"
 alias drm="docker rm"
 alias dkill="docker kill"
 alias dco="docker-compose"
-alias des="cd ~/Personal/CODE/docker-es/v5.2"
+alias dockernotary="notary -s https://notary.docker.io -d ~/.docker/trust"
+# alias des="cd ~/Personal/CODE/docker-es/v5.2"
 # Golang
 alias mango="open http://localhost:6060 && godoc -http=:6060"
+alias davygo="cd $GOPATH/src/github.com/davyj0nes"
 # Python
-alias python="python3"
-alias pip="pip3"
+# alias python="/usr/local/bin/python2.7"
+# alias pip="/usr/local/bin/pip2.7"
 # Kubenetes
-# alias kb="kubectl"
+alias kb="kubectl"
+# Terraform
+alias tf="terraform"
+# Packer
+alias pack="packer"
 # Helpers
 alias getip="wget http://ipinfo.io/ip -qO -"
+# AWS
+alias awspersonal="aws --profile personal --region eu-west-1"
+# Weather
+alias weather="docker run davyj0nes/weather"
+
 
 #### Custom Functions ####
 # Docker related commands
@@ -92,8 +115,9 @@ function dockerstart() {
 }
 
 function dclean() {
-  docker rm $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
-  docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
+  docker container prune -f
+  docker image prune -f
+  docker volume prune -f
 }
 
 # Misc commands that don't warrant being in ~/bin
@@ -106,7 +130,66 @@ function note() {
   echo "$1 \n" >> ~/.notes
 }
 
-func venvproject() {
+function venvproject() {
   echo "going to $1"
   cd $1 && source .lpvenv/bin/activate
+}
+
+function iperfsummary() {
+  if [ "$1" = "" ]; then
+    echo "server address not set"
+    return 1
+  fi
+  iperf3 -c "$1" -J | jq '.end | {received: .sum_received.bits_per_second, sent: .sum_sent.bits_per_second}'
+}
+
+
+# check if uri is up
+function isup() {
+	local uri=$1
+
+	if curl -s --head  --request GET "$uri" | grep "200 OK" > /dev/null ; then
+		notify-send --urgency=critical "$uri is down"
+	else
+		notify-send --urgency=low "$uri is up"
+	fi
+}
+
+# Get colors in manual pages
+function man() {
+	env \
+		LESS_TERMCAP_mb="$(printf '\e[1;31m')" \
+		LESS_TERMCAP_md="$(printf '\e[1;31m')" \
+		LESS_TERMCAP_me="$(printf '\e[0m')" \
+		LESS_TERMCAP_se="$(printf '\e[0m')" \
+		LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
+		LESS_TERMCAP_ue="$(printf '\e[0m')" \
+		LESS_TERMCAP_us="$(printf '\e[1;32m')" \
+		man "$@"
+}
+
+# Run `dig` and display the most useful info
+function digga() {
+	dig +nocmd "$1" any +multiline +noall +answer
+}
+
+# Simple calculator
+function calc() {
+	# local result=""
+	result="$(printf "scale=10;%s\\n" "$*" | bc --mathlib | tr -d '\\\n')"
+	#						└─ default (when `--mathlib` is used) is 20
+
+	if [[ "$result" == *.* ]]; then
+		# improve the output for decimal numbers
+		# add "0" for cases like ".5"
+		# add "0" for cases like "-.5"
+		# remove trailing zeros
+		printf "%s" "$result" |
+			sed -e 's/^\./0./'  \
+			-e 's/^-\./-0./' \
+			-e 's/0*$//;s/\.$//'
+	else
+		printf "%s" "$result"
+	fi
+	printf "\\n"
 }

@@ -7,7 +7,7 @@ FileCopyFunc() {
   shift # remove $1 from args list
   ARRAY=($@)
   for f in "${ARRAY[@]}"; do
-    rsync -avq --copy-links "$HOME/CODE/$DIR/$f" "$DIR/$f"
+    rsync -avq --copy-links "$HOME/$DIR/$f" "$DIR/$f"
     echo "----- Copied $f"
   done
   return 0
@@ -38,7 +38,7 @@ echo "-- Finished Copying ZSH Files"
 
 # Copy Bin Files
 echo "-- Copying bin files"
-files=(aop backup dnd dpg ex-pg exenv gitql ip4 json-csv pingtime start timeconv mux docker-terraform)
+files=(aop backup dnd dpg ex-pg exenv gitql ip4 json-csv pingtime start stop timeconv mux docker-terraform)
 FileCopyFunc "bin" "${files[@]}"
 echo "-- Finished bin files"
 

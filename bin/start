@@ -5,7 +5,7 @@
  
 DATE=$(date "+%d-%m-%Y %H:%M")
 
-cp ~/Personal/checklists/.template ~/Personal/checklists/checklist_"$DATE"
-sed -i.bak "s/^date/$DATE/" ~/Personal/checklists/checklist_"$DATE"
-rm ~/Personal/checklists/checklist_"$DATE".bak
-vi ~/Personal/checklists/checklist_"$DATE"
+cp ~/Personal/checklists/.start-template ~/Personal/checklists/start/start_checklist_"$DATE"
+sed -i.bak "s/^date/$DATE/" ~/Personal/checklists/start/start_checklist_"$DATE"
+rm ~/Personal/checklists/start/start_checklist_"$DATE".bak
+vi ~/Personal/checklists/start/start_checklist_"$DATE"

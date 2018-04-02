@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/Davy/go/src/github.com/davyj0nes/ecs_project/terraform/modules/ecs'
-let g:netrw_dirhist_2='/Users/Davy/go/src/github.com/davyj0nes/ecs_project/terraform/modules/ecr'
-let g:netrw_dirhist_3='/Users/Davy/go/src/github.com/davyj0nes/ecs_project/apps/bill'
-let g:netrw_dirhist_4='/Users/Davy/Cloudreach/CODE/training/davy-agileops-training/Terraform'
-let g:netrw_dirhist_5='/Users/Davy/go/src/github.com/davyj0nes/ecs_project/terraform/modules/ecs'
-let g:netrw_dirhist_6='/Users/Davy/go/src/github.com/davyj0nes/ecs_project/terraform/modules/ecs/service'

@@ -1,3 +1,4 @@
+*.swp
 vim/vim/spell/
 # General
 .DS_Store

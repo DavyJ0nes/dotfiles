@@ -111,6 +111,7 @@ set modelines=1
 " }}}
 " NerdTree {{{
 let g:NERDTreeWinSize=18 
+let g:NERDTreeMapOpenInTab='<ENTER>'
 " }}}
 " NerdCommenter {{{
 let g:NERDSpaceDelims = 1       " Add 1 space after comment delimiter
@@ -119,6 +120,7 @@ let g:NERDDefaultAlign = 'left' " Don't follow TABS when commenting
 " }}}
 " Airline {{{
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme = 'violet'
 " }}}
 " Backups {{{

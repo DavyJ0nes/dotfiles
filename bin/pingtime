@@ -2,61 +2,60 @@
 
 ###
 # Davy Jones June 2015
-# https://github.com/DavyJ0nes
 # Really janky script that checks predefined IPs from
 # local interface to full DNS address resolution and 
-# simply reports status with colour! yay!
+# simply reports status with colour.
 #
 # NEEDS REFACTORING!!!!!
 ###
 
-#COLOUR VARS
-red='tput setaf 1'
-green='tput setaf 2'
-reset='tput sgr0'
+## COLOUR VARS
+black() { echo -e "$(tput setaf 0)$*$(tput setaf 9)"; }
+red() { echo -e "$(tput setaf 1)$*$(tput setaf 9)"; }
+green() { echo -e "$(tput setaf 2)$*$(tput setaf 9)"; }
+yellow() { echo -e "$(tput setaf 3)$*$(tput setaf 9)"; }
+blue() { echo -e "$(tput setaf 4)$*$(tput setaf 9)"; }
+magenta() { echo -e "$(tput setaf 5)$*$(tput setaf 9)"; }
+cyan() { echo -e "$(tput setaf 6)$*$(tput setaf 9)"; }
+white() { echo -e "$(tput setaf 7)$*$(tput setaf 9)"; }
 
-#PING COMMAND VARS
-COMP='ping -c 1 -t 2 127.0.0.1'
-# LOCAL='ping -c 1 192.168.88.1'
-GW='ping -c 1 -t 2 192.168.1.254'
-INET='ping -c 1 -t 2 8.8.8.8'
-DNS='ping -c 1 -t 2 google.com'
+## ROUTE VARS
+DEFAULT_ROUTE=$(netstat -nr -f inet | grep default | awk '{print $2}')
+DEFAULT_IFACE=$(netstat -nr -f inet | grep default | awk '{print $NF}')
+LOCAL_IP=$(ifconfig | grep "$DEFAULT_IFACE" -A 5 | grep -oe "inet [0-9]\\{1,3\\}.[0-9]\\{1,3\\}.[0-9]\\{1,3\\}.[0-9]\\{1,3\\}" | tr -d "inet ")
 
-COUTPUT='NIC:'
-$COMP >> /dev/null 2>&1
-if [ $? != 0 ]; then
-    echo -e "$COUTPUT             `$red` ERROR `$reset`"
+## PING COMMAND VARS
+LOCAL="ping -c 1 -t 2 $LOCAL_IP"
+GW="ping -c 1 -t 2 $DEFAULT_ROUTE"
+INET="ping -c 1 -t 2 1.1.1.1"
+DNS="ping -c 1 -t 2 google.com"
+
+## CHECK LOCAL CONNECTION
+if [ "$LOCAL_IP" == "127.0.0.1" ]; then
+  red "NIC: \\t\\t ERROR"
 else
-    echo -e "$COUTPUT             `$green` OK `$reset`"
-fi
-# LOUTPUT='LOCAL ROUTER:'
-# $LOCAL > /dev/null
-# if [ $? != 0 ]; then
-#     echo -e "$LOUTPUT    `$red` ERROR `$reset`"
-# else
-#     echo -e "$LOUTPUT    `$green` OK `$reset`"
-# fi
-
-GOUTPUT='INTERNET GW:'
-$GW >> /dev/null 2>&1
-if [ $? != 0 ]; then
-    echo -e "$GOUTPUT     `$red` ERROR `$reset`"
-else
-    echo -e "$GOUTPUT     `$green` OK `$reset`"
+  if $LOCAL >> /dev/null 2>&1; then
+    green "NIC:\\t\\t OK"
+  else
+    red "NIC:\\t\\t ERROR"
+  fi
 fi
 
-IOUTPUT='GOOGLE DNS:'
-$INET >> /dev/null 2>&1
-if [ $? != 0 ]; then
-    echo -e "$IOUTPUT       `$red` ERROR `$reset`"
-else
-    echo -e "$IOUTPUT      `$green` OK `$reset`"
+## CHECK DEFAULT GATEWAY
+if $GW >> /dev/null 2>&1; then
+    green "INTERNET GW:\\t OK"
+  else
+    red "INTERNET GW:\\t ERROR"
 fi
 
-DOUTPUT='GOOGLE.COM:'
-$DNS >> /dev/null 2>&1
-if [ $? != 0 ]; then
-    echo -e "$DOUTPUT       `$red` ERROR `$reset`"
-else 
-    echo -e "$DOUTPUT      `$green` OK `$reset`"
+if $INET >> /dev/null 2>&1; then
+    green "DNS SERVER:\\t OK"
+  else
+    red "DNS SERVER:\\t ERROR"
+fi
+
+if $DNS >> /dev/null 2>&1; then
+    green "GOOGLE.COM:\\t OK"
+  else
+    red "GOOGLE.COM:\\t ERROR"
 fi

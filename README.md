@@ -23,7 +23,7 @@ Am using the [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) plugin scrip
 To initialise run the following:
 
 ```shell
-git submodule update --init vim/
+git submodule update --init zsh/
 ```
 
 As with vim you can symlink the config files by running `./install.sh`. If you already have a .zshrc file or oh-my-zsh installed in your HOME directory then installation will be ignored.

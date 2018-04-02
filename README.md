@@ -14,11 +14,19 @@ For vim I am using vim8 and its native plugin support. To that end all you will 
 git submodule update --init vim/
 ```
 
-Then you can symlink the files using the temporary install script: `./install-vim.sh`
+Then you can symlink the files using the install script: `./install.sh`. If you have a vimrc or vim directory in your HOME directory then these files will be ignored.
 
 ### zsh
 
-To be updated
+Am using the [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) plugin scripts to help bootstrap my ZSH environment. This has been added as a submodule under `zsh` directory.
+
+To initialise run the following:
+
+```shell
+git submodule update --init vim/
+```
+
+As with vim you can symlink the config files by running `./install.sh`. If you already have a .zshrc file or oh-my-zsh installed in your HOME directory then installation will be ignored.
 
 ### tmux
 
@@ -46,4 +54,6 @@ A selection of helper scripts and functions that are part of everyday use. They 
 - stop: checklist for stopping work for the day (requires pre configuration for dirs).
 - timeconv: takes argument as seconds and returns formatted version.
 
+# LICENSE
 
+MIT

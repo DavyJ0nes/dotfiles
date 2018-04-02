@@ -19,3 +19,6 @@
 [submodule "vim/vim/pack/plugins/start/vim-airline-themes"]
 	path = vim/vim/pack/plugins/start/vim-airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes.git
+[submodule "zsh/oh-my-zsh"]
+	path = zsh/oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git

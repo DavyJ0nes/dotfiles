@@ -4,7 +4,7 @@ set -e
 #========================================================#
 # Update vim and zsh configuration files
 # This is a temporary fix while I update my config files
-# 2018
+# June 2018
 #========================================================#
  
 # print_usage() {

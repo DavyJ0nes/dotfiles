@@ -2,30 +2,26 @@ date
 Morning Checklist
 ====================
 
-Sweep
------
+Init
+----
 [ ] Clear your work space, close unnesessary programs and brower Tabs
 [ ] How are you today?
 [ ] Process personal email inbox (remember 2-minute rule)
 [ ] Process work email inbox (remember 2-minute rule)
-[ ] Process HipChat/Slack notifications
-[ ] Check work calendar, anything pressing?
+[ ] Process Slack notifications
+[ ] Check calendar, anything pressing?
 
 Process
 -------
 [ ] List out the top 3 tasks that will produce the most value
-[ ] Review outstanding PRs (create tasks if longer than 5 mins)
 [ ] Prioritise your Trello backlog
 [ ] Schedule 2 slots of distraction-free time
 
-Let's Do This!
---------------
-
 Current Goals
--------
-1. Complete Leap into Leadership Course
-2. Act more professional and reduce the amount of complaining. Be more upbeat
-3. Continue working through Go in Action book
+-------------
+1. Find a New Job
+2. Become more comfortable with K8s
+3. Learn more Go Best Practices
 
 Notes
 -----

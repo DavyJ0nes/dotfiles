@@ -40,6 +40,7 @@ source $HOME/.google-cloud-sdk/path.zsh.inc
 source <(kubectl completion zsh)
 
 #### Aliases ####
+alias vi="vim"
 alias cp="cp -iv"
 alias rm="rm -iv"
 alias mv="mv -iv"

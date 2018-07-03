@@ -177,3 +177,12 @@ function calc() {
 	fi
 	printf "\\n"
 }
+
+function kb-get-stuff() {
+  echo "PODS" && echo "----"
+  kubectl get pods
+  echo "\nSERVICES" && echo "--------"
+  kubectl get svc
+  echo "\nINGRESS" && echo "-------"
+  kubectl get ingress
+}

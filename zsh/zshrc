@@ -36,8 +36,10 @@ source $ZSH/oh-my-zsh.sh
 # GCLOUD related stuff
 source $HOME/.google-cloud-sdk/completion.zsh.inc
 source $HOME/.google-cloud-sdk/path.zsh.inc
-# Kubectl completion
+#
+# Kubectl and Helm completion
 source <(kubectl completion zsh)
+source <(helm completion zsh)
 
 #### Aliases ####
 alias vi="vim"

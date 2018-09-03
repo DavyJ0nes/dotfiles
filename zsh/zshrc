@@ -3,7 +3,9 @@
 
 #### ZSH Config ####
 export ZSH=$HOME/.oh-my-zsh
-export LC_ALL="en_US.UTF-8"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 ZSH_THEME="miloshadzic"
 plugins=(git zsh-syntax-highlighting docker docker-compose golang kubectl terraform)
 
@@ -18,24 +20,27 @@ export PATH="/usr/X11/bin:$PATH"
 export TERM="xterm-256color"
 
 # Python version with pyenv
-eval "$(pyenv init -)"
+# eval "$(pyenv init -)"
 
 # Ruby version with rbenv
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 # Set up Docker on older Macbook
-eval $(docker-machine env)
+# eval $(docker-machine env)
 
 #### Custom env exports ####
 export EDITOR='vim'
+
+#### GPG Stuff ####
+export GPG_TTY=$(tty)
 
 #### Other scripts to source ####
 source $ZSH/oh-my-zsh.sh
 # source ~/.tmux/tmuxinator.zsh
 
 # GCLOUD related stuff
-source $HOME/.google-cloud-sdk/completion.zsh.inc
-source $HOME/.google-cloud-sdk/path.zsh.inc
+# source $HOME/.google-cloud-sdk/completion.zsh.inc
+# source $HOME/.google-cloud-sdk/path.zsh.inc
 #
 # Kubectl and Helm completion
 source <(kubectl completion zsh)
@@ -66,7 +71,6 @@ alias glances="top"
 alias topcmds="history | awk '{CMD[\$2]++;count++;}END { for (a in CMD)print CMD[a] \" \" CMD[a]/count*100 \"% \" a;}' | grep -v \"./\" | column -c3 -s \" \" -t | sort -nr | nl |  head -n10"
 # git
 alias gitdock="docker run -v "$PWD":/srv/app davyj0nes/git"
-alias gpom="git push origin $(gb | grep '^*' | sed 's/* //')"
 alias gst="git status"
 alias gl="git log"
 # Ansible
@@ -81,6 +85,8 @@ alias dco="docker-compose"
 alias dockernotary="notary -s https://notary.docker.io -d ~/.docker/trust"
 # Golang
 alias godavy="cd $GOPATH/src/github.com/davyj0nes"
+alias gopos="cd $GOPATH/src/github.com/intelligentpos"
+alias gozettle="cd $GOPATH/src/github.com/izettle"
 # Kubenetes
 alias kb="kubectl"
 # Terraform
@@ -180,11 +186,27 @@ function calc() {
 	printf "\\n"
 }
 
-function kb-get-stuff() {
+function kbgetall() {
   echo "PODS" && echo "----"
-  kubectl get pods
+  kubectl get pods --all-namespaces
   echo "\nSERVICES" && echo "--------"
-  kubectl get svc
+  kubectl get svc --all-namespaces
   echo "\nINGRESS" && echo "-------"
-  kubectl get ingress
+  kubectl get ingress --all-namespaces
 }
+
+function gpob() {
+  git push origin $(git rev-parse --abbrev-ref HEAD)
+}
+
+function check-helm-values() {
+  grep -A 5 "\- name: $1" dev.yml stg.yml minikube.yml prd.yml
+}
+
+function whoseport() {
+  lsof -i ":$1" | grep LISTEN
+}
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/davy.jones/.sdkman"
+[[ -s "/Users/davy.jones/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/davy.jones/.sdkman/bin/sdkman-init.sh"

@@ -42,3 +42,9 @@ if ! ls "$HOME/.oh-my-zsh" > /dev/null 2>&1; then
   ln -s "$THISDIR"/zsh/oh-my-zsh "$HOME"/.oh-my-zsh
 fi
 
+## Symlink tmux files
+echo "Linking tmux files"
+
+if ! ls "$HOME/.zshrc" > /dev/null 2>&1; then
+  ln -s "$THISDIR"/tmux/tmux.conf "$HOME"/.tmux.conf
+fi

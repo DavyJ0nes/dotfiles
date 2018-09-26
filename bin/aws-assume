@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+#================================================#
+# Script to automate setting of temp creds for AWS
+# 2018
+#================================================#
+
+if [ "$1" = "" ] || [ "$2" = "" ]; then
+ echo "usage: aws-assume <ACCOUNT_ID> <ROLE_NAME>"
+ echo ""
+ echo "aws-assume"
+ echo " - ACCOUNT_ID: The ID of the account"
+ echo " - ROLE_NAME: The name of the role to assume"
+
+ exit 1
+fi
+
+ACCOUNT_NUMBER=$1
+ROLE_NAME=$2
+
+temp_role=$(aws sts assume-role \
+                    --role-arn "arn:aws:iam::$ACCOUNT_NUMBER:role/$ROLE_NAME" \
+                    --role-session-name "$(whoami) cli")
+
+export AWS_ACCESS_KEY_ID=$(echo "$temp_role" | jq .Credentials.AccessKeyId | xargs)
+export AWS_SECRET_ACCESS_KEY=$(echo "$temp_role" | jq .Credentials.SecretAccessKey | xargs)
+export AWS_SESSION_TOKEN=$(echo "$temp_role" | jq .Credentials.SessionToken | xargs)
+
+env | grep -i AWS_

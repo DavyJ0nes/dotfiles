@@ -41,15 +41,20 @@ source $ZSH/oh-my-zsh.sh
 # GCLOUD related stuff
 # source $HOME/.google-cloud-sdk/completion.zsh.inc
 # source $HOME/.google-cloud-sdk/path.zsh.inc
-#
+
 # Kubectl and Helm completion
 source <(kubectl completion zsh)
 source <(helm completion zsh)
+source <(jira --completion-script-zsh)
 
+# GO11 Modules Enable
+# export GO111MODULE=on 
 #### Aliases ####
+alias sudo="sudo "
+alias watch="watch "
 alias vi="vim"
 alias cp="cp -iv"
-alias rm="rm -iv"
+alias rm="rmtrash"
 alias mv="mv -iv"
 alias ls="ls -FGh"
 alias l="ls -al"
@@ -73,6 +78,7 @@ alias topcmds="history | awk '{CMD[\$2]++;count++;}END { for (a in CMD)print CMD
 alias gitdock="docker run -v "$PWD":/srv/app davyj0nes/git"
 alias gst="git status"
 alias gl="git log"
+alias git-branch-name="git rev-parse --abbrev-ref HEAD"
 # Ansible
 alias a="ansible -i hosts"
 alias play="ansible-playbook"
@@ -89,6 +95,7 @@ alias gopos="cd $GOPATH/src/github.com/intelligentpos"
 alias gozettle="cd $GOPATH/src/github.com/izettle"
 # Kubenetes
 alias kb="kubectl"
+alias mk="minikube"
 # Terraform
 alias tf="terraform"
 # Packer
@@ -98,7 +105,7 @@ alias getip="wget http://ipinfo.io/ip -qO -"
 # AWS
 alias awspersonal="aws --profile personal --region eu-west-1"
 # Weather
-alias weather="docker run davyj0nes/weather"
+alias weather="docker run davyj0nes/weather:0.0.4"
 
 #### Custom Functions ####
 # Docker related commands
@@ -187,12 +194,20 @@ function calc() {
 }
 
 function kbgetall() {
+  if [ "$1" != "" ]; then
+    NS="-n $1"
+  else
+    NS="--all-namespaces"
+  fi
+
   echo "PODS" && echo "----"
-  kubectl get pods --all-namespaces
+  kubectl get pods "$NS"
   echo "\nSERVICES" && echo "--------"
-  kubectl get svc --all-namespaces
+  kubectl get svc "$NS"
   echo "\nINGRESS" && echo "-------"
-  kubectl get ingress --all-namespaces
+  kubectl get ingress "$NS"
+  echo "\nJOBS" && echo "-------"
+  kubectl get jobs "$NS"
 }
 
 function gpob() {

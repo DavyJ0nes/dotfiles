@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+
+#=====================================#
+# Get Number of SQS Messages in Queue
+# 2018
+#=====================================#
+
+print_usage() {
+  echo "usage: $1 <queue_name>"
+  echo ""
+  echo "getnumsqsmessages"
+  echo " - queue_name: name of sqs queue"
+}
+
+if [ "$1" == "" ]; then
+  print_usage "$@"
+
+  exit 1
+fi
+
+QUEUE_NAME=$1
+START_TIME=$(date -v-10M -u +"%Y-%m-%dT%H:%M:%SZ")
+END_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+CLOUDWATCH_OUTPUT=$(aws cloudwatch get-metric-statistics --dimensions Name=QueueName,Value="$QUEUE_NAME" --metric-name ApproximateNumberOfMessagesVisible --namespace AWS/SQS --period 10 --start-time "$START_TIME" --end-time "$END_TIME" --statistics Maximum)
+
+LAST_DATAPOINT=$(echo "$CLOUDWATCH_OUTPUT" | jq '.Datapoints[-1].Maximum')
+
+if [ ! "$LAST_DATAPOINT" ] || [ "$LAST_DATAPOINT" == "null" ]; then
+  echo "no datapoints for $QUEUE_NAME found"
+  exit 2
+fi
+
+echo "Count of Msgs in $QUEUE_NAME:    $LAST_DATAPOINT"

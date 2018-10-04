@@ -25,3 +25,9 @@
 [submodule "vim/vim/pack/plugins/start/vim-fugitive"]
 	path = vim/vim/pack/plugins/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/vim/pack/plugins/start/vim-easy-align"]
+	path = vim/vim/pack/plugins/start/vim-easy-align
+	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "vim/vim/pack/plugins/start/vim-markdown-toc"]
+	path = vim/vim/pack/plugins/start/vim-markdown-toc
+	url = https://github.com/mzlogin/vim-markdown-toc.git

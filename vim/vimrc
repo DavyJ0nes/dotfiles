@@ -118,6 +118,9 @@ let g:NERDSpaceDelims = 1       " Add 1 space after comment delimiter
 let g:NERDCompactSexyComs = 1   " Use compact style for multi lines
 let g:NERDDefaultAlign = 'left' " Don't follow TABS when commenting
 " }}}
+" Easy Align {{{
+au FileType markdown vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+" }}}
 " Airline {{{
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1

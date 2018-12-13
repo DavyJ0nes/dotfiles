@@ -36,11 +36,10 @@ export GPG_TTY=$(tty)
 
 #### Other scripts to source ####
 source $ZSH/oh-my-zsh.sh
-# source ~/.tmux/tmuxinator.zsh
 
 # GCLOUD related stuff
-# source $HOME/.google-cloud-sdk/completion.zsh.inc
-# source $HOME/.google-cloud-sdk/path.zsh.inc
+source $HOME/.google-cloud-sdk/completion.zsh.inc
+source $HOME/.google-cloud-sdk/path.zsh.inc
 
 # Kubectl and Helm completion
 source <(kubectl completion zsh)
@@ -49,6 +48,7 @@ source <(jira --completion-script-zsh)
 
 # GO11 Modules Enable
 # export GO111MODULE=on 
+
 #### Aliases ####
 alias sudo="sudo "
 alias watch="watch "
@@ -70,6 +70,7 @@ alias tree="tree -L 4"
 alias jq="jq -C"
 alias less="less -r"
 alias brew-upgrade="brew update && brew upgrade $(brew outdated --quiet) && brew cleanup"
+alias uuidgen="uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '\n'"
 # Have these 2 set as was seeing issue with terminal freezing with High Sierra!
 alias htop="top"
 alias glances="top"
@@ -79,6 +80,9 @@ alias gitdock="docker run -v "$PWD":/srv/app davyj0nes/git"
 alias gst="git status"
 alias gl="git log"
 alias git-branch-name="git rev-parse --abbrev-ref HEAD"
+alias ghstatus="curl -s https://status.github.com/api/last-message.json | jq"
+alias prdesign="hub pull-request -l 'Technical Design' -a DavyJ0nes -b master"
+alias prdebt="hub pull-request -l 'Technical Debt' -a DavyJ0nes -b master"
 # Ansible
 alias a="ansible -i hosts"
 alias play="ansible-playbook"
@@ -89,6 +93,7 @@ alias drm="docker rm"
 alias dkill="docker kill"
 alias dco="docker-compose"
 alias dockernotary="notary -s https://notary.docker.io -d ~/.docker/trust"
+alias pgport="jq '.[0].NetworkSettings.Ports.\"5432/tcp\"[0].HostPort' | tr -d '\"'"
 # Golang
 alias godavy="cd $GOPATH/src/github.com/davyj0nes"
 alias gopos="cd $GOPATH/src/github.com/intelligentpos"
@@ -98,10 +103,15 @@ alias kb="kubectl"
 alias mk="minikube"
 # Terraform
 alias tf="terraform"
+alias tf12="tf12-osx"
 # Packer
 alias pack="packer"
+# PHP
+alias php="docker run -t --rm php"
+alias pecl="docker run -t --rm php pecl"
 # Helpers
 alias getip="wget http://ipinfo.io/ip -qO -"
+alias showtodo="grep -R TODO * --exclude-dir=vendor"
 # AWS
 alias awspersonal="aws --profile personal --region eu-west-1"
 # Weather
@@ -220,6 +230,18 @@ function check-helm-values() {
 
 function whoseport() {
   lsof -i ":$1" | grep LISTEN
+}
+
+function apidocs() {
+  awk '/tests :=/,/^$/' $1 | tail -n +9 | tr -d '\t' | sed -E -e 's/^},|^{|^}//'
+}
+
+function gocheckshit() {
+  echo -e "\e[33mrunning linter...\e[0m"
+  gometalinter --fast --vendor --enable=gofmt --deadline=2m --skip=testing ./...
+
+  echo -e "\e[33mrunning tests...\e[0m"
+  go test -race ./...
 }
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!

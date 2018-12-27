@@ -46,6 +46,9 @@ source <(kubectl completion zsh)
 source <(helm completion zsh)
 source <(jira --completion-script-zsh)
 
+# Rust related
+source $HOME/.cargo/env
+
 # GO11 Modules Enable
 # export GO111MODULE=on 
 
@@ -109,6 +112,25 @@ alias pack="packer"
 # PHP
 alias php="docker run -t --rm php"
 alias pecl="docker run -t --rm php pecl"
+# Multipass
+alias mp="multipass"
+alias mpl="multipass list"
+alias mpe="multipass exec"
+alias mp-cleanup="multipass delete --all && multipass purge"
+# microk8s
+alias microk8s-launch="multipass launch -n microk8s -m 4G -d 30G 18.04 --cloud-init $HOME/bin/microk8s-init.yaml"
+alias microk8s-init="multipass exec microk8s -- sudo /snap/bin/microk8s.enable dns storage dashboard"
+alias microk8s-config="multipass exec microk8s -- sudo /snap/bin/microk8s.config"
+alias microk8s-disable="multipass exec microk8s -- sudo /snap/bin/microk8s.disable"
+alias microk8s-enable="multipass exec microk8s -- sudo /snap/bin/microk8s.enable"
+alias microk8s-docker="multipass exec microk8s -- sudo /snap/bin/microk8s.docker"
+alias microk8s-inspect="multipass exec microk8s -- sudo /snap/bin/microk8s.inspect"
+alias microk8s-istioctl="multipass exec microk8s -- sudo /snap/bin/microk8s.istioctl"
+alias microk8s-reset="multipass exec microk8s -- sudo /snap/bin/microk8s.reset"
+alias microk8s-start="multipass exec microk8s -- sudo /snap/bin/microk8s.start"
+alias microk8s-stop="multipass exec microk8s -- sudo /snap/bin/microk8s.stop"
+alias microk8s-status="multipass exec microk8s -- sudo /snap/bin/microk8s.status"
+alias microk8s-shell="multipass shell microk8s"
 # Helpers
 alias getip="wget http://ipinfo.io/ip -qO -"
 alias showtodo="grep -R TODO * --exclude-dir=vendor"

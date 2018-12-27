@@ -1,5 +1,5 @@
 " Davy Jones vimrc
-" Updated 2/4/2018
+" Updated 27/12/2018
 " Plugins Used {{{
 " NERD Commenter - for code commenting
 " CTRL P         - for fuzzy searching
@@ -113,6 +113,11 @@ set modelines=1
 let g:NERDTreeWinSize=18 
 let g:NERDTreeMapOpenInTab='<ENTER>'
 " }}}
+
+" Rust {{{
+let g:rustfmt_autosave = 1
+" }}}
+
 " NerdCommenter {{{
 let g:NERDSpaceDelims = 1       " Add 1 space after comment delimiter
 let g:NERDCompactSexyComs = 1   " Use compact style for multi lines

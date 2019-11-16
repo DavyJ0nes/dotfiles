@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+REPO=$1
+VERSION="$2"
+PREFIX=""
+
+if [ "$VERSION" == "" ]; then
+  OUTPUT=$(aws ecr list-images --repository-name "$PREFIX/$REPO" | jq --arg VERSION "$VERSION" '.imageIds[].imageTag')
+else
+  OUTPUT=$(aws ecr list-images --repository-name "$PREFIX/$REPO" | jq --arg VERSION "$VERSION" '.imageIds[] | select(.imageTag==$VERSION)')
+fi
+
+echo "$OUTPUT"
+

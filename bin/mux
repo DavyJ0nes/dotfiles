@@ -1,9 +1,15 @@
 #!/bin/bash
+
 tmux new-session -d -n dev
 tmux split-window -v
-tmux new-window -n hack
+tmux split-window -h
+tmux split-window -v
+tmux new-window -n ops
 tmux split-window -v
 tmux selectp -t 1
 tmux split-window -h
+tmux selectp -t 3
+tmux split-window -h
+tmux new-window -n dashboard
 tmux selectw -t 1
 tmux -2 attach-session -d

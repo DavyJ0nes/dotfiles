@@ -1,0 +1,5 @@
+#!/bin/bash
+
+printf "# Change Log\n\n"
+
+git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges | cut -c9- | sed 's/^/- /g'

@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+#====================================================#
+# Script to check the status of a build in travis
+# currently only checks latest build
+# 2019
+#====================================================#
+
+if [ "$1" = "" ]; then
+ echo "usage: check-travis <SERVICE>"
+ echo ""
+ echo "check-travis"
+ echo " - SERVICE: The Name of the Service Repo"
+
+ exit 1
+fi
+
+SERVICE=$1
+TOKEN=$TRAVIS_TOKEN
+
+BUILDS=$(curl -s -H "Travis-API-Version: 3" -H "User-Agent: API Explorer" \
+  -H "Authorization: token $TOKEN" \
+"https://api.travis-ci.com/repo/iZettle%2F$SERVICE/builds?limit=5&sort_by=created_at:desc")
+
+FILTERED=$(echo $BUILDS | jq "[.builds[] | { type: .event_type, commit: .commit.message, created_by: .created_by.login, started_at: .started_at, status: .state, stages: [.stages[] | { name: .name, state: .state }], link: \"https://travis-ci.com/iZettle/$SERVICE/builds/\(.number)\" }]")
+
+echo $FILTERED | jq

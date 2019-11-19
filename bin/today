@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+# today
+# tool to show the tasks set for today
+
+DATE=$(date "+%d-%m-%Y")
+PREFIX="$HOME/checklists/start"
+
+# shellcheck disable=SC2086
+TODAYS_FILE=$(ls $PREFIX/*$DATE*)
+
+grep -A 10 "## Today's Goals" "$TODAYS_FILE"

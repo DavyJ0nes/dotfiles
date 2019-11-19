@@ -1,14 +1,17 @@
 #!/bin/bash
+set -e
+
 # start
 # start is a helper script that helps to get focused for the day
 # DavyJ0nes 2016
  
-DATE=$(date "+%d-%m-%Y %H:%M")
+DATE=$(date "+%d-%m-%Y_%H:%M")
 PREFIX="$HOME/checklists"
+FILENAME="$PREFIX/start/start_checklist_$DATE"
 
-cp "$PREFIX/.start-template" "$PREFIX/start/start_checklist_$DATE"
+cp "$PREFIX/.start-template" "$FILENAME"
 
-sed -i.bak "s/^date/$DATE/" "$PREFIX/start/start_checklist_$DATE"
-rm "$PREFIX/start/start_checklist_$DATE.bak"
+sed -i.bak "s/^date/$DATE/" "$FILENAME"
+rm "$FILENAME.bak"
 
-vim "$PREFIX/start/start_checklist_$DATE"
+vim "$FILENAME"

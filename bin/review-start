@@ -46,4 +46,4 @@ fi
 echo "Usage: review-start ARG"
 echo "Args:"
 echo "      archive - moves all start checklists to archive directory"
-echo "      begin   - opens att checklists in vim along with a retrospective file"
+echo "      begin   - opens all checklists in vim along with a retrospective file"

@@ -2,57 +2,37 @@
 
 ## Description
 
-This is a selection of my dot files for vim, zsh etc.
+This is a selection of my dot files for neovim, zsh and tmux.
 
 ## Installation
 
-### vim
+### Colour Scheme
 
-For vim I am using vim8 and its native plugin support. To that end all you will need to do is instantiate the submodules with the following:
+Install [Catpuccin](https://github.com/catppuccin/catppuccin) everywhere.
 
-```shell
-git submodule update --init vim/
-```
+### Neovim
 
-Then you can symlink the files using the install script: `./install.sh`. If you have a vimrc or vim directory in your HOME directory then these files will be ignored.
+For Neovim I'm using [NvChad](https://nvchad.com) which gives a really solid
+baseline configuration for using Neovim as more of an IDE.
+
+- Install neovim with `brew install nvim`
+- Run the install script in `config/neovim`, this will clone NvChad and link the
+  custom configuration to the correct location.
 
 ### zsh
 
-Am using the [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) plugin scripts to help bootstrap my ZSH environment. This has been added as a submodule under `zsh` directory.
+Am using the [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) plugin
+scripts to help bootstrap my ZSH environment. 
 
-To initialise run the following:
-
-```shell
-git submodule update --init zsh/
-```
-
-As with vim you can symlink the config files by running `./install.sh`. If you already have a .zshrc file or oh-my-zsh installed in your HOME directory then installation will be ignored.
+Install that and then symlink the `.zshrc` to the home directory.
 
 ### tmux
 
-To be updated
+Tmux is awesome, this requires tpm to be installed and then after symlinking
+the configuration files, run `PREFIX + I` to install the dependencies.
 
-### iterm2
-
-I have included the panda terminal colour scheme here.
-
-### bin
-
-A selection of helper scripts and functions that are part of everyday use. They include:
-
-- aop: Used on linux laptop to switch audio output between speakers and headphones (is a hack).
-- backup: runs backup script (deprecated).
-- dnd: enabled Do Not Disturb on OSX
-- docker-terraform: wrapper form running terraform in a container.
-- dpg: starts a postgres server with Docker.
-- gitql: git query language binary.
-- ip4: Gets the IP of thunderbolt Ethernet adapter (deprecated).
-- json-csv: uses nodes to convert json to csv
-- mux: starts new tmux session with desired window configuration (simpler than tmuxinator).
-- pingtime: Checks from NIC to Google to test internet connectivity (deprecated).
-- start: checklist for starting work for the day (requires pre configuration for dirs).
-- stop: checklist for stopping work for the day (requires pre configuration for dirs).
-- timeconv: takes argument as seconds and returns formatted version.
+Tmuxinator is used to prexonfigure some window setups for tmux.
+Run with `mux start dev`.
 
 # LICENSE
 

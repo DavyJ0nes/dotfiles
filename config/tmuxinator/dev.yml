@@ -1,0 +1,16 @@
+name: dev
+root: ~/
+
+windows:
+  - editor:
+      layout: main-horizontal
+      panes:
+        - 
+        -
+  - shell:
+      layout: tiled
+      panes:
+        -
+        -
+        -
+        -

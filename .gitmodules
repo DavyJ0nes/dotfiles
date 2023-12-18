@@ -1,45 +1,17 @@
-[submodule "vim/vim/pack/plugins/start/ctrlp.vim"]
-	path = vim/vim/pack/plugins/start/ctrlp.vim
-	url = https://github.com/ctrlpvim/ctrlp.vim.git
-[submodule "vim/vim/pack/plugins/start/vim-airline"]
-	path = vim/vim/pack/plugins/start/vim-airline
-	url = https://github.com/vim-airline/vim-airline.git
-[submodule "vim/vim/pack/plugins/start/nerdtree"]
-	path = vim/vim/pack/plugins/start/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
-[submodule "vim/vim/pack/plugins/start/nerdcommenter"]
-	path = vim/vim/pack/plugins/start/nerdcommenter
-	url = https://github.com/scrooloose/nerdcommenter.git
-[submodule "vim/vim/pack/plugins/start/syntastic"]
-	path = vim/vim/pack/plugins/start/syntastic
-	url = https://github.com/vim-syntastic/syntastic.git
-[submodule "vim/vim/pack/plugins/start/vim-go"]
-	path = vim/vim/pack/plugins/start/vim-go
-	url = https://github.com/fatih/vim-go.git
-[submodule "vim/vim/pack/plugins/start/vim-airline-themes"]
-	path = vim/vim/pack/plugins/start/vim-airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes.git
-[submodule "zsh/oh-my-zsh"]
-	path = zsh/oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh.git
-[submodule "vim/vim/pack/plugins/start/vim-fugitive"]
-	path = vim/vim/pack/plugins/start/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/vim/pack/plugins/start/vim-easy-align"]
-	path = vim/vim/pack/plugins/start/vim-easy-align
-	url = https://github.com/junegunn/vim-easy-align.git
-[submodule "vim/vim/pack/plugins/start/vim-markdown-toc"]
-	path = vim/vim/pack/plugins/start/vim-markdown-toc
-	url = https://github.com/mzlogin/vim-markdown-toc.git
-[submodule "vim/vim/pack/plugins/start/rust"]
-	path = vim/vim/pack/plugins/start/rust
-	url = git@github.com:rust-lang/rust.vim.git
-[submodule "vim/vim/pack/plugins/start/kotlin-vim"]
-	path = vim/vim/pack/plugins/start/kotlin-vim
-	url = git@github.com:udalov/kotlin-vim.git
-[submodule "vim/vim/pack/plugins/start/ale"]
-	path = vim/vim/pack/plugins/start/ale
-	url = https://github.com/w0rp/ale.git
-[submodule "vim/vim/pack/plugins/start/vim-jsonnet"]
-	path = vim/vim/pack/plugins/start/vim-jsonnet
-	url = git@github.com:google/vim-jsonnet.git
+[submodule "config/tmux/plugins/tpm"]
+	path = config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
+[submodule "config/tmux/plugins/captuccin-tmux"]
+	path = config/tmux/plugins/captuccin-tmux
+	url = https://github.com/dreamsofcode-io/catppuccin-tmux
+[submodule "config/tmux/plugins/tmux-sensible"]
+	path = config/tmux/plugins/tmux-sensible
+	url = https://github.com/tmux-plugins/tmux-sensible
+[submodule "config/tmux/plugins/tmux-yank"]
+	path = config/tmux/plugins/tmux-yank
+	url = https://github.com/tmux-plugins/tmux-yank
+[submodule "config/tmux/plugins/vim-tmux-navigator"]
+	path = config/tmux/plugins/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+  
+

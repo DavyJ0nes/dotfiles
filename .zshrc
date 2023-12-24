@@ -1,43 +1,64 @@
-# Path to your oh-my-zsh installation.
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt extendedglob
+
+# -- path updates
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH=$PATH:$(go env GOPATH)/bin
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/Users/davyjones/Library/Application\ Support/JetBrains/Toolbox/scripts:/usr/local/bin:$PATH
+export GOPATH=$(go env GOPATH)
+export EDITOR='vim'
+export GPG_TTY=$(tty)
+
+
+# -- oh-my-zsh
 export ZSH="$HOME/.oh-my-zsh"
 export LANG=en_US.UTF-8
 export LC_ALL="en_US.UTF-8"
 export HOMEBREW_HOME="/opt/homebrew/Caskroom"
+ZSH_THEME="refined"
+plugins=(brew docker fzf git gh golang macos rust terraform)
+source $ZSH/oh-my-zsh.sh
 
-ZSH_THEME="robbyrussell"
-
-# Rust stuff
+# -- rust
 source "$HOME/.cargo/env"
 
-# GCLOUD related stuff
+# -- gcloud
 source "$HOMEBREW_HOME/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "$HOMEBREW_HOME/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 export CLOUDSDK_PYTHON_SITEPACKAGES=1.
 
-# Go stuff
+# -- go
 export GOROOT="/opt/homebrew/Cellar/go/$(ls -t /opt/homebrew/Cellar/go | head -1 | tr -d "/")/libexec"
 export GOPRIVATE="github.com/einride,go.einride.tech"
 
-# genertic Path Updates
-eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH=$PATH:$(go env GOPATH)/bin
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/Library/Application\ Support/JetBrains/Toolbox/scripts:/usr/local/bin:$PATH
-export GOPATH=$(go env GOPATH)
+# -- autocomplete
+zstyle :compinstall filename '/Users/davyjones/.zshrc'
+autoload -Uz compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
 
-plugins=(git docker terraform golang kubectl brew)
+source <(sagaiamctl completion zsh)
+source <(bookctl completion zsh)
+source <(ownctl completion zsh)
+source <(vehicleperformancectl completion zsh)
 
-source $ZSH/oh-my-zsh.sh
-
-export EDITOR='vim'
-export GPG_TTY=$(tty)
+# -- fzf
+source /opt/homebrew/Cellar/fzf/0.44.1/shell/key-bindings.zsh
+source /opt/homebrew/Cellar/fzf/0.44.1/shell/completion.zsh
+export FZF_DEFAULT_COMMAND="fd -L -H . $HOME"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd -L -H -t d . $HOME"
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+bindkey '^F' fzf-cd-widget
 
 # node
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+# [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# Aliases
+# -- aliases
 alias watch="watch "
 alias walk="walk --icons"
 alias vi="nvim"
@@ -62,7 +83,7 @@ alias idea="goland"
 alias make="gmake"
 alias mux="tmuxinator"
 
-## Git
+## -- git
 alias gco="git checkout"
 alias gitdock="docker run -v "$PWD":/srv/app davyj0nes/git"
 alias gst="git status"
@@ -74,10 +95,10 @@ alias ghstatus="curl -s https://www.githubstatus.com/api/v2/status.json | jq '{u
 alias ghstatus-f="while true; do ghstatus && sleep 30 && printf \"\033c\"; done"
 alias ghprstatus="gh pr view --json \"statusCheckRollup\" | jq '.statusCheckRollup[] | {\"name\": .name, \"status\": .status}'"
 alias ghprstatus-f="while true; do ghprstatus && sleep 30 && printf \"\033c\"; done"
-alias gfuck="git add . && git commit --amend --no-edit"
-alias gfuckoff="git add . && git commit --amend --no-edit && git fetch && git rebase origin/master && git push -f"
+alias gfuck="git commit --all --amend --no-edit"
+alias gfuckoff="gfuck && git fetch && git rebase origin/master && git push -f"
 
-# Docker
+# -- docker
 # -- For Podman
 export DOCKER_HOST="unix://${HOME}/.local/share/containers/podman/machine/qemu/podman.sock"
 # export DOCKER_HOST="unix://$HOME/.colima/docker.sock"
@@ -92,25 +113,28 @@ alias dockernotary="notary -s https://notary.docker.io -d ~/.docker/trust"
 alias pgport="jq '.[0].NetworkSettings.Ports.\"5432/tcp\"[0].HostPort' | tr -d '\"'"
 alias ctop="docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock quay.io/vektorlab/ctop:latest"
 
-# Golang
+# -- golang
 alias godavy="cd $GOPATH/src/github.com/davyj0nes"
 alias gozettle="cd $GOPATH/src/github.com/iZettle"
-alias goein="cd ~/go/src/github.com/einride"
+alias goresetdeps="rm Gopkg.lock && rm vendor/ && dep ensure"
+export GOPRIVATE=github.com/einride/*
 
-# Einride
+# -- einride
 alias setup-sage="go run go.einride.tech/sage@latest init"
 
-# Kubenetes
+# -- k8s
 alias kb="kubectl"
 alias k="kubectl"
 alias mk="minikube"
 
-# Terraform
+# -- terraform
 alias tf="terraform"
 
+## -- dirs
+alias goein="cd ~/go/src/github.com/einride"
+alias godavy="cd ~/go/src/github.com/davyj0nes"
 
-#### Custom Functions ####
-# Docker related commands
+#### custom functions ####
 function da() {
   docker start $1 && docker attach $1
 }
@@ -127,7 +151,6 @@ function dclean() {
   docker volume prune -f
 }
 
-# Misc commands that don't warrant being in ~/bin
 function rant() {
   echo $1 > /dev/null
   echo "Rant over, go for a walk!"
@@ -145,7 +168,6 @@ function iperfsummary() {
   iperf3 -c "$1" -J | jq '.end | {received: .sum_received.bits_per_second, sent: .sum_sent.bits_per_second}'
 }
 
-# check if uri is up
 function isup() {
 	local uri=$1
 
@@ -156,7 +178,6 @@ function isup() {
 	fi
 }
 
-# Get colors in manual pages
 function man() {
 	env \
 		LESS_TERMCAP_mb="$(printf '\e[1;31m')" \
@@ -174,7 +195,6 @@ function digga() {
 	dig +nocmd "$1" any +multiline +noall +answer
 }
 
-# Simple calculator
 function calc() {
 	# local result=""
 	result="$(printf "scale=10;%s\\n" "$*" | bc --mathlib | tr -d '\\\n')"

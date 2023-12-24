@@ -1,4 +1,10 @@
-local opts = {
+local present, noice = pcall(require, "noice")
+
+if not present then
+  return
+end
+
+noice.setup {
   notify = {
     enabled = true,
     view = "notify",
@@ -83,5 +89,3 @@ local opts = {
     },
   },
 }
-
-return opts

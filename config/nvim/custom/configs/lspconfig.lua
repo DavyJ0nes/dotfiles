@@ -3,12 +3,15 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 local lspconfig = require("lspconfig")
 local util = require "lspconfig/util"
 
+-- local gopls_cfg = require "go.lsp".config()
 lspconfig.gopls.setup({
   on_attach = on_attach,
   capabilities = capabilities,
+  filetypes = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },
+  message_level = vim.lsp.protocol.MessageType.Error,
   cmd = {"gopls"},
-  filetypes = {"go", "gomod", "gowork", "gotmpl"},
   root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+  flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
   settings = {
     gopls = {
       gofumpt = true,
@@ -37,6 +40,7 @@ lspconfig.gopls.setup({
         unusedparams = true,
         atomic = true,
       },
+      matcher = 'Fuzzy',
     },
   },
 })
@@ -48,3 +52,5 @@ lspconfig.terraformls.setup {
   cmd = {"terraform-ls", "serve"},
   root_dir = util.root_pattern(".terraform", ".git"),
 }
+
+-- lspconfig.bufls.setup{}

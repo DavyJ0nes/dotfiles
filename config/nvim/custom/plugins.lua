@@ -1,13 +1,12 @@
-local cmp = require "cmp"
-
 local plugins = {
   {
     "nvim-neotest/neotest",
-    ft = { "go", "javascript", "typescript", "javascriptreact", "typescriptreact" },
+    ft = { "go", "rust", "typescript", "javascriptreact", "typescriptreact" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-go",
+      "nvim-neotest/neotest-rust",
       "nvim-treesitter/nvim-treesitter",
     },
     config = function()
@@ -21,15 +20,35 @@ local plugins = {
     "rouge8/neotest-rust",
   },
   {
-    "christoomey/vim-tmux-navigator",
-    lazy = false,
-  },
-  {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      "ray-x/go.nvim",
+    },
     config = function ()
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
     end
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
+    cmd = "Telescope",
+    init = function()
+      require("core.utils").load_mappings "telescope"
+    end,
+    opts = function()
+      return require "custom.configs.telescope"
+    end,
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "telescope")
+      local telescope = require "telescope"
+      telescope.setup(opts)
+
+      -- load extensions
+      for _, ext in ipairs(opts.extensions_list) do
+        telescope.load_extension(ext)
+      end
+    end,
   },
   {
     "williamboman/mason.nvim",
@@ -88,14 +107,20 @@ local plugins = {
     end,
   },
   {
-    "olexsmir/gopher.nvim",
-    ft = "go",
+    "ray-x/go.nvim",
+    dependencies = {  -- optional packages
+      "ray-x/guihua.lua",
+    },
+    -- opts = function ()
+    --   return require "custom.configs.go"
+    -- end,
+    opts = {},
     config = function(_, opts)
-      require("gopher").setup(opts)
+      require("go").setup(opts)
     end,
-    build = function()
-      vim.cmd [[silent! GoInstallDeps]]
-    end,
+    event = {"CmdlineEnter"},
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
   -- RUST PLUGINS --------------------------------------------------------------
   {
@@ -118,15 +143,22 @@ local plugins = {
   },
   {
     'saecki/crates.nvim',
-    ft = {"rust", "toml"},
-    config = function(_, opts)
-      local crates  = require('crates')
-      crates.setup(opts)
-      require('cmp').setup.buffer({
-        sources = { { name = "crates" }}
-      })
+    ft = {"rust","toml"},
+    event = { "BufRead Cargo.toml" },
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    -- opts = function()
+    --   return {
+    --     null_ls = {
+    --       enabled = true,
+    --       name = "crates.nvim",
+    --     }
+    --   }
+    -- end,
+    config = function(_, _)
+      local crates = require('crates')
+      crates.setup()
       crates.show()
-      require("core.utils").load_mappings("crates")
+     require("core.utils").load_mappings("crates")
     end,
   },
   {
@@ -160,20 +192,45 @@ local plugins = {
     "folke/noice.nvim",
      event = "VeryLazy",
      dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      -- "rcarriga/nvim-notify",
+      "rcarriga/nvim-notify",
     },
-    opts = function ()
+    config = function()
       return require "custom.configs.noice"
     end,
-    config = function(_, opts)
-      require("noice").setup(opts)
+  },
+  {
+    "echasnovski/mini.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("mini.animate").setup {
+        scroll = {
+          enable = false,
+        },
+      }
     end,
   },
+  {
+    "christoomey/vim-tmux-navigator",
+    lazy = false,
+  },
+  {
+    "ThePrimeagen/vim-be-good",
+    ft = {"markdown"},
+  },
+  {
+  "johmsalas/text-case.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    -- Author's Note: If default keymappings fail to register (possible config issue in my local setup),
+    -- verify lazy loading functionality. On failure, disable lazy load and report issue
+    -- lazy = false,
+    config = function()
+      require("textcase").setup({
+          default_keymappings_enabled = false,
+        })
+      require("telescope").load_extension("textcase")
+    end,
+  }
 }
 
 return plugins

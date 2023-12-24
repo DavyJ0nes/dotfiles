@@ -4,7 +4,7 @@ M.disabled = {
   n = {
       ["<leader>rn"] = "",
       ["<leader>n"] = "",
-      ["<C-a>"] = ""
+      ["<C-a>"] = "",
   }
 }
 
@@ -14,7 +14,26 @@ M.general = {
     ["<C-l>"] = { "<cmd> TmuxNavigateRight<CR>", "window right" },
     ["<C-j>"] = { "<cmd> TmuxNavigateDown<CR>", "window down" },
     ["<C-k>"] = { "<cmd> TmuxNavigateUp<CR>", "window up" },
-    ["<leader>q"] = { "<cmd> :enew<bar>bw #<CR>", "close buffer" },
+    ["<leader>gfs"] = { "<cmd> GoFillStruct<CR>", "fill go struct" },
+    ["gb"] = { "<C-o>", "go back" },
+    ["<leader>stp"] = {
+      function()
+        require('textcase').current_word('to_pascal_case')
+      end,
+      "switch text case to pascal",
+    },
+    ["<leader>sts"] = {
+      function()
+        require('textcase').current_word('to_snake_case')
+      end,
+      "switch text case to snake",
+    },
+    ["<leader>stc"] = {
+      function()
+        require('textcase').current_word('to_camel_case')
+      end,
+      "switch text case to camel",
+    },
   }
 }
 
@@ -25,7 +44,31 @@ M.dap = {
       "<cmd> DapToggleBreakpoint <CR>",
       "Add breakpoint at line",
     },
+    ["<leader>do"] = {
+      "<cmd> DapStepOver <CR>",
+      "Dap Step Over",
+    },
+    ["<leader>dc"] = {
+      "<cmd> DapContinue <CR>",
+      "Dap Continue",
+    },
+    ["<leader>dr"] = {
+      "<cmd> DapRerun <CR>",
+      "Dap Rerun",
+    },
+    ["<leader>dq"] = {
+      "<cmd> DapTerminate <CR>",
+      "Dap Terminate",
+    },
     ["<leader>dus"] = {
+      function ()
+        local widgets = require('dap.ui.widgets');
+        local sidebar = widgets.sidebar(widgets.scopes);
+        sidebar.open();
+      end,
+      "Open debugging sidebar",
+    },
+    ["<leader>dso"] = {
       function ()
         local widgets = require('dap.ui.widgets');
         local sidebar = widgets.sidebar(widgets.scopes);
@@ -47,11 +90,34 @@ M.dap_go = {
     },
     ["<leader>dgl"] = {
       function()
-        require('dap-go').debug_last()
+        require('dap-go').debug_last_test()
       end,
       "Debug last go test"
     },
   }
+}
+
+M.development = {
+  n = {
+    ["gd"] = {
+      function()
+        vim.lsp.buf.definition()
+      end,
+      "󰑊 Go to definition",
+    },
+    ["gi"] = {
+      function()
+        vim.lsp.buf.implementation()
+      end,
+      "󰑊 Go to implementation",
+    },
+    ["gr"] = {
+      function()
+        vim.lsp.buf.references()
+      end,
+      "󰑊 Go to implementation",
+    },
+  },
 }
 
 M.test = {
@@ -116,7 +182,45 @@ M.crates = {
         require('crates').upgrade_all_crates()
       end,
       "update crates"
-    }
+    },
+    ["<leader>rcv"] = {
+      function ()
+        require('crates').show_versions_popup()
+      end,
+      "show crate versions"
+    },
+    ["<leader>rcD"] = {
+      function ()
+        require('crates').open_documentation()
+      end,
+      "show crate documentation"
+    },
+    ["<leader>rcf"] = {
+      function ()
+        require('crates').show_features_popup()
+      end,
+      "show crate features"
+    },
+    ["<leader>rcd"] = {
+      function ()
+        require('crates').show_dependencies_popup()
+      end,
+      "show crate dependencies"
+    },
+
+    ["<leader>rr"] = { "<cmd> RustRun<CR>", "window up" },
+  }
+}
+
+M.development = {
+  plugin = true,
+  n = {
+    ["<C-space>"] = {
+      function ()
+        require('rust-tools').hover_actions.hover_actions()
+      end,
+      "Show rust hover actions"
+    },
   }
 }
 
@@ -141,14 +245,45 @@ M.nvterm = {
       end,
       "Toggle floating term",
     },
-    ["<leader>rcr"] = {
-      function()
-        require("nvterm.terminal").toggle "float"
-        require("nvterm.terminal").send("cargo run", "float")
-      end,
-      "Run cargo run in a floating window",
-    },
   },
 }
+
+M.telescope = {
+  plugin = true,
+
+  n = {
+    -- find
+    ["<leader>ff"] = {
+      function()
+        require("custom.utils").find_files_from_project_git_root()
+      end,
+      "Find files",
+    },
+    ["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" },
+    ["<leader>fg"] = {
+      function()
+        require("custom.utils").live_grep_from_project_git_root()
+      end,
+      "Live grep",
+    },
+    ["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
+    ["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
+    ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
+    ["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
+
+    -- git
+    ["<leader>cm"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
+    ["<leader>gt"] = { "<cmd> Telescope git_status <CR>", "Git status" },
+
+    -- pick a hidden term
+    ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
+
+    -- theme switcher
+    ["<leader>th"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
+
+    ["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
+  },
+}
+
 
 return M

@@ -16,6 +16,11 @@ M.general = {
     ["<C-k>"] = { "<cmd> TmuxNavigateUp<CR>", "window up" },
     ["<leader>gfs"] = { "<cmd> GoFillStruct<CR>", "fill go struct" },
     ["gb"] = { "<C-o>", "go back" },
+    ["ZP"] = { "<cmd> w<CR>", "save" },
+    -- TODO: does not work, needs fixing.
+    -- ["<leader>fr"] = { "<cmd> %s/<C-r><C-w>/<CR>", "replace all occurences of selection in file"},
+    ["<leader>so"] = { "<cmd> set spell spelllang=en_gb<CR>", "spellcheck on" },
+    ["<leader>soff"] = { "<cmd> set nospell<CR>", "spellcheck on" },
     ["<leader>stp"] = {
       function()
         require('textcase').current_word('to_pascal_case')
@@ -208,7 +213,7 @@ M.crates = {
       "show crate dependencies"
     },
 
-    ["<leader>rr"] = { "<cmd> RustRun<CR>", "window up" },
+    ["<leader>rr"] = { "<cmd> Cargo run<CR>", "window up" },
   }
 }
 

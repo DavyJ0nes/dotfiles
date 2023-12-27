@@ -60,6 +60,7 @@ local plugins = {
         "rust-analyzer",
         "elixir-ls",
         "terraform-ls",
+        "mdformat",
       },
     },
   },
@@ -230,7 +231,18 @@ local plugins = {
         })
       require("telescope").load_extension("textcase")
     end,
-  }
+  },
+  {
+    "chrishrb/gx.nvim",
+    event = { "BufEnter" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = function ()
+      return require "custom.configs.gx"
+    end,
+    config = function(_, opts)
+      require("gx").setup(opts)
+    end
+  },
 }
 
 return plugins

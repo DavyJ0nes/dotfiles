@@ -254,7 +254,7 @@ M.nvterm = {
 
   t = {
     -- toggle in terminal mode
-    ["<C-q>"] = {
+  ["ƒ"] = {
       function()
         require("nvterm.terminal").toggle "float"
       end,
@@ -264,7 +264,7 @@ M.nvterm = {
 
   n = {
     -- toggle in normal mode
-    ["<leader>ft"] = {
+    ["ƒ"] = {
       function()
         require("nvterm.terminal").toggle "float"
       end,

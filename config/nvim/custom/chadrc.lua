@@ -2,14 +2,14 @@
 local M = {}
 
 M.ui = {
-  theme = 'bearded-arc',
+  theme = 'catppuccin',
   transparency = false,
 
   cmp = {
     icons = true,
     lspkind_text = true,
-    style = "flat_dark", -- default/flat_light/flat_dark/atom/atom_colored
-    border_color = "grey_fg", -- only applicable for "default" style, use color names from base30 variables
+    style = "flat_dark",          -- default/flat_light/flat_dark/atom/atom_colored
+    border_color = "grey_fg",     -- only applicable for "default" style, use color names from base30 variables
     selected_item_bg = "colored", -- colored / simple
   },
 
@@ -30,6 +30,10 @@ M.ui = {
     },
   },
   cheatsheet = { theme = "simple" }, -- simple/grid
+  statusline = {
+    theme = "minimal",               -- default/vscode/vscode_colored/minimal
+    separator_style = "round",
+  },
 }
 M.plugins = "custom.plugins"
 M.mappings = require "custom.mappings"

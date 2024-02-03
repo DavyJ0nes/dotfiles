@@ -18,3 +18,8 @@ windows:
       panes:
         - vi
         -
+  - config:
+      root: "~/.config/"
+      layout: main-horizontal
+      panes:
+        - vi

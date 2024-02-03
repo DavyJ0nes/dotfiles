@@ -2,14 +2,9 @@
 local M = {}
 
 M.ui = {
-  theme = 'chadracula',
+  theme = 'bearded-arc',
   transparency = false,
 
-  statusline = {
-    theme = "minimal", -- default/vscode/vscode_colored/minimal
-    separator_style = "round",
-    overriden_modules = nil,
-  },
   cmp = {
     icons = true,
     lspkind_text = true,

@@ -5,21 +5,34 @@ M.disabled = {
       ["<leader>rn"] = "",
       ["<leader>n"] = "",
       ["<C-a>"] = "",
+      ["Z"] = "",
+      ["ZZ"] = "",
+      ["qq"] = "",
   }
 }
 
 M.general = {
   n = {
+    -- tmux navigation in vim
     ["<C-h>"] = { "<cmd> TmuxNavigateLeft<CR>", "window left" },
     ["<C-l>"] = { "<cmd> TmuxNavigateRight<CR>", "window right" },
     ["<C-j>"] = { "<cmd> TmuxNavigateDown<CR>", "window down" },
     ["<C-k>"] = { "<cmd> TmuxNavigateUp<CR>", "window up" },
+    -- diable arrows
+    ["<Up>"] = { "<Nop>", "" },
+    ["<Down>"] = { "<Nop>", "" },
+    ["<Left>"] = { "<Nop>", "" },
+    ["<Right>"] = { "<Nop>", "" },
     ["<leader>gfs"] = { "<cmd> GoFillStruct<CR>", "fill go struct" },
+    -- ["<leader>ca"] = { "<cmd> GoCodeLenAct<CR>", "code lens actions" },
     ["gb"] = { "<C-o>", "go back" },
-    ["ZP"] = { "<cmd> w<CR>", "save" },
+    ["ZQ"] = { "<cmd> q<CR>", "quit" },
+    ["<leader>q"] = { "<cmd> q<CR>", "quit" },
+    ["ZZ"] = { "<cmd> w<CR>", "save" },
+    ["<leader>p"] = { "\"_dP", "paste without losing paste register" },
     -- TODO: does not work, needs fixing.
     -- ["<leader>fr"] = { "<cmd> %s/<C-r><C-w>/<CR>", "replace all occurences of selection in file"},
-    ["<leader>so"] = { "<cmd> set spell spelllang=en_gb<CR>", "spellcheck on" },
+    ["<leader>son"] = { "<cmd> set spell spelllang=en_gb<CR>", "spellcheck on" },
     ["<leader>soff"] = { "<cmd> set nospell<CR>", "spellcheck on" },
     ["<leader>stp"] = {
       function()
@@ -39,7 +52,46 @@ M.general = {
       end,
       "switch text case to camel",
     },
-  }
+    ["<leader>grr"] = {
+      function()
+        vim.lsp.buf.references()
+      end,
+      "󰑊 LSP references",
+    },
+    ["<leader>gca"] = {
+      function()
+        vim.lsp.buf.code_action()
+      end,
+      "󰑊 LSP code_action",
+    },
+    ["<leader>grn"] = {
+      function()
+        vim.lsp.buf.rename()
+      end,
+      "󰑊 LSP rename",
+    },
+    ["<leader>gws"] = {
+      function()
+        vim.lsp.buf.workspace_symbol()
+      end,
+      "󰑊 LSP workspace_symbol",
+    },
+    ["<leader>gh"] = {
+      function()
+        vim.lsp.buf.hover()
+      end,
+      "󰑊 Hover definition",
+    },
+  },
+
+  i = {
+    ["<C-h>"] = {
+      function()
+        vim.lsp.buf.signature_help()
+      end,
+      "󰑊 Signature help",
+    },
+  },
 }
 
 M.dap = {
@@ -87,13 +139,13 @@ M.dap = {
 M.dap_go = {
   plugin = true,
   n = {
-    ["<leader>dgt"] = {
+    ["<leader>dt"] = {
       function()
         require('dap-go').debug_test()
       end,
       "Debug go test"
     },
-    ["<leader>dgl"] = {
+    ["<leader>dtl"] = {
       function()
         require('dap-go').debug_last_test()
       end,
@@ -103,26 +155,6 @@ M.dap_go = {
 }
 
 M.development = {
-  n = {
-    ["gd"] = {
-      function()
-        vim.lsp.buf.definition()
-      end,
-      "󰑊 Go to definition",
-    },
-    ["gi"] = {
-      function()
-        vim.lsp.buf.implementation()
-      end,
-      "󰑊 Go to implementation",
-    },
-    ["gr"] = {
-      function()
-        vim.lsp.buf.references()
-      end,
-      "󰑊 Go to implementation",
-    },
-  },
 }
 
 M.test = {
@@ -133,12 +165,6 @@ M.test = {
         require("neotest").run.run()
       end,
       "Run neotest",
-    },
-    ["<leader>td"] = {
-      function()
-        require("neotest").run.run({ strategy = "dap" })
-      end,
-      "Debug test",
     },
     ["<leader>tf"] = {
       function()
@@ -151,12 +177,6 @@ M.test = {
         require("neotest").run.run_last()
       end,
       "Run last test",
-    },
-    ["<leader>tld"] = {
-      function()
-        require("neotest").run.run_last({ strategy = "dap" })
-      end,
-      "Debug last test",
     },
     ["<leader>ts"] = {
       function()
@@ -265,12 +285,6 @@ M.telescope = {
       "Find files",
     },
     ["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" },
-    ["<leader>fg"] = {
-      function()
-        require("custom.utils").live_grep_from_project_git_root()
-      end,
-      "Live grep",
-    },
     ["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
     ["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
@@ -289,6 +303,5 @@ M.telescope = {
     ["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
   },
 }
-
 
 return M

@@ -1,0 +1,25 @@
+import = [
+  "~/.config/alacritty/catppuccin-macchiato.toml"
+]
+[shell]
+program = "/bin/zsh"
+args = ["-l"]
+
+[window]
+decorations = "None"
+opacity = 0.98
+startup_mode = "Maximized"
+blur = true
+
+[font]
+normal = { family = "Hack Nerd Font Mono", style = "Regular" }
+size = 14
+
+[selection]
+save_to_clipboard = true
+
+[keyboard]
+bindings = [
+  { key = "Q", mods = "Command", action = "None" },
+  { key = "W", mods = "Command", action = "None" }
+]

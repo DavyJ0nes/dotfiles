@@ -80,6 +80,9 @@ local plugins = {
 	},
 	{
 		"mfussenegger/nvim-dap",
+		dependencies = {
+			"rcarriga/nvim-dap-ui",
+		},
 		init = function()
 			require("core.utils").load_mappings("dap")
 			-- require "custom.configs.dap"
@@ -146,6 +149,57 @@ local plugins = {
 		ft = { "go", "gomod" },
 		build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
 	},
+	{
+		"mfussenegger/nvim-lint",
+		ft = { "go" },
+		enabled = true,
+		opts = function(_, opts)
+			local linters = require("lint").linters
+
+			local function find_file(filename)
+				-- find file
+				local command = "fd --hidden --no-ignore '" .. filename .. "' " .. vim.fn.getcwd() .. " | head -n 1"
+				local file = io.popen(command):read("*l")
+				return file and file or nil
+			end
+
+			local use_golangci_config_if_available = function()
+				local config_file = find_file(".golangci.yml")
+				if config_file then
+					print("Using golangci-lint config: " .. config_file)
+					return {
+						"run",
+						"--out-format",
+						"json",
+						"--config",
+						config_file,
+						function()
+							return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h")
+						end,
+					}
+				else
+					return linters.golangcilint.args
+				end
+			end
+
+			linters.golangcilint.args = use_golangci_config_if_available()
+			linters.mypy.cmd = prefer_bin_from_venv("mypy")
+
+			local linters_by_ft = {
+				-- this extends lazyvim's nvim-lint setup
+				-- https://www.lazyvim.org/extras/linting/nvim-lint
+				protobuf = { "buf", "protolint" },
+				yaml = { "yamllint" },
+				go = { "golangcilint" },
+			}
+
+			-- extend opts.linters_by_ft
+			for ft, linters_ in pairs(linters_by_ft) do
+				opts.linters_by_ft[ft] = opts.linters_by_ft[ft] or {}
+				vim.list_extend(opts.linters_by_ft[ft], linters_)
+			end
+		end,
+	},
 	-- RUST PLUGINS --------------------------------------------------------------
 	-- {
 	--   "rust-lang/rust.vim",
@@ -164,12 +218,6 @@ local plugins = {
 					-- register which-key mappings
 					local wk = require("which-key")
 					wk.register({
-						["<leader>cR"] = {
-							function()
-								vim.cmd.RustLsp("codeAction")
-							end,
-							"Code Action",
-						},
 						["<leader>dr"] = {
 							function()
 								vim.cmd.RustLsp("debuggables")
@@ -192,6 +240,9 @@ local plugins = {
 							command = "clippy",
 							extraArgs = { "--no-deps" },
 						},
+						-- rustfmt = {
+						--
+						-- },
 						procMacro = {
 							enable = true,
 							ignored = {

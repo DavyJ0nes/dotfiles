@@ -1,5 +1,6 @@
 name: dev
 root: ~/
+tmux_options: "-u"
 
 windows:
   - editor:

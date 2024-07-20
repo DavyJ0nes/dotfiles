@@ -27,6 +27,7 @@ opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
 opt.colorcolumn = "79,119"
+opt.mouse = ""
 
 -- backspace
 opt.backspace = "indent,eol,start"

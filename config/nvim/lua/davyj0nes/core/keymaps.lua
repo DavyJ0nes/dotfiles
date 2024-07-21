@@ -27,12 +27,24 @@ keymap.set("n", "<leader>tn", "<cmd>tabnew<CR>", { desc = "Create new tab" }) --
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
 keymap.set("n", "<tab>", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 keymap.set("n", "<shift><tab>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
-keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+keymap.set("n", "<leader>bt", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 -- terminal
 keymap.set("n", "ƒ", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
 keymap.set("t", "ƒ", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
---
+
+-- comment
+keymap.set("n", "<leader>/", function()
+	require("Comment.api").toggle.linewise.current()
+end, { desc = "toggle comment" })
+
+keymap.set(
+	"v",
+	"<leader>/",
+	"<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+	{ desc = "toggle comment" }
+)
+
 -- test
 keymap.set("n", "<leader>tt", function()
 	require("neotest").run.run()
@@ -57,3 +69,10 @@ end, { desc = "Toggle test output panel" })
 keymap.set("n", "<leader>tw", function()
 	require("neotest").watch.toggle()
 end, { desc = "Toggle test watch" })
+
+keymap.set(
+	"n",
+	"<leader>ff",
+	"<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=00<cr>",
+	{ desc = "[F]ind [B]uffers" }
+)

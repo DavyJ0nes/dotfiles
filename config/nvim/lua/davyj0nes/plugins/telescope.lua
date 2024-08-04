@@ -11,7 +11,24 @@ return {
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
 
-		local find_cmd = { "rg", "--files", "--color", "never", "-g", "!.git" }
+		local find_cmd = {
+			"rg",
+			"--files",
+			"--color",
+			"never",
+			"-g",
+			"!.git",
+			"-g",
+			"!build",
+			"-g",
+			"!.cpcache*",
+			"-g",
+			"!.lsp*",
+			"-g",
+			"!.clj-kondo*",
+			"-g",
+			"!target/*",
+		}
 
 		local opts = {
 			defaults = {
@@ -64,23 +81,11 @@ return {
 		-- set keymaps
 		local keymap = vim.keymap -- for conciseness
 
-		-- keymap.set(
-		-- 	"n",
-		-- 	"<leader>ff",
-		-- 	function()
-		-- 		require("telescope.builtin").find_files({
-		-- 			hidden = true,
-		-- 			follow = true,
-		-- 		})
-		-- 	end,
-		-- 	-- "<cmd>Telescope find_files hidden=true follow=true<cr>",
-		-- 	{ desc = "[F]ind [F]iles" }
-		-- )
 		keymap.set(
 			"n",
 			"<leader>ff",
-			"<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=00<cr>",
-			{ desc = "[F]ind [B]uffers" }
+			"<cmd>Telescope find_files hidden=true follow=true<cr>",
+			{ desc = "[F]ind [F]iles" }
 		)
 		keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "[F]ind [B]uffers" })
 		keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "[F]ind [R]ecent" })

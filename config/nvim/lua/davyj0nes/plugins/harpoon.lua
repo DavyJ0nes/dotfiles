@@ -26,6 +26,20 @@ return {
 				end,
 				desc = "Harpoon Quick Menu",
 			},
+			{
+				"<leader>hn",
+				function()
+					require("harpoon"):list():next({ ui_nav_wrap = true })
+				end,
+				desc = "Harpoon to next",
+			},
+			{
+				"<leader>hn",
+				function()
+					require("harpoon"):list():prev({ ui_nav_wrap = true })
+				end,
+				desc = "Harpoon to previous",
+			},
 		}
 
 		for i = 1, 5 do

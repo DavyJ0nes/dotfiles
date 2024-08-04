@@ -1,0 +1,7 @@
+{TODAY_NORG}
+
+@code go
+func p() string {
+  return "p"
+}
+@end

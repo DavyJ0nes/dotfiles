@@ -134,6 +134,7 @@ return {
 			cmd = { "terraform-ls", "serve" },
 			root_dir = util.root_pattern(".terraform", ".git"),
 		})
+
 		lspconfig.lua_ls.setup({
 			capabilities = capabilities,
 			settings = {
@@ -147,6 +148,14 @@ return {
 					},
 				},
 			},
+		})
+
+		lspconfig.clojure_lsp.setup({
+			capabilities = capabilities,
+			filetypes = { "clojure" },
+		})
+		lspconfig.ocamllsp.setup({
+			capabilities = capabilities,
 		})
 	end,
 }

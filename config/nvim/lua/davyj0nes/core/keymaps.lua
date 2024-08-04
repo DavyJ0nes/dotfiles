@@ -1,6 +1,7 @@
 local keymap = vim.keymap
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = " m" -- was being used by conjure
 
 -- handle typos
 keymap.set("n", ":Wq<CR>", ":wq<CR>", { desc = "write and quit" })
@@ -32,6 +33,12 @@ keymap.set("n", "<leader>bt", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 -- terminal
 keymap.set("n", "ƒ", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
 keymap.set("t", "ƒ", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
+keymap.set("t", "<C-x>", "<C-\\><C-n>", { desc = "exit term mode" })
+
+-- buffers
+keymap.set("n", "<leader>bp", "<cmd>bprev<CR>", { desc = "previous buffer" })
+keymap.set("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "next buffer" })
+keymap.set("n", "<leader>bx", "<cmd>bdelete<CR>", { desc = "close buffer" })
 
 -- comment
 keymap.set("n", "<leader>/", function()
@@ -44,6 +51,10 @@ keymap.set(
 	"<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
 	{ desc = "toggle comment" }
 )
+
+-- spellcheck
+keymap.set("n", "<leader>son", "<cmd> set spell spelllang=en_gb<CR>", { desc = "enable spellcheck" })
+keymap.set("n", "<leader>soff", "<cmd> set nospell<CR>", { desc = "disable spellcheck" })
 
 -- test
 keymap.set("n", "<leader>tt", function()
@@ -70,9 +81,52 @@ keymap.set("n", "<leader>tw", function()
 	require("neotest").watch.toggle()
 end, { desc = "Toggle test watch" })
 
-keymap.set(
-	"n",
-	"<leader>ff",
-	"<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=00<cr>",
-	{ desc = "[F]ind [B]uffers" }
-)
+-- keymap.set("n", "<leader>fn", "<Plug>(neorg.telescope.find_norg_files)", { desc = "[F]ind [N]otes" })
+keymap.set("n", "<leader>fn", "<Plug>(neorg.telescope.find_linkable)", { desc = "[F]ind [N]otes" })
+-- keymap.set("n", "<Leader>oc", "<CMD>Neorg capture<CR>", { desc = "Capture note", silent = true })
+keymap.set("n", "<Leader>oc", "<CMD>Neorg capture<CR>", { desc = "Capture note" })
+
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "norg",
+	callback = function()
+		vim.keymap.set("n", "<leader>mut", "<cmd>Neorg toc<CR>", {})
+		vim.keymap.set("n", "<leader>mj", "<cmd>Neorg journal<CR>", {})
+		vim.keymap.set("n", "<leader>mm", "<Plug>(neorg.qol.todo-items.todo.task-cycle)", {})
+		keymap.set("n", "<leader>fnh", "<Plug>(neorg.telescope.search_headings)", { desc = "[F]ind [N]ote [H]eadings" })
+		keymap.set("n", "<leader>mil", "<Plug>(neorg.telescope.insert_link)", { desc = "Insert Link" })
+	end,
+})
+
+local function setup_loading_template_on_new_file()
+	local group = vim.api.nvim_create_augroup("NeorgLoadTemplateGroup", { clear = true })
+
+	local is_buffer_empty = function(buffer)
+		local content = vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
+		return not (#content > 1 or content[1] ~= "")
+	end
+
+	local callback = function(args)
+		vim.schedule(function()
+			if not is_buffer_empty(args.buf) then
+				return
+			end
+
+			if string.find(args.file, "/journal/") then
+				-- debug('loading template "journal" ' .. args.event)
+				vim.api.nvim_cmd({ cmd = "Neorg", args = { "templates", "fload", "journal" } }, {})
+			else
+				-- debug("add metadata " .. args.event)
+				vim.api.nvim_cmd({ cmd = "Neorg", args = { "inject-metadata" } }, {})
+			end
+		end)
+	end
+
+	vim.api.nvim_create_autocmd({ "BufNewFile", "BufNew" }, {
+		desc = "Load template on new norg files",
+		pattern = "*.norg",
+		callback = callback,
+		group = group,
+	})
+end
+
+setup_loading_template_on_new_file()

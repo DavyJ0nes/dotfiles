@@ -1,0 +1,33 @@
+@document.meta
+title: {TODAY}
+description:
+authors: {AUTHOR}
+categories:
+created: {TODAY}
+updated: {TODAY}
+version: 1.0.0
+@end
+
+* {TODAY}
+  Weather: {WEATHER}
+  {{:{YESTERDAY}:}}[Yesterday] - {{:{TOMORROW}:}}[Tomorrow]
+
+  {TODAY_NORG}
+
+** Morning Checklist
+*** Init
+    - ( ) Clear your work space, close unnecessary programs and browser tabs
+    - ( ) Process personal email inbox (remember 2-minute rule)
+    - ( ) Process work email inbox (remember 2-minute rule)
+    - ( ) Check calendar, what needs prepping for?
+    - ( ) Process Slack notifications, what's in Save for Later?
+
+*** Process
+    - ( ) Process personal board
+    - ( ) Process reading list
+    - ( ) Prioritise your backlog
+    - ( ) What is the goal for today?
+
+** Notes
+   - GOAL:
+   -

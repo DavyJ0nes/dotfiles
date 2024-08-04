@@ -14,6 +14,7 @@ opt.expandtab = true -- expand tabs to spaces
 opt.autoindent = true -- use indentation from line above
 
 opt.wrap = false
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 -- search settings
 opt.ignorecase = true -- ignore case when seaching
@@ -22,7 +23,6 @@ opt.smartcase = true -- if mixed case then use that
 opt.cursorline = true
 
 -- UI
--- vim.cmd("colorscheme nightfox")
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
@@ -59,6 +59,21 @@ autocmd("FileType", {
 	pattern = "qf",
 	callback = function()
 		vim.opt_local.buflisted = false
+	end,
+})
+
+autocmd({ "BufRead", "BufNewFile" }, {
+	callback = function()
+		if vim.fn.getline(1) == "#!/usr/bin/env bb" then
+			vim.cmd.setfiletype("clojure")
+		end
+		vim.cmd.stopinsert()
+	end,
+})
+
+autocmd({ "BufEnter" }, {
+	callback = function()
+		vim.cmd.stopinsert()
 	end,
 })
 

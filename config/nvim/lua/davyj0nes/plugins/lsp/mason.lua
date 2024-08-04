@@ -25,6 +25,7 @@ return {
 			ensure_installed = {
 				"bashls",
 				"bufls",
+				"clojure_lsp",
 				"elixirls",
 				"gopls",
 				"lua_ls",

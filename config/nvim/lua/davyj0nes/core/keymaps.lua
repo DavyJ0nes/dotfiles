@@ -31,8 +31,8 @@ keymap.set("n", "<shift><tab>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }
 keymap.set("n", "<leader>bt", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 -- terminal
-keymap.set("n", "ƒ", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
-keymap.set("t", "ƒ", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
+keymap.set("n", "†", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
+keymap.set("t", "†", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
 keymap.set("t", "<C-x>", "<C-\\><C-n>", { desc = "exit term mode" })
 
 -- buffers
@@ -81,17 +81,20 @@ keymap.set("n", "<leader>tw", function()
 	require("neotest").watch.toggle()
 end, { desc = "Toggle test watch" })
 
--- keymap.set("n", "<leader>fn", "<Plug>(neorg.telescope.find_norg_files)", { desc = "[F]ind [N]otes" })
+-- neorg
+keymap.set("n", "<leader>fn", "<Plug>(neorg.telescope.find_norg_files)", { desc = "[F]ind [N]otes" })
 keymap.set("n", "<leader>fn", "<Plug>(neorg.telescope.find_linkable)", { desc = "[F]ind [N]otes" })
--- keymap.set("n", "<Leader>oc", "<CMD>Neorg capture<CR>", { desc = "Capture note", silent = true })
-keymap.set("n", "<Leader>oc", "<CMD>Neorg capture<CR>", { desc = "Capture note" })
+keymap.set("n", "<Leader>oc", "<CMD>Neorg capture<CR>", { desc = "Capture note", silent = true })
+keymap.set("n", "<leader>oj", "<cmd>Neorg journal<CR>", { desc = "Open Journal" })
+keymap.set("n", "<leader>ojt", "<cmd>Neorg journal today<CR>", { desc = "Open Todays Journal" })
+keymap.set("n", "<leader>ojy", "<cmd>Neorg journal yesterday<CR>", { desc = "Open Yesterda:s Journal" })
+keymap.set("n", "<leader>oi", "<cmd>vsp ~/notes/inbox.norg<CR>", { desc = "Open Inbox" })
 
 vim.api.nvim_create_autocmd("Filetype", {
 	pattern = "norg",
 	callback = function()
-		vim.keymap.set("n", "<leader>mut", "<cmd>Neorg toc<CR>", {})
-		vim.keymap.set("n", "<leader>mj", "<cmd>Neorg journal<CR>", {})
-		vim.keymap.set("n", "<leader>mm", "<Plug>(neorg.qol.todo-items.todo.task-cycle)", {})
+		keymap.set("n", "<leader>mut", "<cmd>Neorg toc<CR>", {})
+		keymap.set("n", "<leader>mm", "<Plug>(neorg.qol.todo-items.todo.task-cycle)", {})
 		keymap.set("n", "<leader>fnh", "<Plug>(neorg.telescope.search_headings)", { desc = "[F]ind [N]ote [H]eadings" })
 		keymap.set("n", "<leader>mil", "<Plug>(neorg.telescope.insert_link)", { desc = "Insert Link" })
 	end,

@@ -14,6 +14,17 @@ return {
 				["core.defaults"] = {},
 				["core.keybinds"] = {},
 				["core.concealer"] = {},
+				["core.qol.todo_items"] = {
+					config = {
+						create_todo_parents = true,
+					},
+				},
+				["core.journal"] = {
+					config = {
+						strategy = "flat",
+						journal_folder = "journal/2024",
+					},
+				},
 				["core.integrations.telescope"] = {},
 				["core.presenter"] = {
 					config = {
@@ -36,6 +47,8 @@ return {
 							local ls = require("luasnip")
 							local s = require("neorg.modules.external.templates.default_snippets")
 							return ls.text_node(s.parse_date(0, os.time(), [[%a, %d %b %Y %H:%M:%S]])) -- Wed, 1 Nov 2006 19:15
+						end,
+						CURSOR = function() -- detect date from filename and return in norg date format
 						end,
 					},
 				},

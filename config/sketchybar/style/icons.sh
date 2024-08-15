@@ -52,6 +52,7 @@ WIFI_DISCONNECTED=􀙈
 export ICON_PACKAGE=󰏓 # brew
 export ICON_DEV=
 
+export ICON_HEADPHONES=󰋋
 export ICON_VSCODIUM= # nvim, xcode, vscode
 export ICON_FILE=󰉋 # ranger, finder
 export ICON_FINDER=󰀶

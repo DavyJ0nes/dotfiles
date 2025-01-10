@@ -1,6 +1,0 @@
-#!/usr/bin/env node
-
-var input = require(process.argv[2])
-var util = require('util')
-
-console.log(util.inspect(input, {showHidden: false, depth: null, colors: true}))

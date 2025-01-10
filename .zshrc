@@ -1,73 +1,93 @@
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-setopt extendedglob
+# enable profiling
+# zmodload zsh/zprof
 
-# -- path updates
-eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH=$PATH:$(go env GOPATH)/bin
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=/Users/davyjones/Library/Application\ Support/JetBrains/Toolbox/scripts:/usr/local/bin:$PATH
-export GOPATH=$(go env GOPATH)
-export EDITOR='vim'
+# basic set up
+export CC=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/gcc-14
 export GPG_TTY=$(tty)
-
-
-# -- oh-my-zsh
-export ZSH="$HOME/.oh-my-zsh"
 export LANG=en_US.UTF-8
 export LC_ALL="en_US.UTF-8"
+export EDITOR='nvim'
+export TERM=alacritty
 export HOMEBREW_HOME="/opt/homebrew/Caskroom"
-ZSH_THEME="refined"
-plugins=(brew docker fzf git gh golang macos rust terraform)
-source $ZSH/oh-my-zsh.sh
+setopt extendedglob
 
-# -- rust
+# generic Path Updates
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export GOBIN=$HOME/go/bin
+export XDG_CONFIG_HOME=$HOME/.config
+export PATH=$PATH:$GOBIN
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/bin
+export GOPATH=$(go env GOPATH)
+
+# history setup
+HISTFILE=$HOME/.zhistory
+SAVEHIST=1000
+HISTSIZE=999
+setopt share_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_verify
+bindkey '\e[A' history-search-backward
+bindkey '\e[B' history-search-forward
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Completion
+zstyle :compinstall filename '/Users/davyjones/.zshrc'
+zstyle ':completion:*' menu select
+autoload -Uz compinit; compinit
+_comp_options+=(globdots)
+
+# Rust stuff
 source "$HOME/.cargo/env"
 
-# -- gcloud
+# GCLOUD related stuff
 source "$HOMEBREW_HOME/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "$HOMEBREW_HOME/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-export CLOUDSDK_PYTHON_SITEPACKAGES=1.
 
-# -- go
-export GOROOT="/opt/homebrew/Cellar/go/$(ls -t /opt/homebrew/Cellar/go | head -1 | tr -d "/")/libexec"
-export GOPRIVATE="github.com/einride,go.einride.tech"
+# Go stuff
+export GOPRIVATE=github.com/einride/*
 
-# -- autocomplete
-zstyle :compinstall filename '/Users/davyjones/.zshrc'
-autoload -Uz compinit && compinit
-autoload -U +X bashcompinit && bashcompinit
+# ---- FZF -----
 
-source <(sagaiamctl completion zsh)
-source <(bookctl completion zsh)
-source <(ownctl completion zsh)
-source <(vehicleperformancectl completion zsh)
-
-# -- fzf
-source /opt/homebrew/Cellar/fzf/0.44.1/shell/key-bindings.zsh
-source /opt/homebrew/Cellar/fzf/0.44.1/shell/completion.zsh
+# Set up fzf key bindings and fuzzy completion
+source /opt/homebrew/Cellar/fzf/0.57.0/shell/key-bindings.zsh
+source /opt/homebrew/Cellar/fzf/0.57.0/shell/completion.zsh
 export FZF_DEFAULT_COMMAND="fd -L -H . $HOME"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd -L -H -t d . $HOME"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 bindkey '^F' fzf-cd-widget
+eval "$(fzf --zsh)"
 
-# node
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-# [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# -- aliases
+# ---- Zoxide (better cd) ----
+eval "$(zoxide init zsh)"
+
+
+# -- aliases ---
+alias ..="cd .."
 alias watch="watch "
 alias walk="walk --icons"
-alias vi="nvim"
 alias vim="nvim"
+alias vi="vim"
+alias v="vim"
 alias editnvim="cd ~/.config/nvim/ && vi"
-alias grep="rg"
 alias cp="cp -iv"
 alias mv="mv -iv"
-alias ls="ls -FGh"
+alias ls="eza"
 alias l="ls -al"
 alias du="du -cksh"
 alias df="df -h"
@@ -82,12 +102,22 @@ alias python="python3"
 alias idea="goland"
 alias make="gmake"
 alias mux="tmuxinator"
+alias docker="podman"
+alias inbox="nvim ~/notes/inbox.norg"
 
-## -- git
+# -- clojure
+alias crepl="clojure -M:repl/basic"
+alias crepl-headless="clojure -M:repl/headless"
+
+## Git
+alias g='git'
+alias ga='git add'
+alias gaa='git add --all'
+alias gb='git branch'
 alias gco="git checkout"
+alias gc='git commit --verbose'
 alias gitdock="docker run -v "$PWD":/srv/app davyj0nes/git"
 alias gst="git status"
-alias gs="git status"
 alias gl="git log"
 alias gaf='git add -A; git commit -m "WIP: $(w3m whatthecommit.com | head -n 1)"'
 alias git-branch-name="git rev-parse --abbrev-ref HEAD"
@@ -95,13 +125,12 @@ alias ghstatus="curl -s https://www.githubstatus.com/api/v2/status.json | jq '{u
 alias ghstatus-f="while true; do ghstatus && sleep 30 && printf \"\033c\"; done"
 alias ghprstatus="gh pr view --json \"statusCheckRollup\" | jq '.statusCheckRollup[] | {\"name\": .name, \"status\": .status}'"
 alias ghprstatus-f="while true; do ghprstatus && sleep 30 && printf \"\033c\"; done"
-alias gfuck="git commit --all --amend --no-edit"
+alias gfuck="git add . && git commit --amend --no-edit"
 alias gfuckoff="gfuck && git fetch && git rebase origin/master && git push -f"
+alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
 
-# -- docker
-# -- For Podman
-export DOCKER_HOST="unix://${HOME}/.local/share/containers/podman/machine/qemu/podman.sock"
-# export DOCKER_HOST="unix://$HOME/.colima/docker.sock"
+# Docker
+export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE="/var/run/docker.sock"
 export TESTCONTAINERS_RYUK_DISABLED=true
 alias dm="docker-machine"
@@ -113,51 +142,33 @@ alias dockernotary="notary -s https://notary.docker.io -d ~/.docker/trust"
 alias pgport="jq '.[0].NetworkSettings.Ports.\"5432/tcp\"[0].HostPort' | tr -d '\"'"
 alias ctop="docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock quay.io/vektorlab/ctop:latest"
 
-# -- golang
-alias godavy="cd $GOPATH/src/github.com/davyj0nes"
-alias gozettle="cd $GOPATH/src/github.com/iZettle"
-alias goresetdeps="rm Gopkg.lock && rm vendor/ && dep ensure"
-export GOPRIVATE=github.com/einride/*
-
-# -- einride
-alias setup-sage="go run go.einride.tech/sage@latest init"
-
-# -- k8s
+# Kubenetes
 alias kb="kubectl"
 alias k="kubectl"
 alias mk="minikube"
 
-# -- terraform
+# Terraform
 alias tf="terraform"
 
 ## -- dirs
-alias goein="cd ~/go/src/github.com/einride"
-alias godavy="cd ~/go/src/github.com/davyj0nes"
+alias goein="cd $GOPATH/src/github.com/einride"
+alias godavy="cd $GOPATH/src/github.com/davyj0nes"
+alias gorustlings="cd $HOME/rust/rustlings"
+alias gonote="cd /Users/davyjones/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/umo"
+alias goconfig="cd $HOME/.config/nvim/lua"
+alias notes "cd $HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/version2"
+
+## -- connect headphones
+alias commbadge="blueutil --connect 68-ca-c4-cc-11-ee"
+alias cb="commbadge"
+alias whsony="blueutil --connect 94-db-56-5f-d2-fe"
+alias wh="whsony"
 
 #### custom functions ####
-function da() {
-  docker start $1 && docker attach $1
-}
-
-function dockerstart() {
-  docker-machine stop
-  docker-machine start
-  eval $(docker-machine env)
-}
-
 function dclean() {
   docker container prune -f
   docker image prune -f
   docker volume prune -f
-}
-
-function rant() {
-  echo $1 > /dev/null
-  echo "Rant over, go for a walk!"
-}
-
-function note() {
-  echo "$1 \n" >> ~/.notes
 }
 
 function iperfsummary() {
@@ -266,3 +277,6 @@ function prev() {
 function gi() {
   curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;
 }
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

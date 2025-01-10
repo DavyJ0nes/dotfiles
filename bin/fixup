@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+FILES="$(find . -name "*.go" | sed '/gen/d')"
+
+gofumpt -extra -w $FILES
+gci write  $FILES
+# golines $FILES -w -m 120

@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+# today
+# today is a helper to open today's daily note in obsidian
+# DavyJ0nes 2023
+
+DATE=$(date -v "-1d" "+%d-%m-%Y")
+
+OBSIDIAN_VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/version2"
+PREFIX="$OBSIDIAN_VAULT/checklists"
+FILENAME="$PREFIX/daily/$DATE.md"
+
+nvim "$FILENAME" "+norm! G" -c '/## Trackers'

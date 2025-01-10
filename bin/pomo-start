@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+while getopts d:p:n: flag
+do
+    case "${flag}" in
+        d) duration=${OPTARG};;
+        p) pomos=${OPTARG};;
+    esac
+done
+
+tmux split-window -h -l 50 "pomo start -d $duration -p $pomos \"task\""\; last-pane
+

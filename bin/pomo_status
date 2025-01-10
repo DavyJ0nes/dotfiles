@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+DETAILS="$(pomo status --json)"
+REMAIN=$(echo $DETAILS | jq -M '.remaining')
+STATE=$(echo $DETAILS | jq -M '.state')
+TASK=$(echo $DETAILS | jq -M '.task_message')
+
+echo "$TASK | $STATE | $REMAIN"

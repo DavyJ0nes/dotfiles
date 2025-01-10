@@ -1,7 +1,0 @@
-#!/bin/bash
-# This script takes input from commandline as seconds and returns value in hours, mins, seconds
-# DavyJ0nes 2017
-
-secs=$1
-#shellcheck disable=SC2004
-printf "%dh:%dm:%ds\n" $(($secs/3600)) $(($secs%3600/60)) $(($secs%60))

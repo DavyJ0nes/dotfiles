@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+open "https://miro.com/app/board/uXjVK0jgXlc=/?share_link_id=146665670333"

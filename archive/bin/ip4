@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-ifconfig en4

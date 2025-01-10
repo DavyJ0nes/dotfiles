@@ -1,7 +1,0 @@
-#cloud-config
-
-runcmd:
-  - snap install microk8s --classic
-  - iptables -P FORWARD ACCEPT
-
-final_message: "microk8s is running, after $UPTIME seconds"

@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+# notes
+# notes is a command to get to todays notes
+# DavyJ0nes 2024
+
+DATE=$(date "+%Y-%m-%d")
+
+PREFIX="$HOME/notes/journal/2024"
+FILENAME="$PREFIX/$DATE.norg"
+
+nvim "$FILENAME"

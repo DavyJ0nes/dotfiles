@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+echo "before..."
+echo "podman time: $(podman machine ssh 'sudo date')"
+echo "system time: $(date)"
+
+echo ""
+echo "resetting clock..."
+podman machine ssh "sudo systemctl restart systemd-timesyncd.service"
+:q
+podman machine ssh "sudo hwclock -s"
+echo "done..."
+echo ""
+
+echo "after..."
+echo "podman time: $(podman machine ssh 'sudo date')"
+echo "system time: $(date)"

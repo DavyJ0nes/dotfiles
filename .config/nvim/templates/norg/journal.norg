@@ -1,0 +1,87 @@
+@document.meta
+title: {TODAY}
+description:
+authors: {AUTHOR}
+categories:
+created: {TODAY}
+updated: {TODAY}
+version: 1.0.0
+@end
+
+* {TODAY}
+  Weather: {WEATHER}
+  {{:{YESTERDAY}:}}[Yesterday] - {{:{TOMORROW}:}}[Tomorrow]
+
+** Notes
+   - GOAL:
+   - ( ) TODO:
+   -- ( ) <>
+
+-------------------------------------------------------------------------------
+
+** Morning Checklist
+   - ( ) Init
+   -- ( ) Clear your work space, close unnecessary programs and browser tabs
+   -- ( ) Process personal email inbox (remember 2-minute rule)
+   -- ( ) Process work email inbox (remember 2-minute rule)
+   -- ( ) Check calendar, what needs prepping for?
+   -- ( ) Process Slack notifications, what's in Save for Later?
+
+   - ( ) Process
+   -- ( ) Process personal board
+   -- ( ) Process reading list
+   -- ( ) Prioritise your backlog
+   -- ( ) What is the goal for today?
+
+-------------------------------------------------------------------------------
+
+** Evening Checklist
+
+   - ( ) Stop
+   -- ( ) Process personal email inbox (remember 2-minute rule)
+   -- ( ) Process work email inbox (remember 2-minute rule)
+   -- ( ) Process Slack notifications, what's in Save for Later?
+   -- ( ) Check calendar, what needs prepping for?
+   -- ( ) Clear your work space, close unnecessary programs and browser tabs
+
+   - ( ) Process
+   -- ( ) Update trackers
+   -- ( ) Update Current Ticket
+   -- ( ) Create Follow up Actions
+   -- ( ) Re-prioritise backlog
+   -- ( ) What did you learn today
+   -- ( ) Summarise the Day
+
+   - *_What did you learn today?_*
+   -- <here>
+
+-------------------------------------------------------------------------------
+
+** Trackers
+  @code yaml
+  ---
+  trackers:
+    work:
+      worked: false
+      meetings: -1
+      hours_worked: -1
+      worked_on_today:
+        incident_mgmt: 0
+        on_call_mgmt: 0
+        reliablity_project_work: 0
+        vi_planning: 0
+        vi_delivery: 0
+    weight: -1
+    km_cycled: -1
+    litres_of_water: -1
+    meditation: false
+    no_drink: false
+    yoga: false
+    swedish: false
+
+  questions:
+    How do you feel? (0[depressed] - 10[really good]): -1
+    How many 30 min blocks were uninterupted? (0-16): -1
+    How in control did you feel? (1-5): -1
+    Did you achieve what you planned to do? (true / false): -1
+  @end

@@ -1,7 +1,7 @@
 # enable profiling
 # zmodload zsh/zprof
 
-# basic set up
+# -- basic set up
 export CC=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/gcc-14
 export GPG_TTY=$(tty)
 export LANG=en_US.UTF-8
@@ -11,17 +11,15 @@ export TERM=alacritty
 export HOMEBREW_HOME="/opt/homebrew/Caskroom"
 setopt extendedglob
 
-# generic Path Updates
+# -- generic path updates
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export GOBIN=$HOME/go/bin
 export XDG_CONFIG_HOME=$HOME/.config
 export PATH=$PATH:$GOBIN
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/bin
-export GOPATH=$(go env GOPATH)
 
-# history setup
+# -- history setup
 HISTFILE=$HOME/.zhistory
 SAVEHIST=1000
 HISTSIZE=999
@@ -31,6 +29,7 @@ setopt hist_ignore_dups
 setopt hist_verify
 bindkey '\e[A' history-search-backward
 bindkey '\e[B' history-search-forward
+bindkey -e
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -44,20 +43,23 @@ source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Completion
+# -- completion
 zstyle :compinstall filename '/Users/davyjones/.zshrc'
 zstyle ':completion:*' menu select
 autoload -Uz compinit; compinit
 _comp_options+=(globdots)
+bindkey '^I' autosuggest-accept
 
-# Rust stuff
+# -- rust stuff
 source "$HOME/.cargo/env"
 
-# GCLOUD related stuff
+# -- GCLOUD related stuff
 source "$HOMEBREW_HOME/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "$HOMEBREW_HOME/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
-# Go stuff
+# -- go stuff
+export GOBIN=$HOME/go/bin
+export GOPATH=$(go env GOPATH)
 export GOPRIVATE=github.com/einride/*
 
 # ---- FZF -----
@@ -73,12 +75,15 @@ bindkey '^F' fzf-cd-widget
 eval "$(fzf --zsh)"
 
 
-# ---- Zoxide (better cd) ----
+# -- zoxide
 eval "$(zoxide init zsh)"
 
 
-# -- aliases ---
+# -- aliases
 alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 alias watch="watch "
 alias walk="walk --icons"
 alias vim="nvim"
@@ -109,7 +114,7 @@ alias inbox="nvim ~/notes/inbox.norg"
 alias crepl="clojure -M:repl/basic"
 alias crepl-headless="clojure -M:repl/headless"
 
-## Git
+# -- git
 alias g='git'
 alias ga='git add'
 alias gaa='git add --all'
@@ -129,7 +134,7 @@ alias gfuck="git add . && git commit --amend --no-edit"
 alias gfuckoff="gfuck && git fetch && git rebase origin/master && git push -f"
 alias gwip='git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
 
-# Docker
+# -- docker
 export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE="/var/run/docker.sock"
 export TESTCONTAINERS_RYUK_DISABLED=true
@@ -142,15 +147,15 @@ alias dockernotary="notary -s https://notary.docker.io -d ~/.docker/trust"
 alias pgport="jq '.[0].NetworkSettings.Ports.\"5432/tcp\"[0].HostPort' | tr -d '\"'"
 alias ctop="docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock quay.io/vektorlab/ctop:latest"
 
-# Kubenetes
+# -- kubenetes
 alias kb="kubectl"
 alias k="kubectl"
 alias mk="minikube"
 
-# Terraform
+# -- terraform
 alias tf="terraform"
 
-## -- dirs
+# -- dirs
 alias goein="cd $GOPATH/src/github.com/einride"
 alias godavy="cd $GOPATH/src/github.com/davyj0nes"
 alias gorustlings="cd $HOME/rust/rustlings"
@@ -158,7 +163,7 @@ alias gonote="cd /Users/davyjones/Library/Mobile\ Documents/iCloud~md~obsidian/D
 alias goconfig="cd $HOME/.config/nvim/lua"
 alias notes "cd $HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/version2"
 
-## -- connect headphones
+# -- connect headphones
 alias commbadge="blueutil --connect 68-ca-c4-cc-11-ee"
 alias cb="commbadge"
 alias whsony="blueutil --connect 94-db-56-5f-d2-fe"

@@ -29,3 +29,5 @@ Temporary Items
 .apdisk
 vim/vim/.netrwhist
 .config/tmux/plugins/
+.config/fish/functions/tide/*
+.config/fish/functions/_*

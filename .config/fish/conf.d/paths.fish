@@ -12,6 +12,7 @@ set -gx MANPATH /opt/homebrew/share/man $MANPATH
 set -q INFOPATH; or set INFOPATH ''
 set -gx INFOPATH /opt/homebrew/share/info $INFOPATH
 set -g fish_user_paths $HOMEBREW_PREFIX/bin $fish_user_paths
+set -g fish_user_paths $HOME/bin $fish_user_paths
 
 # Homebrew make - gmake - MacOS ships with v3.81
 set -g fish_user_paths /opt/homebrew/opt/make/libexec/gnubin $fish_user_paths

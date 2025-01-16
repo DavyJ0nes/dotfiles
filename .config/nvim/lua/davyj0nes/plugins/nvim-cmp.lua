@@ -49,6 +49,8 @@ return {
 				-- { name = "buffer" }, -- text within current buffer
 				{ name = "path" }, -- file system paths
 				{ name = "conjure" }, -- conjure / clojure
+				-- Copilot Source
+				{ name = "copilot", group_index = 2 },
 			}),
 
 			-- configure lspkind for vs-code like pictograms in completion menu
@@ -56,6 +58,7 @@ return {
 				format = lspkind.cmp_format({
 					maxwidth = 50,
 					ellipsis_char = "...",
+					symbol_map = { Copilot = "" },
 				}),
 			},
 		})

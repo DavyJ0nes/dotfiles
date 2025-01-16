@@ -104,6 +104,9 @@ vim.api.nvim_create_autocmd("Filetype", {
 	end,
 })
 
+-- copilot
+keymap.set("n", "<leader>ck", '<cmd>lua require("copilot.suggestion").toggle_auto_trigger()<cr>')
+
 local function setup_loading_template_on_new_file()
 	local group = vim.api.nvim_create_augroup("NeorgLoadTemplateGroup", { clear = true })
 

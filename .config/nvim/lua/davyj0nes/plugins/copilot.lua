@@ -15,23 +15,10 @@ return {
 		build = ":Copilot auth",
 		opts = {
 			panel = {
-				enabled = true,
-				auto_refresh = true,
+				enabled = false,
 			},
 			suggestion = {
-				enabled = true,
-				-- use the built-in keymapping for "accept" (<M-l>)
-				auto_trigger = true,
-				accept = false, -- disable built-in keymapping
-			},
-			filetypes = {
-				sh = function()
-					if string.match(vim.fs.basename(vim.api.nvim_buf_get_name(0)), "^%.env.*") then
-						-- disable for .env files
-						return false
-					end
-					return true
-				end,
+				enabled = false,
 			},
 		},
 		config = function(_, opts)
@@ -39,19 +26,24 @@ return {
 
 			-- hide copilot suggestions when cmp menu is open
 			-- to prevent odd behavior/garbled up suggestions
-			local cmp_status_ok, cmp = pcall(require, "cmp")
-			if cmp_status_ok then
-				cmp.event:on("menu_opened", function()
-					vim.b.copilot_suggestion_hidden = true
-				end)
-
-				cmp.event:on("menu_closed", function()
-					vim.b.copilot_suggestion_hidden = false
-				end)
-			end
+			-- local cmp_status_ok, cmp = pcall(require, "cmp")
+			-- if cmp_status_ok then
+			-- 	cmp.event:on("menu_opened", function()
+			-- 		vim.b.copilot_suggestion_hidden = true
+			-- 	end)
+			--
+			-- 	cmp.event:on("menu_closed", function()
+			-- 		vim.b.copilot_suggestion_hidden = false
+			-- 	end)
+			-- end
 		end,
 	},
-
+	{
+		"zbirenbaum/copilot-cmp",
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	},
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
 		lazy = true,
@@ -67,8 +59,6 @@ return {
 		},
 		config = function(_, opts)
 			require("CopilotChat").setup(opts)
-			-- NOTE: cmp is disabled
-			-- require("CopilotChat.integrations.cmp").setup()
 		end,
 	},
 }

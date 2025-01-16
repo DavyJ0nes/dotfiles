@@ -171,14 +171,16 @@ return {
 			capabilities = capabilities,
 			filetypes = { "clojure" },
 		})
-		lspconfig.elixirls.setup({
-			settings = {
-				elixirLS = {
-					dialyzerEnabled = true,
-					fetchDeps = true,
-					enableTestLenses = false,
-				},
-			},
-		})
+		-- lspconfig.elixirls.setup({
+		-- 	capabilities = capabilities,
+		-- 	filetypes = { "elixir", "ex", "exs" },
+		-- 	settings = {
+		-- 		elixirLS = {
+		-- 			dialyzerEnabled = true,
+		-- 			fetchDeps = true,
+		-- 			enableTestLenses = false,
+		-- 		},
+		-- 	},
+		-- })
 	end,
 }

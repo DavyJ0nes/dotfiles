@@ -9,8 +9,7 @@ import = [
 live_config_reload = true
 
 [shell]
-program = "/bin/zsh"
-args = ["-l"]
+program = "/opt/homebrew/bin/fish"
 
 [window]
 startup_mode = "Maximized"

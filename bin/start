@@ -2,24 +2,3 @@
 set -e
 
 nvim -c "Neorg journal today" "n+22"
-
-# start
-# start is a helper script that helps to get focused for the day
-# DavyJ0nes 2016
-
-# TIME=$(date "+%H:%M")
-# DATE=$(date "+%d-%m-%Y")
-#
-# OBSIDIAN_VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/version2"
-# PREFIX="$OBSIDIAN_VAULT/checklists"
-# FILENAME="$PREFIX/daily/$DATE.md"
-#
-# if [ ! -f "$FILENAME" ]; then
-#   cp "$PREFIX/templates/daily.md" "$FILENAME"
-#
-#   sed -i.bak "s/!!date!!/$DATE/" "$FILENAME"
-#   sed -i.bak "s/!!start_time!!/$TIME/" "$FILENAME"
-#   rm "$FILENAME.bak"
-# fi
-#
-# nvim "$FILENAME" "+norm! G" -c '/### Init' "+norm! jjwl"

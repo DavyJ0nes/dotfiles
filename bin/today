@@ -7,7 +7,7 @@ set -e
 
 DATE=$(date "+%Y-%m-%d")
 
-PREFIX="$HOME/notes/journal/2024"
+PREFIX="$HOME/notes/journal/2025"
 FILENAME="$PREFIX/$DATE.norg"
 
 nvim "$FILENAME"

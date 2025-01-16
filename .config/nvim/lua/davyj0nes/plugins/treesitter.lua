@@ -45,6 +45,7 @@ return {
 				"vimdoc",
 				"go",
 				"clojure",
+				"elixir",
 			},
 			incremental_selection = {
 				enable = true,

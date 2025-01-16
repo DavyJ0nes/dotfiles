@@ -22,15 +22,37 @@ return {
 			sidebar.open()
 		end, { desc = "Open debugging sidebar" })
 	end,
-	-- config = function()
-	-- 	require("dap").adapters.codelldb = {
-	-- 		type = "server",
-	-- 		host = "127.0.0.1",
-	-- 		port = 13000,
-	-- 		executable = {
-	-- 			command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
-	-- 			args = { "--port", "13000" },
-	-- 		},
-	-- 	}
-	-- end,
+	config = function()
+		local dap = require("dap")
+		-- Elixir
+		dap.adapters.mix_task = {
+			type = "executable",
+			command = vim.fn.stdpath("data") .. "/mason/bin/elixir-ls-debugger",
+			args = {},
+		}
+		dap.configurations.elixir = {
+			{
+				type = "mix_task",
+				name = "mix test",
+				task = "test",
+				taskArgs = { "--trace" },
+				request = "launch",
+				startApps = true, -- for Phoenix projects
+				projectDir = "${workspaceFolder}",
+				requireFiles = {
+					"test/**/test_helper.exs",
+					"test/**/*_test.exs",
+				},
+			},
+		}
+		-- 	dap.adapters.codelldb = {
+		-- 		type = "server",
+		-- 		host = "127.0.0.1",
+		-- 		port = 13000,
+		-- 		executable = {
+		-- 			command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
+		-- 			args = { "--port", "13000" },
+		-- 		},
+		-- 	}
+	end,
 }

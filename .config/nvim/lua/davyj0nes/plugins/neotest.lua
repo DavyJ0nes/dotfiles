@@ -12,6 +12,7 @@ return {
 		"nvim-lua/plenary.nvim",
 		"antoinemadec/FixCursorHold.nvim",
 		"nvim-neotest/neotest-go",
+		"jfpedroza/neotest-elixir",
 		"nvim-treesitter/nvim-treesitter",
 		"nvim-neotest/nvim-nio",
 	},
@@ -29,6 +30,7 @@ return {
 
 		require("neotest").setup({
 			adapters = {
+				require("neotest-elixir"),
 				require("neotest-go")({
 					experimental = {
 						test_table = true,

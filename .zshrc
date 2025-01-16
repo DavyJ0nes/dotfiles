@@ -31,6 +31,19 @@ bindkey '\e[A' history-search-backward
 bindkey '\e[B' history-search-forward
 bindkey -e
 
+# -- navigation
+setopt AUTO_CD              # Go to folder path without using cd.
+
+setopt AUTO_PUSHD           # Push the old directory onto the stack on cd.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+
+setopt CORRECT              # Spelling correction
+setopt CDABLE_VARS          # Change directory to a path stored in a variable.
+setopt EXTENDED_GLOB        # Use extended globbing syntax.
+
+# -- prompt
+source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -38,17 +51,52 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # -- completion
-zstyle :compinstall filename '/Users/davyjones/.zshrc'
-zstyle ':completion:*' menu select
-autoload -Uz compinit; compinit
-_comp_options+=(globdots)
+FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
 bindkey '^I' autosuggest-accept
+
+zmodload zsh/complist
+autoload -Uz compinit && compinit
+_comp_options+=(globdots)
+
+setopt MENU_COMPLETE        # Automatically highlight first element of completion menu
+setopt AUTO_LIST            # Automatically list choices on ambiguous completion.
+setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
+
+# zstyle :compinstall filename '/Users/davyjones/.zshrc'
+
+# Define completers
+# zstyle ':completion:*' completer _extensions _complete _approximate
+#
+# # Use cache for commands using cache
+# zstyle ':completion:*' use-cache on
+# zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+# # Complete the alias when _expand_alias is used as a function
+# zstyle ':completion:*' complete true
+#
+# zle -C alias-expension complete-word _generic
+# bindkey '^Xa' alias-expension
+# zstyle ':completion:alias-expension:*' completer _expand_alias
+#
+# # Use cache for commands which use it
+#
+# # Allow you to select in a menu
+# zstyle ':completion:*' menu select
+#
+# # Autocomplete options for cd instead of directory stack
+# zstyle ':completion:*' complete-options true
+#
+# zstyle ':completion:*' file-sort modification
+#
+# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle :compinstall filename '/Users/davyjones/.zshrc'
+
+autoload -Uz compinit
+compinit
 
 # -- rust stuff
 source "$HOME/.cargo/env"
@@ -285,3 +333,7 @@ function gi() {
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# The following lines were added by compinstall
+
+# End of lines added by compinstall

@@ -1,6 +1,5 @@
 font-family = "JetBrainsMono Nerd font Propo"
 font-size = 14
-
 window-decoration = false
 window-title-font-family = "Maple Mono"
 
@@ -9,9 +8,12 @@ macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 macos-non-native-fullscreen = true
 
-theme = tokyonight-storm
 background-opacity = 0.90
 background-blur-radius = 50
+theme = tokyonight-storm
 
 cursor-style = block_hollow
+
 copy-on-select = true
+shell-integration = fish
+command = ~/bin/tmux-startup

@@ -36,7 +36,7 @@ return {
 				"terraformls",
 				"tflint",
 				-- "rust_analyzer",
-				-- "elixirls",
+				"elixirls",
 				-- "htmx-lsp",
 			},
 		})

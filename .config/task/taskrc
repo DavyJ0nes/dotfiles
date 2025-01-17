@@ -21,3 +21,8 @@ include solarized-dark-256.theme
 #include solarized-light-256.theme
 #include no-color.theme
 news.version=3.3.0
+
+# Taskwarrior TUI
+uda.taskwarrior-tui.selection.indicator=
+uda.done.label=Done
+uda.done.type=string

@@ -1,17 +1,24 @@
 function update -d "update brew, fish, fisher and mac app store"
     echo 'start updating ...'
 
+    echo "========================"
+    set TO_UPDATE $(brew outdated -v)
+
     echo 'updating homebrew'
     brew update
-    brew upgrade
-    brew cleanup
+    brew upgrade --greedy
+    brew cleanup --prune=all
 
+    echo "========================"
     echo 'updating fish shell'
-    fisher
+    fisher update
     fish_update_completions
 
+    echo "========================"
     echo 'checking Apple Updates'
     /usr/sbin/softwareupdate -ia
 
-    exit 0
+    echo "========================"
+    echo "updated brew packages:"
+    echo "$TO_UPDATE"
 end

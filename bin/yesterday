@@ -5,7 +5,7 @@ set -e
 # yesterday is a helper to open yesterdays daily note
 # DavyJ0nes 2023
 
-DATE=$(date -v "-1d" "+%d-%m-%Y")
+DATE=$(date -v "-1d" "+%Y-%m-%d")
 
 PREFIX="$HOME/notes/journal/2025"
 FILENAME="$PREFIX/$DATE.norg"

@@ -1,0 +1,74 @@
+#!/bin/bash
+set -e
+
+echo "Installing Homebrew packages..."
+brew install adr-tools
+brew install bash
+brew install bat
+brew install blueutil
+brew install cmake
+brew install coreutils
+brew install diffutils
+brew install docker-compose
+brew install elixir
+brew install exercism
+brew install eza
+brew install fd
+brew install fish
+brew install fisher
+brew install fzf
+brew install gcc
+brew install gh
+brew install git
+brew install gnu-sed
+brew install gnupg
+brew install go
+brew install go-jsonnet
+brew install gofumpt
+brew install golangci-lint
+brew install golines
+brew install grep
+brew install jq
+brew install jsonnet-bundler
+brew install kn
+brew install ko
+brew install kubernetes-cli
+brew install lazygit
+brew install make
+brew install mdcat
+brew install minikube
+brew install neovim
+brew install pinentry-mac
+brew install podman
+brew install pyenv
+brew install ripgrep
+brew install shellcheck
+brew install shfmt
+brew install sketchybar
+brew install socat
+brew install stow
+brew install switchaudio-osx
+brew install task
+brew install taskwarrior-tui
+brew install tfenv
+brew install tmux
+brew install tmuxinator
+brew install tree
+brew install walk
+brew install watch
+brew install wget
+brew install yq
+brew install zoxide
+
+echo "Installing Homebrew casks..."
+
+brew install --cask aerospace
+brew install --cask font-lilex-nerd-font
+brew install --cask ghostty
+brew install --cask livebook
+brew install --cask font-jetbrains-mono-nerd-font
+brew install --cask font-sf-pro
+brew install --cask google-cloud-sdk
+brew install --cask sf-symbols
+
+echo "Homebrew packages installed successfully!"

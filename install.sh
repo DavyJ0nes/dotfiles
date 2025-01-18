@@ -72,6 +72,7 @@ brew install --cask font-hack-nerd-font
 brew install --cask font-jetbrains-mono-nerd-font
 brew install --cask font-lilex-nerd-font
 brew install --cask font-sf-pro
+brew install --cask google-chrome
 brew install --cask google-cloud-sdk
 brew install --cask raycast
 brew install --cask sf-symbols

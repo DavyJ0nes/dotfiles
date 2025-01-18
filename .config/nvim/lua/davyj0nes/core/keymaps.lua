@@ -33,6 +33,8 @@ keymap.set("n", "<leader>bt", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 -- terminal
 keymap.set("n", "†", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
 keymap.set("t", "†", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
+keymap.set("n", "<leader>ot", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
+keymap.set("t", "<leader>ot", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
 keymap.set("t", "<C-x>", "<C-\\><C-n>", { desc = "exit term mode" })
 
 -- buffers
@@ -105,7 +107,10 @@ vim.api.nvim_create_autocmd("Filetype", {
 })
 
 -- copilot
-keymap.set("n", "<leader>ck", '<cmd>lua require("copilot.suggestion").toggle_auto_trigger()<cr>')
+keymap.set("n", "<leader>ai", "<cmd>CopilotChatToggle<cr>")
+keymap.set("v", "<leader>air", "<cmd>CopilotChatReview<cr>")
+keymap.set("v", "<leader>ait", "<cmd>CopilotChatTests<cr>")
+keymap.set("v", "<leader>aie", "<cmd>CopilotChatExplain<cr>")
 
 local function setup_loading_template_on_new_file()
 	local group = vim.api.nvim_create_augroup("NeorgLoadTemplateGroup", { clear = true })

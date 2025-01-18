@@ -15,5 +15,5 @@ set -Ux EDITOR nvim
 set -Ux TERM alacritty
 
 set -Ux GOBIN $HOME/go/bin
-set -Ux GOPATH $(go env GOPATH)
+set -Ux GOPATH $HOME/go
 set -Ux GOPRIVATE "github.com/einride/*"

@@ -171,16 +171,10 @@ return {
 			capabilities = capabilities,
 			filetypes = { "clojure" },
 		})
-		-- lspconfig.elixirls.setup({
-		-- 	capabilities = capabilities,
-		-- 	filetypes = { "elixir", "ex", "exs" },
-		-- 	settings = {
-		-- 		elixirLS = {
-		-- 			dialyzerEnabled = true,
-		-- 			fetchDeps = true,
-		-- 			enableTestLenses = false,
-		-- 		},
-		-- 	},
-		-- })
+
+		lspconfig.ocamllsp.setup({
+			capabilities = capabilities,
+			filetypes = { "ocaml" },
+		})
 	end,
 }

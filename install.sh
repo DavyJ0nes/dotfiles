@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+## -- Home Folders ------------------------------------------------------------
+echo "setting up default folders"
+cd $HOME && mkdir -p {elixir,go,scratch,tmp,work_notes}
+cd $HOME && mkdir -p elixir/src
+cd $HOME && mkdir -p go/{src,bin,pkg}
+cd $HOME && mkdir -p go/src/github.com/{davyj0nes,fever}
+## ----------------------------------------------------------------------------
+
 ## -- Homebrew ----------------------------------------------------------------
 echo "installing Homebrew packages..."
 brew install adr-tools
@@ -38,6 +46,7 @@ brew install make
 brew install mdcat
 brew install minikube
 brew install neovim
+brew install opam
 brew install pinentry-mac
 brew install podman
 brew install pyenv
@@ -99,14 +108,6 @@ brew services start sketchybar
 echo "sketchybar enabled successfully!"
 ## ----------------------------------------------------------------------------
 
-## -- Home Folders ------------------------------------------------------------
-echo "setting up default folders"
-cd $HOME && mkdir -p {elixir,go,scratch,tmp,work_notes}
-cd $HOME && mkdir -p elixir/src
-cd $HOME && mkdir -p go/{src,bin,pkg}
-cd $HOME && mkdir -p go/src/github.com/{davyj0nes,fever}
-## ----------------------------------------------------------------------------
-
 ## -- Git ---------------------------------------------------------------------
 echo "setting up git config..."
 gh auth login
@@ -115,6 +116,16 @@ gh config set editor nvim
 gh auth setup-git
 ## ----------------------------------------------------------------------------
 
+## -- note helper -------------------------------------------------------------
+echo "installing nothelp..."
+go install github.com/davyj0nes/nothelp@latest
+## ----------------------------------------------------------------------------
+
+## -- OCaml -------------------------------------------------------------------
+echo "setting up ocaml..."
+opam init -a
+opam install ocaml-lsp-server odoc ocamlformat utop
+## ----------------------------------------------------------------------------
 echo "installations complete!"
 
 echo "now clone notes repo and check that taskwarrior is working"
@@ -133,7 +144,7 @@ echo "adding remaining tasks to taskwarrior..."
 
 task add "Update Caps Lock to Escape" due:today
 task add "Install Slack" due:today
-task add "Install Keymap" due:today
+task add "Install Keymapp" due:today
 task add "Hide Dock and menu bar" due:today
 task add "Rearrange dock applications" due:today
 task add "Set background image" due:today

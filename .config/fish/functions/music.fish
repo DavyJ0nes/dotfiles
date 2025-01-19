@@ -7,8 +7,10 @@ function music -d "Control Music. Use -h or --help for a more detailed descripti
         set opt "set mute to true"
       case unmute
         set opt "set mute to false"
-      case next previous
-        set opt "$opt track"
+      case next
+        set opt "next track"
+      case prev previous
+        set opt "previous track"
       case vol volume
         set opt "set sound volume to $argv[2]"
       case "" -h --help

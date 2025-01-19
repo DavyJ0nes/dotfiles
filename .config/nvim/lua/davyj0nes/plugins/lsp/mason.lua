@@ -35,9 +35,8 @@ return {
 				"ruff",
 				"terraformls",
 				"tflint",
-				-- "rust_analyzer",
 				"elixirls",
-				-- "htmx-lsp",
+				"ocamllsp",
 			},
 		})
 
@@ -54,6 +53,7 @@ return {
 				"protolint", -- proto linter
 				"pyright", -- python linter
 				"black", -- python formatter
+				"ocamlformat", -- ocaml formatter
 			},
 		})
 	end,

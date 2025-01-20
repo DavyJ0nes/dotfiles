@@ -8,6 +8,7 @@ windows:
       layout: main-horizontal
       panes:
         -
+        -
   - shell:
       layout: tiled
       panes:
@@ -15,12 +16,12 @@ windows:
         -
   - notes:
       root: "~/notes"
-      layout: main-horizontal
+      layout: even-vertical
       panes:
         - vi
-        - tasks
+        - ttoday
   - config:
       root: "~/.config/"
-      layout: main-horizontal
+      layout: tiled
       panes:
-        -
+        - vi

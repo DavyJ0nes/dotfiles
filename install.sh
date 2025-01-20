@@ -57,6 +57,7 @@ brew install socat
 brew install stow
 brew install switchaudio-osx
 brew install task
+brew install taskopen
 brew install taskwarrior-tui
 brew install tfenv
 brew install tmux

@@ -1,5 +1,4 @@
 # [Created by task 3.3.0 1/16/2025 13:22:14]
-# news.version=3.3.0
 
 data.location=~/notes/tasksdb
 #hooks.location=~/.config/task/hooks
@@ -20,7 +19,13 @@ data.location=~/notes/tasksdb
 include solarized-dark-256.theme
 #include solarized-light-256.theme
 #include no-color.theme
-news.version=3.3.0
+
+# view
+description.count=0
+
+# urgency modifiers
+urgency.inherit=on
+urgency.user.project.daily.coefficient=-10.0
 
 # Taskwarrior TUI
 uda.taskwarrior-tui.selection.indicator=

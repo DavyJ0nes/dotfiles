@@ -14,6 +14,7 @@ Application.put_env(:elixir, :ansi_enabled, true)
 
 IEx.configure(
   history_size: 100,
+  width: 80,
   inspect: [
     limit: 5_000,
     pretty: true,
@@ -29,7 +30,11 @@ IEx.configure(
     ],
     eval_result: [:green, :bright],
     eval_error: [:red, :bright],
-    eval_info: [:blue, :bright]
+    eval_info: [:blue, :bright],
+    doc_code: :green,
+    doc_inline_code: :magenta,
+    doc_headings: [:cyan, :underline],
+    doc_title: [:cyan, :bright, :underline]
   ],
   default_prompt:
     "#{IO.ANSI.green()}%prefix#{IO.ANSI.reset()}" <>

@@ -1,5 +1,6 @@
 # [Created by task 3.3.0 1/16/2025 13:22:14]
 
+news.version=4.0.0
 data.location=~/notes/tasksdb
 #hooks.location=~/.config/task/hooks
 
@@ -37,6 +38,10 @@ uda.trelloboardid.label=TrelloBoardID
 uda.trellolistid.type=string
 uda.trellolistid.label=TrelloListID
 uda.trelloboardid.type=string
+#
+# Contexts
+context.today.read=+today or due:today
 context.work.read=project:work or +work
+context.work.write=+work
 context.personal.read=project:daily or +personal
-context=work
+context.personal.write=+personal

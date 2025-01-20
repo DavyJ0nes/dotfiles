@@ -46,15 +46,21 @@ alias start "nothelp start"
 alias stop "nothelp stop"
 alias t "task"
 alias tasks "taskwarrior-tui"
+alias tm "task modify"
+alias ta "task add"
 alias done "task done"
 alias twork "task context work && task"
 alias tpersonal "task context personal && task"
-alias tall "task context none"
+alias tall "task context none && task"
+alias ttoday "task context today && task"
 alias nbackup "$HOME/notes/backup"
 
 # -- clojure
 alias crepl "clojure -M:repl/basic"
 alias crepl-headless "clojure -M:repl/headless"
+
+# -- elixir
+alias miex "iex -S mix"
 
 # -- git
 alias g 'git'

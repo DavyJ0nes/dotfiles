@@ -50,6 +50,7 @@ alias done "task done"
 alias twork "task context work && task"
 alias tpersonal "task context personal && task"
 alias tall "task context none"
+alias nbackup "$HOME/notes/backup"
 
 # -- clojure
 alias crepl "clojure -M:repl/basic"

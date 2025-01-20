@@ -1,0 +1,9 @@
+#/bin/bash
+set -e
+
+commit_msg="chore: auto backup $(date +'%F %H:%M:%S')"
+
+cd $HOME/dotfiles
+git add .
+git commit -m "$commit_msg"
+git push

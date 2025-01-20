@@ -37,3 +37,6 @@ uda.trelloboardid.label=TrelloBoardID
 uda.trellolistid.type=string
 uda.trellolistid.label=TrelloListID
 uda.trelloboardid.type=string
+context.work.read=project:work or +work
+context.personal.read=project:daily or +personal
+context=work

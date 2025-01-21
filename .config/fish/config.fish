@@ -5,6 +5,7 @@ end
 source ~/.config/fish/conf.d/variables.fish
 source ~/.config/fish/conf.d/paths.fish
 source ~/.config/fish/conf.d/exports.fish
+source ~/.config/fish/conf.d/bindings.fish
 nothelp completion fish | source
 
 

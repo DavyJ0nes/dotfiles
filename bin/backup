@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+echo "Backup started at $(date)"
+
+echo "backing up notes..."
+cd ~/notes && ./backup
+
+echo "backing up dotfiles..."
+cd ~/dotfiles && ./backup
+
+echo "Backup completed at $(date)"

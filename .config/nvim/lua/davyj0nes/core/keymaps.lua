@@ -57,6 +57,8 @@ keymap.set(
 -- spellcheck
 keymap.set("n", "<leader>son", "<cmd> set spell spelllang=en_gb<CR>", { desc = "enable spellcheck" })
 keymap.set("n", "<leader>soff", "<cmd> set nospell<CR>", { desc = "disable spellcheck" })
+keymap.set("n", "<leader>ss", "<cmd>Telescope spell_suggest<CR>", { desc = "get spelling suggestion" })
+keymap.set("n", "z=", "<cmd>Telescope spell_suggest<CR>", { desc = "get spelling suggestion" })
 
 -- arrow
 keymap.set("n", "mn", "<cmd>Arrow next_buffer_bookmark<CR>")
@@ -87,14 +89,25 @@ keymap.set("n", "<leader>tw", function()
 	require("neotest").watch.toggle()
 end, { desc = "Toggle test watch" })
 
--- neorg
--- keymap.set("n", "<leader>fn", "<Plug>(neorg.telescope.find_norg_files)", { desc = "[F]ind [N]otes" })
-keymap.set("n", "<leader>fn", "<Plug>(neorg.telescope.find_linkable)", { desc = "[F]ind [N]otes" })
-keymap.set("n", "<Leader>oc", "<CMD>Neorg capture<CR>", { desc = "Capture note", silent = true })
-keymap.set("n", "<leader>oj", "<cmd>Neorg journal<CR>", { desc = "Open Journal" })
-keymap.set("n", "<leader>ojt", "<cmd>Neorg journal today<CR>", { desc = "Open Todays Journal" })
-keymap.set("n", "<leader>ojy", "<cmd>Neorg journal yesterday<CR>", { desc = "Open Yesterda:s Journal" })
-keymap.set("n", "<leader>oi", "<cmd>vsp ~/notes/inbox.norg<CR>", { desc = "Open Inbox" })
+-- notes
+keymap.set(
+	"n",
+	"<leader>onl",
+	"<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>",
+	{ desc = "Create/open Quicknote for current line" }
+)
+
+keymap.set(
+	"n",
+	"<leader>ons",
+	"<cmd>:lua require('quicknote').ToggleNoteSigns()<cr>",
+	{ desc = "Show what lines have quicknotes" }
+)
+
+keymap.set("n", "<leader>oi", function()
+	local date = os.date("%Y-%m-%d")
+	vim.cmd("e +5 ~/notes/daily/" .. date .. ".md")
+end, { desc = "Open today's note" })
 
 vim.api.nvim_create_autocmd("Filetype", {
 	pattern = "norg",

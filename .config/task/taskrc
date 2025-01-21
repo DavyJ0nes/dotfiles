@@ -45,3 +45,6 @@ context.work.read=project:work or +work
 context.work.write=+work
 context.personal.read=project:daily or +personal
 context.personal.write=+personal
+context.inbox.read=+inbox
+context.inbox.write=+inbox
+context=inbox

@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+# Use osascript to sync the "Checklist" note with taskwarrior.
+
+checklist=$(osascript <<EOF
+tell application "Notes"
+    set theNote to first note whose name is "=== Checklist"
+    return body of theNote
+end tell
+EOF
+)
+# Convert the checklist to a format suitable for taskwarrior
+tasks=$(echo "$checklist" | sed -n '/<ul>/,/<\/ul>/p' | sed 's/<[^>]*>//g' | tail -n +3)
+
+# Exit if tasks is empty
+if [ -z "$tasks" ]; then
+    exit 0
+fi
+
+# Add tasks to taskwarrior
+while IFS= read -r task; do
+    if [ -n "$task" ]; then
+        task context inbox
+        task add "$task"
+    fi
+done <<< "$tasks"
+
+# Clear the checklist in the note
+osascript <<EOF
+tell application "Notes"
+    set theNote to first note whose name is "=== Checklist"
+    set body of theNote to "<div><h1>=== Checklist</h1></div><div><br></div><ul><li>===BELOW===</li></ul>"
+end tell
+EOF
+
+task

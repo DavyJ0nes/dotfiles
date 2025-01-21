@@ -1,12 +1,17 @@
 #!/bin/bash
-set -e
 
 echo "Backup started at $(date)"
-
+echo ""
+echo "------------------------------------------------"
+echo ""
 echo "backing up notes..."
 cd ~/notes && ./backup
-
+echo ""
+echo "------------------------------------------------"
+echo ""
 echo "backing up dotfiles..."
 cd ~/dotfiles && ./backup
+echo ""
+echo "------------------------------------------------"
 
 echo "Backup completed at $(date)"

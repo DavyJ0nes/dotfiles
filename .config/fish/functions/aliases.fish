@@ -55,6 +55,7 @@ alias tall "task context none; task"
 alias tinbox "task context inbox; task"
 alias tpersonal "task context personal; task"
 alias ttoday "task context today; task"
+alias topen "taskopen"
 alias done "task done"
 
 # -- clojure

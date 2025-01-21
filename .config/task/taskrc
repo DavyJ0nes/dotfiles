@@ -47,4 +47,7 @@ context.personal.read=project:daily or +personal
 context.personal.write=+personal
 context.inbox.read=+inbox
 context.inbox.write=+inbox
-context=today
+
+# list view
+report.list.sort=start-,+today,due+,project+/,urgency-
+default.command=minimal

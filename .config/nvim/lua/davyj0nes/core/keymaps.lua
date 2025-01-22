@@ -109,15 +109,8 @@ keymap.set("n", "<leader>oi", function()
 	vim.cmd("e +5 ~/notes/daily/" .. date .. ".md")
 end, { desc = "Open today's note" })
 
-vim.api.nvim_create_autocmd("Filetype", {
-	pattern = "norg",
-	callback = function()
-		keymap.set("n", "<leader>mut", "<cmd>Neorg toc<CR>", {})
-		keymap.set("n", "<leader>mm", "<Plug>(neorg.qol.todo-items.todo.task-cycle)", {})
-		keymap.set("n", "<leader>fnh", "<Plug>(neorg.telescope.search_headings)", { desc = "[F]ind [N]ote [H]eadings" })
-		keymap.set("n", "<leader>mil", "<Plug>(neorg.telescope.insert_link)", { desc = "Insert Link" })
-	end,
-})
+--- go back to previous note after following linka
+keymap.set("n", "<bs>", ":edit #<cr>", { silent = true })
 
 -- copilot
 keymap.set("n", "<leader>ai", "<cmd>CopilotChatToggle<cr>")

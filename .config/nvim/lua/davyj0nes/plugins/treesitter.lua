@@ -6,8 +6,9 @@ return {
 		"windwp/nvim-ts-autotag",
 	},
 	config = function()
-		-- import nvim-treesitter plugin
 		local treesitter = require("nvim-treesitter.configs")
+		-- used to make livebooks work as normal markdown
+		-- vim.treesitter.language.register("markdown", "livebook")
 
 		-- configure treesitter
 		treesitter.setup({ -- enable syntax highlighting

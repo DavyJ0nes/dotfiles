@@ -51,4 +51,3 @@ context.inbox.write=+inbox
 # list view
 report.list.sort=start-,+today,due+,project+/,urgency-
 default.command=minimal
-context=work

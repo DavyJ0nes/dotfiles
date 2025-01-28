@@ -90,27 +90,8 @@ keymap.set("n", "<leader>tw", function()
 end, { desc = "Toggle test watch" })
 
 -- notes
-keymap.set(
-	"n",
-	"<leader>onl",
-	"<cmd>:lua require('quicknote').NewNoteAtCurrentLine()<cr>",
-	{ desc = "Create/open Quicknote for current line" }
-)
-
-keymap.set(
-	"n",
-	"<leader>ons",
-	"<cmd>:lua require('quicknote').ToggleNoteSigns()<cr>",
-	{ desc = "Show what lines have quicknotes" }
-)
-
-keymap.set("n", "<leader>oi", function()
-	local date = os.date("%Y-%m-%d")
-	vim.cmd("e +5 ~/notes/daily/" .. date .. ".md")
-end, { desc = "Open today's note" })
-
---- go back to previous note after following linka
-keymap.set("n", "<bs>", ":edit #<cr>", { silent = true })
+keymap.set("n", "<leader>oi", "<cmd>ObsidianToday<cr>", { desc = "Open today's note" })
+keymap.set("n", "<leader>oy", "<cmd>ObsidianYesterday<cr>", { desc = "Open yesterday's note" })
 
 -- copilot
 keymap.set("n", "<leader>ai", "<cmd>CopilotChatToggle<cr>")

@@ -1,36 +1,20 @@
 #!/bin/bash
 set -e
-# Use osascript to sync the "Checklist" note with taskwarrior.
 
-checklist=$(osascript <<EOF
-tell application "Notes"
-    set theNote to first note whose name is "=== Checklist"
-    return body of theNote
-end tell
-EOF
-)
-# Convert the checklist to a format suitable for taskwarrior
-tasks=$(echo "$checklist" | sed -n '/<ul>/,/<\/ul>/p' | sed 's/<[^>]*>//g' | tail -n +3)
+TODO_FILE_LOCATION="~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/Todo.md"
 
-# Exit if tasks is empty
-if [ -z "$tasks" ]; then
-    exit 0
-fi
+# Expand the tilde to the full path
+TODO_FILE_LOCATION=$(eval echo $TODO_FILE_LOCATION)
 
-# Add tasks to taskwarrior
-while IFS= read -r task; do
-    if [ -n "$task" ]; then
-        task context inbox
-        task add "$task"
-    fi
-done <<< "$tasks"
+# Read the markdown file and extract checklist items
+grep -E '^\s*-\s*\[ \]' "$TODO_FILE_LOCATION" | tail -n +2 | while read -r line; do
+  task_description=$(echo "$line" | cut -c 7-)
 
-# Clear the checklist in the note
-osascript <<EOF
-tell application "Notes"
-    set theNote to first note whose name is "=== Checklist"
-    set body of theNote to "<div><h1>=== Checklist</h1></div><div><br></div><ul><li>===BELOW===</li></ul>"
-end tell
-EOF
+  task add "$task_description"
+done
+
+gsed -i '/===/,$d' "$TODO_FILE_LOCATION"
+echo "- [ ] ===" >> "$TODO_FILE_LOCATION"
+echo "- [ ] " >> "$TODO_FILE_LOCATION"
 
 task

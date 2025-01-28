@@ -17,3 +17,8 @@ set -Ux TERM alacritty
 set -Ux GOBIN $HOME/go/bin
 set -Ux GOPATH $HOME/go
 set -Ux GOPRIVATE "github.com/einride/*"
+
+set -Ux NVM_DIR $HOME/.nvm
+set --universal nvm_default_version 23
+
+set -Ux NOTES_DIR "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/"

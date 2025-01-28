@@ -67,16 +67,13 @@ return {
 					theme = "ivy",
 				},
 			},
-			extensions_list = { "fzf", "quicknote", "file_browser" },
+			extensions_list = { "fzf", "file_browser" },
 			extensions = {
 				fzf = {
 					fuzzy = true,
 					override_generic_sorter = true,
 					override_file_sorter = true,
 					case_mode = "smart_case",
-				},
-				quicknote = {
-					defaultScope = "CWD",
 				},
 				file_browser = {
 					theme = "ivy",
@@ -107,6 +104,12 @@ return {
 		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "[F]ind [C]urrent word" })
 		keymap.set("n", "<leader>fm", "<cmd>Telescope marks <cr>", { desc = "[F]ind [M]arks" })
 		keymap.set("n", "<leader>ft", "<cmd>Telescope treesitter <cr>", { desc = "[F]ind [T]reesitter" })
-		keymap.set("n", "<leader>fn", "<cmd>Telescope file_browser path=~/notes<cr>", { desc = "[F]ind [N]otes" })
+		keymap.set(
+			"n",
+			"<leader>fn",
+			"<cmd>Telescope file_browser path=/Users/davy/Library/Mobile\\ Documents/iCloud~md~obsidian/Documents/notes/<cr>",
+			{ desc = "[F]ind [N]otes" }
+		)
+		keymap.set("n", "<leader>sn", "<cmd>ObsidianSearch<cr>", { desc = "[S]earch [N]otes" })
 	end,
 }

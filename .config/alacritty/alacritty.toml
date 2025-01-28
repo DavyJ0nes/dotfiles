@@ -1,14 +1,5 @@
-import = [
-  # "~/.config/alacritty/catppuccin-macchiato.toml"
-  # "~/.config/alacritty/catppuccin-latte.toml"
-  # "~/.config/alacritty/nightfox.toml"
-  "~/.config/alacritty/tokyonight-storm.toml"
-  # "~/.config/alacritty/oxocarbon.toml"
-]
 
-live_config_reload = true
-
-[shell]
+[terminal.shell]
 program = "/opt/homebrew/bin/fish"
 
 [window]
@@ -40,3 +31,16 @@ post_processing = true
 persist = false
 mouse = { enabled = true, mods = "Control" }
 regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+
+[general]
+
+live_config_reload = true
+import = [
+  # "~/.config/alacritty/catppuccin-macchiato.toml"
+  # "~/.config/alacritty/catppuccin-latte.toml"
+  # "~/.config/alacritty/nightfox.toml"
+  "~/.config/alacritty/tokyonight-storm.toml"
+  # "~/.config/alacritty/oxocarbon.toml"
+]
+
+[terminal]

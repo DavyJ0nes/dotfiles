@@ -58,6 +58,7 @@ alias tpersonal "task context personal; task"
 alias ttoday "task context today; task"
 alias topen "taskopen"
 alias done "task done"
+alias notes "cd ~/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/notes/"
 
 # -- clojure
 alias crepl "clojure -M:repl/basic"
@@ -80,7 +81,7 @@ alias gl "git log"
 alias gaf 'git add -A; git commit -m "WIP: $(w3m whatthecommit.com | head -n 1)"'
 alias git-branch-name "git rev-parse --abbrev-ref HEAD"
 alias gfuck "git add . && git commit --amend --no-edit"
-alias gfuckoff "gfuck && git fetch && git rebase origin/master && git push -f"
+alias gfuckoff "gfuck && git fetch && git rebase origin/main && git push -f"
 alias gwip 'git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
 alias ghstatus "curl -s https://www.githubstatus.com/api/v2/status.json | jq '{url: .page.url, status: .status.description}'"
 alias ghprstatus "gh pr view --json \"statusCheckRollup\" | jq '.statusCheckRollup[] | {\"name\": .name, \"status\": .status}'"

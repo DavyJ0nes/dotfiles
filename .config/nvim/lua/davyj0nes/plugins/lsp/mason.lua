@@ -22,12 +22,10 @@ return {
 
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
+			automatic_installation = true,
 			ensure_installed = {
 				"bashls",
-				"clojure_lsp",
-				"gopls",
-				"lua_ls",
-				"markdown_oxide",
+				-- "clojure_lsp",
 				"gopls",
 				"lua_ls",
 				"markdown_oxide",
@@ -49,8 +47,8 @@ return {
 				"golangci-lint", -- go linter
 				"tflint", -- terraform linter
 				"mdformat", -- markdown formatter
-				"buf", -- proto formatter and linter
-				"protolint", -- proto linter
+				-- "buf", -- proto formatter and linter
+				-- "protolint", -- proto linter
 				"pyright", -- python linter
 				"black", -- python formatter
 				"ocamlformat", -- ocaml formatter

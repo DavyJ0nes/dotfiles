@@ -11,10 +11,11 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"antoinemadec/FixCursorHold.nvim",
-		"nvim-neotest/neotest-go",
+		-- "nvim-neotest/neotest-go",
 		"jfpedroza/neotest-elixir",
 		"nvim-treesitter/nvim-treesitter",
 		"nvim-neotest/nvim-nio",
+		{ "fredrikaverpil/neotest-golang", version = "*" }, -- Installation
 	},
 	config = function()
 		local neotest_ns = vim.api.nvim_create_namespace("neotest")
@@ -31,11 +32,11 @@ return {
 		require("neotest").setup({
 			adapters = {
 				require("neotest-elixir"),
-				require("neotest-go")({
-					experimental = {
-						test_table = true,
+				require("neotest-golang")({
+					go_test_args = {
+						"-v",
+						"-race",
 					},
-					args = { "-count=1", "-race" },
 				}),
 			},
 			diagnostic = {

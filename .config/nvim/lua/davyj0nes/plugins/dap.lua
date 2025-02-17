@@ -6,22 +6,44 @@ return {
 	},
 	init = function()
 		local keymap = vim.keymap -- for conciseness
-		keymap.set("n", "<leader>db", "<cmd> DapToggleBreakpoint <CR>", { desc = "Add breakpoint to line" })
-		keymap.set("n", "<leader>do", "<cmd> DapStepOver <CR>", { desc = "Dap step over" })
-		keymap.set("n", "<leader>dc", "<cmd> DapContinue <CR>", { desc = "Dap continue" })
-		keymap.set("n", "<leader>dr", "<cmd> DapRerun <CR>", { desc = "Dap rerun" })
-		keymap.set("n", "<leader>dq", "<cmd> DapTerminate <CR>", { desc = "Dap quit" })
-		keymap.set("n", "<leader>dus", function()
+		local n = "n"
+
+		keymap.set(n, "<leader>db", function()
+			require("dap").toggle_breakpoint()
+		end, { desc = "Add breakpoint to line" })
+
+		keymap.set(n, "<leader>dc", function()
+			require("dap").continue()
+		end, { desc = "Dap continue" })
+
+		keymap.set(n, "<leader>do", function()
+			require("dap").step_over()
+		end, { desc = "Dap step over" })
+
+		keymap.set(n, "<leader>dr", function()
+			require("dap").run_last()
+		end, { desc = "Dap rerun" })
+
+		keymap.set(n, "<leader>dq", function()
+			require("dap").terminate()
+		end, { desc = "Dap quit" })
+
+		keymap.set(n, "<leader>dus", function()
 			local widgets = require("dap.ui.widgets")
 			local sidebar = widgets.sidebar(widgets.scopes)
 			sidebar.open()
 		end, { desc = "Open debugging sidebar" })
-		keymap.set("n", "<leader>dso", function()
+
+		keymap.set(n, "<leader>dso", function()
 			local widgets = require("dap.ui.widgets")
 			local sidebar = widgets.sidebar(widgets.scopes)
 			sidebar.open()
 		end, { desc = "Open debugging sidebar" })
+
+		vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", numhl = "" })
+		vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
 	end,
+
 	config = function()
 		local dap = require("dap")
 		-- Elixir

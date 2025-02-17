@@ -64,7 +64,7 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 inner.horizontal = 3
 inner.vertical =   3
 outer.left =       1
-outer.top = [{ monitor.main = 1 }, 36]
+outer.top = [{ monitor."^built-in retina display$" = 1 }, 36]
 outer.bottom =     1
 outer.right =      1
 

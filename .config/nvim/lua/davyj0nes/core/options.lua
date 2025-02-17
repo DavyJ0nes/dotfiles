@@ -13,6 +13,9 @@ opt.shiftwidth = 2 -- 2 spaces for indent width
 opt.expandtab = true -- expand tabs to spaces
 opt.autoindent = true -- use indentation from line above
 
+-- Enable break indent
+opt.breakindent = true
+
 opt.wrap = false
 opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
@@ -36,6 +39,10 @@ opt.backspace = "indent,eol,start"
 
 -- clipboard
 opt.clipboard:append("unnamedplus") -- use system clipboard as default
+--
+-- Decrease update time
+opt.updatetime = 250
+vim.wo.signcolumn = "yes"
 
 -- window splits
 opt.splitright = true

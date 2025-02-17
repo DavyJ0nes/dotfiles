@@ -39,26 +39,19 @@ return {
 		end,
 	},
 	{
-		"zbirenbaum/copilot-cmp",
-		config = function()
-			require("copilot_cmp").setup()
-		end,
-	},
-	{
 		"CopilotC-Nvim/CopilotChat.nvim",
 		lazy = true,
 		event = "VeryLazy",
 		enabled = true,
-		branch = "main",
+		-- branch = "main", // BROKE
+		version = "v3.6.0",
 		dependencies = {
 			{ "zbirenbaum/copilot.lua" },
 			{ "nvim-lua/plenary.nvim" },
 		},
+		build = "make tiktoken",
 		opts = {
 			debug = false, -- Enable debugging
 		},
-		config = function(_, opts)
-			require("CopilotChat").setup(opts)
-		end,
 	},
 }

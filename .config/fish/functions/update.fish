@@ -1,4 +1,4 @@
-function update -d "update brew, fish, fisher and mac app store"
+function update -d "update brew, fish, fisher, gh and mac app store"
     echo 'start updating ...'
 
     echo "========================"
@@ -15,10 +15,14 @@ function update -d "update brew, fish, fisher and mac app store"
     fish_update_completions
 
     echo "========================"
+    echo 'updating GH extensions'
+    gh extension upgrade --all
+
+    echo "========================"
     echo 'checking Apple Updates'
     /usr/sbin/softwareupdate -ia
 
     echo "========================"
     echo "updated brew packages:"
-    echo "$TO_UPDATE"
+    echo -e "$TO_UPDATE"
 end

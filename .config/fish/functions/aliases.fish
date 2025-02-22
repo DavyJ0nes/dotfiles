@@ -12,7 +12,6 @@ alias ...... 'cd ../../../../..'
 # Confirm before overwriting
 alias cp 'cp -Ri'
 alias mv 'mv -i'
-alias rm 'rm -i'
 
 alias md 'mkdir -p'
 alias rd 'rmdir -p'
@@ -85,6 +84,7 @@ alias gfuckoff "gfuck && git fetch && git rebase origin/main && git push -f"
 alias gwip 'git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
 alias ghstatus "curl -s https://www.githubstatus.com/api/v2/status.json | jq '{url: .page.url, status: .status.description}'"
 alias ghprstatus "gh pr view --json \"statusCheckRollup\" | jq '.statusCheckRollup[] | {\"name\": .name, \"status\": .status}'"
+# alias ghnewpr "git fetch && git rebase origin/main && gh pr create --title \"$(git log -1 --pretty=%s)\" --body \"_Why?_ $(git log -1 --pretty=%b | grep -v 'Co-authored-by' | awk 'BEGIN {RS=\"\n\n\"; FS=\"\n\"; OFS=\" \"} {for (i=1;i<=NF;i++) printf \"%s\", $i (i==NF ? \\'\n\n\\' : OFS)}')\""
 
 # -- docker
 alias dm "docker-machine"

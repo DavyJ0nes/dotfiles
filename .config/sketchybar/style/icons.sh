@@ -50,7 +50,7 @@ WIFI_CONNECTED=􀙇
 WIFI_DISCONNECTED=􀙈
 
 export ICON_PACKAGE=󰏓 # brew
-export ICON_DEV=
+export ICON_DEV=
 
 export ICON_HEADPHONES=󰋋
 export ICON_TV=
@@ -92,8 +92,10 @@ export ICON_WIFI_OFF=󰖪
 export ICON_VPN=󰦝 # vpn, nordvpn
 export ICON_SLACK=
 export ICON_DAVY=
+export ICON_MUSIC=
+export ICON_SPARE=󰲴
 export ICONS_VOLUME=(󰸈 󰕿 󰖀 󰕾)
-export ICONS_SPACES=(000 $ICON_DEV $ICON_WEB $ICON_SLACK $ICON_DAVY )
+export ICONS_SPACES=(000 $ICON_DEV $ICON_WEB $ICON_SLACK $ICON_DAVY $ICON_MUSIC $ICON_SPARE)
 export ICONS_BATTERY=(󰂎 󰁺 󰁻 󰁼 󰁽 󰁾 󰁿 󰂀 󰂁 󰂂 󰁹)
 export ICONS_BATTERY_CHARGING=(󰢟 󰢜 󰂆 󰂇 󰂈 󰢝 󰂉 󰢞 󰂊 󰂋 󰂅)
 export ICON_SWAP=󰁯

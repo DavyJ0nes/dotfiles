@@ -3,7 +3,6 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
 		local lualine = require("lualine")
-		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
 		local colors = {
 			blue = "#65D1FF",
@@ -16,7 +15,7 @@ return {
 			inactive_bg = "#2c3043",
 		}
 
-		local my_lualine_theme = {
+		local lols = {
 			normal = {
 				a = { bg = colors.blue, fg = colors.bg, gui = "bold" },
 				b = { bg = colors.bg, fg = colors.fg },
@@ -49,22 +48,42 @@ return {
 			},
 		}
 
-		-- configure lualine with modified theme
 		lualine.setup({
 			options = {
-				theme = my_lualine_theme,
+				icons_enabled = true,
+				theme = lols,
+				component_separators = { left = "|", right = "|" },
+				section_separators = { left = "", right = "" },
+				disabled_filetypes = {
+					statusline = {},
+					winbar = {},
+				},
+				ignore_focus = {},
+				always_divide_middle = true,
+				always_show_tabline = true,
+				globalstatus = false,
+				refresh = {
+					statusline = 100,
+					tabline = 100,
+					winbar = 100,
+				},
 			},
 			sections = {
-				lualine_x = {
-					{
-						lazy_status.updates,
-						cond = lazy_status.has_updates,
-						color = { fg = "#ff9e64" },
-					},
-					{ "encoding" },
-					{ "fileformat" },
-					{ "filetype" },
-				},
+				lualine_a = { "mode" },
+				lualine_b = { "diagnostics" },
+				lualine_c = { "filename" },
+
+				lualine_x = { "encoding", "fileformat", "filetype" },
+				lualine_y = {},
+				lualine_z = { "location" },
+			},
+			tabline = {},
+			winbar = {},
+			inactive_winbar = {},
+			extensions = {
+				"quickfix",
+				"nvim-dap-ui",
+				"trouble",
 			},
 		})
 	end,

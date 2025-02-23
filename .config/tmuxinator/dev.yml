@@ -4,7 +4,7 @@ tmux_options: "-u"
 
 windows:
   - editor:
-      root: ~/go/src/github.com/einride
+      root: ~/go/src/github.com/feverenergy/
       layout: main-horizontal
       panes:
         -
@@ -14,6 +14,11 @@ windows:
       panes:
         -
         -
+  - db:
+      layout: 81e7,382x65,0,0[382x59,0,0,2,382x5,0,60,13
+      panes:
+        - vi -c :DBUI
+        - ssh -v -N sandbox-jump
   - notes:
       root: '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
       layout: even-vertical

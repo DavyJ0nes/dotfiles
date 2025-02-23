@@ -11,11 +11,10 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"antoinemadec/FixCursorHold.nvim",
-		-- "nvim-neotest/neotest-go",
 		"jfpedroza/neotest-elixir",
 		"nvim-treesitter/nvim-treesitter",
 		"nvim-neotest/nvim-nio",
-		{ "fredrikaverpil/neotest-golang", version = "*" }, -- Installation
+		{ "fredrikaverpil/neotest-golang", version = "*" },
 	},
 	config = function()
 		local neotest_ns = vim.api.nvim_create_namespace("neotest")
@@ -39,28 +38,20 @@ return {
 					},
 				}),
 			},
-			diagnostic = {
-				enabled = false,
+			discovery = {
+				-- Drastically improve performance in ginormous projects by
+				-- only AST-parsing the currently opened buffer.
+				enabled = true,
+				-- Number of workers to parse files concurrently.
+				-- A value of 0 automatically assigns number based on CPU.
+				-- Set to 1 if experiencing lag.
+				concurrent = 0,
 			},
-			floating = {
-				border = "rounded",
-				max_height = 0.6,
-				max_width = 0.6,
+			running = {
+				-- Run tests concurrently when an adapter provides multiple commands to run.
+				concurrent = true,
 			},
-			icons = {
-				child_indent = "│",
-				child_prefix = "├",
-				collapsed = "─",
-				expanded = "╮",
-				failed = "✖",
-				final_child_indent = " ",
-				final_child_prefix = "╰",
-				non_collapsible = "─",
-				passed = "",
-				running = "",
-				skipped = "",
-				unknown = "",
-			},
+			log_level = vim.log.levels.WARN, -- increase to DEBUG when troubleshooting
 			output = {
 				enabled = true,
 				open_on_run = true,
@@ -81,6 +72,7 @@ return {
 			},
 			summary = {
 				enabled = true,
+				animated = true,
 				expand_errors = true,
 				follow = true,
 				mappings = {

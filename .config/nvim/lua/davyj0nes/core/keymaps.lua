@@ -56,9 +56,26 @@ set("n", "<leader>son", "<cmd> set spell spelllang=en_gb<CR>", { desc = "enable 
 set("n", "<leader>soff", "<cmd> set nospell<CR>", { desc = "disable spellcheck" })
 
 -- AI
-set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "Toggle AI Chat" })
-set({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionActions<CR>", { desc = "Toggle AI Actions" })
-set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+local opts = { noremap = true, silent = true }
+
+opts.desc = "Toggle AI Chat"
+set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanionChat Toggle<CR>", opts)
+
+opts.desc = "Toggle AI Actions"
+set({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionActions<CR>", opts)
+
+opts.desc = "Add selection to chat"
+set("v", "ga", "<cmd>CodeCompanionChat Add<CR>", opts)
+
+opts.desc = "Add AI Comment"
+set({ "v" }, "<leader>apc", function()
+	require("codecompanion").prompt("comment")
+end, opts)
+
+opts.desc = "Generate Go Tests"
+set({ "v" }, "<leader>apt", function()
+	require("codecompanion").prompt("gen_test")
+end, opts)
 
 -- test
 set("n", "<leader>ta", function()
@@ -93,8 +110,8 @@ set("n", "<leader>to", function()
 	require("neotest").output.open({ enter = true, auto_close = true })
 end, { desc = "[t]est [o]utput" })
 
-set("n", "<leader>tO", function()
-	require("neotest").output_panel.toggle()
+set("n", "<leader>to", function()
+	require("neotest").output_panel.toggle({ enter = true, auto_close = true })
 end, { desc = "[t]est [O]utput panel" })
 
 set("n", "<leader>td", function()
@@ -121,9 +138,9 @@ set("n", "<leader>ts", function()
 	require("neotest").summary.toggle()
 end, { desc = "Toggle test summary" })
 
-set("n", "<leader>to", function()
-	require("neotest").output.open({ enter = true })
-end, { desc = "Toggle test output panel" })
+-- set("n", "<leader>to", function()
+-- 	require("neotest").output.open({ enter = true })
+-- end, { desc = "Toggle test output panel" })
 
 set("n", "<leader>tw", function()
 	require("neotest").watch.toggle()
@@ -132,3 +149,8 @@ end, { desc = "Toggle test watch" })
 -- notes
 set("n", "<leader>oi", "<cmd>ObsidianToday<cr>", { desc = "Open today's note" })
 set("n", "<leader>oy", "<cmd>ObsidianYesterday<cr>", { desc = "Open yesterday's note" })
+
+-- quickfix
+set("n", "<leader>xn", "<cmd>cnext<cr>", { desc = "Next quickfix" })
+set("n", "<leader>xp", "<cmd>cprev<cr>", { desc = "Prev quickfix" })
+set("n", "<leader>xp", "<cmd>cclose<cr>", { desc = "Close quickfix" })

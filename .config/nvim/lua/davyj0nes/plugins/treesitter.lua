@@ -49,15 +49,15 @@ return {
 				"clojure",
 				"elixir",
 			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<C-space>",
-					node_incremental = "<C-space>",
-					scope_incremental = false,
-					node_decremental = "<bs>",
-				},
-			},
+			-- incremental_selection = {
+			-- 	enable = false,
+			-- 	keymaps = {
+			-- 		init_selection = "vi",
+			-- 		node_incremental = "vi",
+			-- 		scope_incremental = false,
+			-- 		node_decremental = "<bs>",
+			-- 	},
+			-- },
 		})
 		require("treesitter-context").setup({
 			enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)

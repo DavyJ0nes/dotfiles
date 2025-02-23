@@ -7,7 +7,26 @@ return {
 		explorer = { enabled = true },
 		indent = { enabled = true },
 		input = { enabled = true },
-		picker = { enabled = true },
+		picker = {
+			enabled = true,
+			layout = { preset = "ivy" },
+			win = {
+				input = {
+					keys = {
+						["<c-P>"] = "toggle_preview",
+						["<c-W>"] = "cycle_win",
+						["<c-H>"] = "toggle_hidden",
+						["<c-F>"] = "toggle_follow",
+					},
+				},
+				list = {
+					keys = {
+						["<c-P>"] = "toggle_preview",
+						["<c-W>"] = "cycle_win",
+					},
+				},
+			},
+		},
 		quickfile = { enabled = true },
 		scope = { enabled = true },
 		scroll = { enabled = true },
@@ -276,6 +295,13 @@ return {
 			desc = "Grep",
 		},
 		{
+			"<leader>fw",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "[F]ind [W]ord",
+		},
+		{
 			"<leader>sw",
 			function()
 				Snacks.picker.grep_word()
@@ -397,7 +423,7 @@ return {
 			desc = "Quickfix List",
 		},
 		{
-			"<leader>sR",
+			"<leader>sr",
 			function()
 				Snacks.picker.resume()
 			end,
@@ -441,7 +467,7 @@ return {
 			desc = "References",
 		},
 		{
-			"gI",
+			"gi",
 			function()
 				Snacks.picker.lsp_implementations()
 			end,

@@ -3,45 +3,53 @@ return {
 	dependencies = {
 		"rcarriga/nvim-dap-ui",
 		"nvim-neotest/nvim-nio",
+		"Weissle/persistent-breakpoints.nvim",
 	},
+	lazy = true,
 	init = function()
-		local keymap = vim.keymap -- for conciseness
+		local keyset = vim.keymap.set
 		local n = "n"
 
-		keymap.set(n, "<leader>db", function()
-			require("dap").toggle_breakpoint()
+		keyset(n, "<leader>db", function()
+			-- require("dap").toggle_breakpoint()
+			require("persistent-breakpoints.api").toggle_breakpoint()
 		end, { desc = "Add breakpoint to line" })
 
-		keymap.set(n, "<leader>dc", function()
+		keyset(n, "<leader>dx", function()
+			-- require("dap").toggle_breakpoint()
+			require("persistent-breakpoints.api").clear_all_breakpoints()
+		end, { desc = "Clear all breakpoints" })
+
+		keyset(n, "<leader>dc", function()
 			require("dap").continue()
 		end, { desc = "Dap continue" })
 
-		keymap.set(n, "<leader>do", function()
+		keyset(n, "<leader>do", function()
 			require("dap").step_over()
 		end, { desc = "Dap step over" })
 
-		keymap.set(n, "<leader>dr", function()
+		keyset(n, "<leader>dr", function()
 			require("dap").run_last()
 		end, { desc = "Dap rerun" })
 
-		keymap.set(n, "<leader>dq", function()
+		keyset(n, "<leader>dq", function()
 			require("dap").terminate()
 		end, { desc = "Dap quit" })
 
-		keymap.set(n, "<leader>dus", function()
+		keyset(n, "<leader>dus", function()
 			local widgets = require("dap.ui.widgets")
 			local sidebar = widgets.sidebar(widgets.scopes)
 			sidebar.open()
 		end, { desc = "Open debugging sidebar" })
 
-		keymap.set(n, "<leader>dso", function()
+		keyset(n, "<leader>dso", function()
 			local widgets = require("dap.ui.widgets")
 			local sidebar = widgets.sidebar(widgets.scopes)
 			sidebar.open()
 		end, { desc = "Open debugging sidebar" })
 
-		vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", numhl = "" })
-		vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
+		vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
+		vim.fn.sign_define("DapStopped", { text = "👉", texthl = "", linehl = "", numhl = "" })
 	end,
 
 	config = function()
@@ -67,14 +75,9 @@ return {
 				},
 			},
 		}
-		-- 	dap.adapters.codelldb = {
-		-- 		type = "server",
-		-- 		host = "127.0.0.1",
-		-- 		port = 13000,
-		-- 		executable = {
-		-- 			command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
-		-- 			args = { "--port", "13000" },
-		-- 		},
-		-- 	}
+
+		require("persistent-breakpoints").setup({
+			load_breakpoints_event = { "BufReadPost" },
+		})
 	end,
 }

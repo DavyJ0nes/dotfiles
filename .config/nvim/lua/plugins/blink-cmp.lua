@@ -20,9 +20,9 @@ return {
 		},
 
 		cmdline = {
+			enabled = true,
 			keymap = {
-				-- recommended, as the default keymap will only show and select the next item
-				["<Tab>"] = { "show", "accept" },
+				preset = "cmdline",
 			},
 			completion = { menu = { auto_show = false } },
 		},

@@ -4,31 +4,33 @@ return {
 	lazy = false,
 	opts = {
 		bigfile = { enabled = true },
-		explorer = {
-			enabled = true,
-			auto_close = true,
-			win = {
-				list = {
-					keys = {
-						["<c-h>"] = "",
-						["<c-j>"] = "",
-						["<c-k>"] = "",
-						["<c-l>"] = "",
-					},
-				},
-			},
-		},
+		explorer = { enabled = true },
 		indent = { enabled = true },
 		input = { enabled = true },
 		picker = {
 			enabled = true,
 			sources = {
+				explorer = {
+					hidden = true, -- show hidden files
+					auto_close = true,
+					win = {
+						list = {
+							keys = {
+								["<c-j>"] = "tmux_down_pane",
+							},
+						},
+					},
+					actions = {
+						tmux_down_pane = function()
+							vim.fn.system("tmux select-pane -D")
+						end,
+					},
+				},
 				files = {
 					hidden = true, -- show hidden files
 					follow = true,
 				},
 			},
-			-- layout = { preset = "ivy" },
 			layout = {
 				layout = {
 					backdrop = true,

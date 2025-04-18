@@ -7,6 +7,7 @@ decorations = "buttonless"
 dynamic_padding = false
 opacity = 0.99
 blur = true
+decorations_theme_variant = "Dark"
 
 [font]
 normal = { family = "JetBrainsMono Nerd font Propo", style = "Regular"}
@@ -37,8 +38,10 @@ live_config_reload = true
 import = [
   # "~/.config/alacritty/catppuccin-macchiato.toml"
   # "~/.config/alacritty/catppuccin-latte.toml"
+  # "~/.config/alacritty/catppuccin-frappe.toml"
+  "~/.config/alacritty/kanagawa-wave.toml"
   # "~/.config/alacritty/nightfox.toml"
-  "~/.config/alacritty/tokyonight-storm.toml"
+  # "~/.config/alacritty/tokyonight-storm.toml"
   # "~/.config/alacritty/oxocarbon.toml"
 ]
 

@@ -9,7 +9,12 @@ return {
 			auto_close = true,
 			win = {
 				list = {
-					keys = {},
+					keys = {
+						["<c-h>"] = "",
+						["<c-j>"] = "",
+						["<c-k>"] = "",
+						["<c-l>"] = "",
+					},
 				},
 			},
 		},

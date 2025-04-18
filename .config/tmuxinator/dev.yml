@@ -26,7 +26,7 @@ windows:
         - vi
         - ttoday
   - config:
-      root: "~/.config/"
+      root: "~/dotfiles/.config/"
       layout: tiled
       panes:
         - vi

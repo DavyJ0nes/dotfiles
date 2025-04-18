@@ -7,7 +7,9 @@ source ~/.config/fish/conf.d/paths.fish
 source ~/.config/fish/conf.d/exports.fish
 # source ~/.config/fish/conf.d/bindings.fish
 nothelp completion fish | source
+epghelper completion fish | source
 
+direnv hook fish | source
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:

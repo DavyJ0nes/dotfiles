@@ -47,6 +47,10 @@ return {
 				-- Set to 1 if experiencing lag.
 				concurrent = 0,
 			},
+			diagnostic = {
+				enabled = true,
+				severity = vim.diagnostic.severity.ERROR,
+			},
 			running = {
 				-- Run tests concurrently when an adapter provides multiple commands to run.
 				concurrent = true,
@@ -75,11 +79,12 @@ return {
 				animated = true,
 				expand_errors = true,
 				follow = true,
+				count = true,
 				mappings = {
 					attach = "a",
 					expand = { "<CR>", "<2-LeftMouse>" },
 					expand_all = "e",
-					jumpto = "i",
+					jumpto = "gd",
 					output = "o",
 					run = "r",
 					short = "O",

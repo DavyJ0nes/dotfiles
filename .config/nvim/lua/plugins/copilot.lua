@@ -8,7 +8,7 @@ return {
 			{
 				"nvim-lualine/lualine.nvim",
 				event = "VeryLazy",
-				opts = function(_, opts) end,
+				opts = function(_, _) end,
 			},
 		},
 		cmd = "Copilot",
@@ -38,20 +38,20 @@ return {
 			-- end
 		end,
 	},
-	-- {
-	-- 	"CopilotC-Nvim/CopilotChat.nvim",
-	-- 	lazy = true,
-	-- 	event = "VeryLazy",
-	-- 	enabled = true,
-	-- 	-- branch = "main", // BROKE
-	-- 	version = "v3.6.0",
-	-- 	dependencies = {
-	-- 		{ "zbirenbaum/copilot.lua" },
-	-- 		{ "nvim-lua/plenary.nvim" },
-	-- 	},
-	-- 	build = "make tiktoken",
-	-- 	opts = {
-	-- 		debug = false, -- Enable debugging
-	-- 	},
-	-- },
+	-- -- {
+	-- -- 	"CopilotC-Nvim/CopilotChat.nvim",
+	-- -- 	lazy = true,
+	-- -- 	event = "VeryLazy",
+	-- -- 	enabled = true,
+	-- -- 	-- branch = "main", // BROKE
+	-- -- 	version = "v3.6.0",
+	-- -- 	dependencies = {
+	-- -- 		{ "zbirenbaum/copilot.lua" },
+	-- -- 		{ "nvim-lua/plenary.nvim" },
+	-- -- 	},
+	-- -- 	build = "make tiktoken",
+	-- -- 	opts = {
+	-- -- 		debug = false, -- Enable debugging
+	-- -- 	},
+	-- -- },
 }

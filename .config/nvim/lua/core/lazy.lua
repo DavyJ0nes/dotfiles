@@ -14,8 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = {
 		-- import/override with your plugins
-		{ import = "davyj0nes.plugins" },
-		{ import = "davyj0nes.plugins.lsp" },
+		{ import = "plugins" },
 	},
 	change_detection = {
 		notify = false,

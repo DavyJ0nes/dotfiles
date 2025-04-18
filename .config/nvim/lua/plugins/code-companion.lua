@@ -5,11 +5,27 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 	},
 	config = function()
-		local prompt_library = require("davyj0nes.plugins.code-companion.prompts")
+		local prompt_library = require("plugins.code-companion.prompts")
 		require("codecompanion").setup({
+			log_level = "DEBUG", -- TRACE|DEBUG|ERROR|INFO
+			adapters = {
+				gemini = function()
+					return require("codecompanion.adapters").extend("gemini", {
+						env = {
+							api_key = "cmd:op read op://Employee/Gemini/credential --no-newline",
+						},
+						schema = {
+							model = {
+								default = "gemini-2.5-pro-exp-03-25",
+								-- default = "gemini-2.0-flash-thinking-exp",
+							},
+						},
+					})
+				end,
+			},
 			strategies = {
 				chat = {
-					adapter = "copilot",
+					adapter = "gemini",
 
 					agents = {
 						["go_dev"] = {
@@ -29,7 +45,7 @@ return {
 					},
 				},
 				inline = {
-					adapter = "copilot",
+					adapter = "gemini",
 				},
 			},
 			prompt_library = prompt_library,

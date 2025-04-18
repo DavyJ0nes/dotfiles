@@ -7,7 +7,7 @@ return {
 	opts = {
 		controls = {
 			element = "repl",
-			enabled = false,
+			enabled = true,
 		},
 		element_mappings = {},
 		expand_lines = true,

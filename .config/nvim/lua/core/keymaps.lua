@@ -9,6 +9,7 @@ set("x", "<leader>p", [["_dP]])
 -- handle typos
 set("n", ":Wq<CR>", ":wq<CR>", { desc = "write and quit" })
 set("n", ":W<CR>", ":w<CR>", { desc = "write" })
+set("n", "<A-s>", ":w<CR>", { desc = "alt [s]ave" })
 set("n", ":Q<CR>", ":q<CR>", { desc = "quit" })
 set("n", "<leader>q", ":q<CR>", { desc = "quit" })
 set("n", "<leader>w", ":w<CR>", { desc = "write" })
@@ -38,9 +39,8 @@ set("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "next buffer" })
 set("n", "<leader>bx", "<cmd>bdelete<CR>", { desc = "close buffer" })
 
 -- terminal
-set({ "n", "t" }, "†", function()
-	Snacks.terminal()
-end, { desc = "toggle terminal" })
+set({ "n", "t" }, "<A-t>", "<cmd>ToggleTerm direction=float display_name=term<CR>", { desc = "toggle terminal" })
+set({ "n", "t" }, "<leader>ot", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
 set("t", "<C-x>", "<C-\\><C-n>", { desc = "exit term mode" })
 
 -- db ui
@@ -110,8 +110,8 @@ set("n", "<leader>to", function()
 	require("neotest").output.open({ enter = true, auto_close = true })
 end, { desc = "[t]est [o]utput" })
 
-set("n", "<leader>to", function()
-	require("neotest").output_panel.toggle({ enter = true, auto_close = true })
+set("n", "<leader>tO", function()
+	require("neotest").output_panel.toggle()
 end, { desc = "[t]est [O]utput panel" })
 
 set("n", "<leader>td", function()
@@ -138,10 +138,6 @@ set("n", "<leader>ts", function()
 	require("neotest").summary.toggle()
 end, { desc = "Toggle test summary" })
 
--- set("n", "<leader>to", function()
--- 	require("neotest").output.open({ enter = true })
--- end, { desc = "Toggle test output panel" })
-
 set("n", "<leader>tw", function()
 	require("neotest").watch.toggle()
 end, { desc = "Toggle test watch" })
@@ -154,3 +150,62 @@ set("n", "<leader>oy", "<cmd>ObsidianYesterday<cr>", { desc = "Open yesterday's 
 set("n", "<leader>xn", "<cmd>cnext<cr>", { desc = "Next quickfix" })
 set("n", "<leader>xp", "<cmd>cprev<cr>", { desc = "Prev quickfix" })
 set("n", "<leader>xp", "<cmd>cclose<cr>", { desc = "Close quickfix" })
+
+local function goto_test()
+	local current_path = vim.api.nvim_buf_get_name(0)
+	if current_path == "" then
+		vim.notify("Buffer has no associated file", vim.log.levels.WARN)
+		return
+	end
+
+	local filename = vim.fn.fnamemodify(current_path, ":t")
+	local dirname = vim.fn.fnamemodify(current_path, ":h")
+	local derived_path = nil
+
+	-- Go: file.go <-> file_test.go (same directory)
+	if filename:match("%.go$") and not filename:match("_test.go$") then
+		derived_path = vim.fs.joinpath(dirname, (filename:gsub("%.go$", "_test.go"))) -- Use parentheses around gsub
+	elseif filename:match("_test.go$") then
+		derived_path = vim.fs.joinpath(dirname, (filename:gsub("_test.go$", ".go"))) -- Use parentheses around gsub
+
+	-- Elixir: lib/../file.ex <-> test/../file_test.exs
+	elseif filename:match("%.ex$") then -- Source file to test file
+		local test_filename = (filename:gsub("%.ex$", "_test.exs")) -- Use parentheses around gsub
+		local test_dirname = (dirname:gsub("^lib", "test")) -- Replace lib at the start with test
+		if test_dirname == dirname then -- Handle cases where 'lib' is not at the start
+			test_dirname = (dirname:gsub("/lib/", "/test/")) -- Replace /lib/ anywhere with /test/
+		end
+		if test_dirname ~= dirname then -- Only construct path if directory changed
+			derived_path = vim.fs.joinpath(test_dirname, test_filename)
+		else
+			-- Maybe the test file is in the same directory? (Less common for Elixir)
+			-- derived_path = vim.fs.joinpath(dirname, test_filename)
+			vim.notify("Could not determine Elixir test directory structure from: " .. dirname, vim.log.levels.INFO)
+		end
+	elseif filename:match("_test.exs$") then -- Test file to source file
+		local source_filename = (filename:gsub("_test.exs$", ".ex")) -- Use parentheses around gsub
+		local source_dirname = (dirname:gsub("^test", "lib")) -- Replace test at the start with lib
+		if source_dirname == dirname then -- Handle cases where 'test' is not at the start
+			source_dirname = (dirname:gsub("/test/", "/lib/")) -- Replace /test/ anywhere with /lib/
+		end
+		if source_dirname ~= dirname then -- Only construct path if directory changed
+			derived_path = vim.fs.joinpath(source_dirname, source_filename)
+		else
+			vim.notify("Could not determine Elixir source directory structure from: " .. dirname, vim.log.levels.INFO)
+		end
+	end
+	-- NOTE: Removed Python logic, added Elixir logic. Add more rules as needed.
+
+	-- Open the derived path if it exists
+	if derived_path and vim.fn.filereadable(derived_path) == 1 then
+		vim.cmd("edit " .. vim.fn.fnameescape(derived_path))
+	elseif derived_path then
+		vim.notify("Guessed path not found or not readable: " .. derived_path, vim.log.levels.WARN)
+	else
+		vim.notify("Could not determine corresponding file for: " .. filename, vim.log.levels.INFO)
+	end
+end
+
+-- Set the keymap
+-- Use <leader>st in normal mode to trigger the switch
+vim.keymap.set("n", "gt", goto_test, { noremap = true, silent = true, desc = "Switch to Test/Source File" })

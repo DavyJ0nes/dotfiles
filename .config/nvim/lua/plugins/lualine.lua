@@ -1,6 +1,9 @@
 return {
 	"nvim-lualine/lualine.nvim",
-	dependencies = { "nvim-tree/nvim-web-devicons" },
+	dependencies = {
+		"nvim-tree/nvim-web-devicons",
+		"nvim-neotest/neotest",
+	},
 	config = function()
 		local lualine = require("lualine")
 
@@ -23,8 +26,8 @@ return {
 			},
 			insert = {
 				a = { bg = colors.green, fg = colors.bg, gui = "bold" },
-				b = { bg = colors.bg, fg = colors.fg },
-				c = { bg = colors.bg, fg = colors.fg },
+				b = { bg = colors.fg, fg = colors.bg },
+				c = { bg = colors.fg, fg = colors.bg },
 			},
 			visual = {
 				a = { bg = colors.violet, fg = colors.bg, gui = "bold" },
@@ -70,12 +73,36 @@ return {
 			},
 			sections = {
 				lualine_a = { "mode" },
-				lualine_b = { "diagnostics" },
-				lualine_c = { "filename" },
+				lualine_b = {
+					"diagnostics",
+					{
+						"branch",
+						-- fmt = function(str)
+						-- 	local slash_index = str:find("/")
+						-- 	if slash_index then
+						-- 		return str:sub(1, slash_index) .. "..."
+						-- 	elseif #str > 12 then
+						-- 		return str:sub(1, 12) .. "..."
+						-- 	else
+						-- 		return str
+						-- 	end
+						-- end,
+					},
+					-- {
+					-- 	require("noice").api.statusline.mode.get,
+					-- 	cond = require("noice").api.statusline.mode.has,
+					-- 	color = { fg = "#ff9e64" },
+					-- },
+				},
+				lualine_c = { { "filename", path = 4, shortening_target = 20 } },
 
-				lualine_x = { "encoding", "fileformat", "filetype" },
-				lualine_y = {},
-				lualine_z = { "location" },
+				lualine_x = { "filetype" },
+				lualine_y = {
+					"lsp_status",
+				},
+				lualine_z = {
+					"location",
+				},
 			},
 			tabline = {},
 			winbar = {},
@@ -84,6 +111,7 @@ return {
 				"quickfix",
 				"nvim-dap-ui",
 				"trouble",
+				"toggleterm",
 			},
 		})
 	end,

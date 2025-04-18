@@ -27,7 +27,7 @@ opt.cursorline = true
 
 -- UI
 opt.termguicolors = true
-opt.background = "dark"
+opt.background = "dark" -- light or dark
 opt.signcolumn = "yes"
 opt.colorcolumn = "79,119"
 opt.mouse = ""
@@ -60,28 +60,7 @@ end
 local is_windows = vim.fn.has("win32") ~= 0
 vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (is_windows and ";" or ":") .. vim.env.PATH
 
--------------------------------------- autocmds -------------------------------
-local autocmd = vim.api.nvim_create_autocmd
-
--- dont list quickfix buffers
-autocmd("FileType", {
-	pattern = "qf",
-	callback = function()
-		vim.opt_local.buflisted = false
-	end,
-})
-
-autocmd({ "BufRead", "BufNewFile" }, {
-	callback = function()
-		if vim.fn.getline(1) == "#!/usr/bin/env bb" then
-			vim.cmd.setfiletype("clojure")
-		end
-		vim.cmd.stopinsert()
-	end,
-})
-
-autocmd({ "BufEnter", "BufNewFile" }, {
-	callback = function()
-		vim.cmd.stopinsert()
-	end,
+-- diagnostic config
+vim.diagnostic.config({
+	virtual_text = { current_line = true },
 })

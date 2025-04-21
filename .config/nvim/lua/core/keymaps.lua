@@ -17,9 +17,11 @@ set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
 set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
 set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
 set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
+
 -- Goto
 set("n", "gl", "$", { desc = "Go to end of line" })
 set("n", "gh", "^", { desc = "Go to start of line" })
+set("n", "gb", "<C-o>", { desc = "Go back" })
 
 -- handle typos
 set("n", ":Wq<CR>", ":wq<CR>", { desc = "write and quit" })
@@ -160,6 +162,39 @@ end, { desc = "Toggle test watch" })
 -- notes
 set("n", "<leader>oi", "<cmd>ObsidianToday<cr>", { desc = "Open today's note" })
 set("n", "<leader>oy", "<cmd>ObsidianYesterday<cr>", { desc = "Open yesterday's note" })
+set("n", "<leader>nn", function()
+	require("zk.commands").get("ZkNew")({ title = vim.fn.input("Title: ") })
+end, { desc = "new note" })
+
+set("v", "<leader>nt", ":'<,'>ZkNewFromTitleSelection<CR>", { desc = "new note title" })
+
+set("v", "<leader>ns", function()
+	require("zk.commands").get("ZkNewFromContentSelection")()
+end, { desc = "new note selection" })
+
+set("n", "<leader>nl", function()
+	require("zk.commands").get("ZkInsertLink")()
+end, { desc = "insert link" })
+
+set("v", "<leader>nl", function()
+	require("zk.commands").get("ZkInsertLinkAtSelection")()
+end, { desc = "insert link" })
+
+set("n", "<leader>fzl", function()
+	require("zk.commands").get("ZkLinks")()
+end, { desc = "find zk links" })
+
+set("n", "<leader>fzb", function()
+	require("zk.commands").get("ZkBacklinks")()
+end, { desc = "find zk backlinks" })
+
+set("n", "<leader>fzn", function()
+	require("zk.commands").get("ZkNotes")({ sort = { "modified" } })
+end, { desc = "find zk notes" })
+
+set("n", "<leader>fzt", function()
+	require("zk.commands").get("ZkTags")()
+end, { desc = "find zk tags" })
 
 -- quickfix
 set("n", "<leader>xn", "<cmd>cnext<cr>", { desc = "Next quickfix" })

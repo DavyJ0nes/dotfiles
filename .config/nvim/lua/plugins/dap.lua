@@ -35,6 +35,7 @@ return {
 
 		keyset(n, "<leader>dq", function()
 			require("dap").terminate()
+			require("dapui").close()
 		end, { desc = "Dap quit" })
 
 		keyset(n, "<leader>dus", function()
@@ -49,7 +50,7 @@ return {
 			sidebar.open()
 		end, { desc = "Open debugging sidebar" })
 
-		keyset(n, "<leader>d?", function()
+		keyset(n, "<leader>dk", function()
 			require("dapui").eval(nil, { enter = true })
 		end, { desc = "eval var under cursor" })
 
@@ -80,48 +81,71 @@ return {
 				},
 			},
 		}
-
-		dap.adapters.dlv_spawn = function(cb)
-			local stdout = vim.loop.new_pipe(false)
-			local handle
-			local pid_or_err
-			local port = 38697
-			local opts = {
-				stdio = { nil, stdout },
-				args = { "dap", "-l", "127.0.0.1:" .. port },
-				detached = true,
-			}
-			handle, pid_or_err = vim.loop.spawn("dlv", opts, function(code)
-				stdout:close()
-				handle:close()
-				if code ~= 0 then
-					print("dlv exited with code", code)
-				end
-			end)
-			assert(handle, "Error running dlv: " .. tostring(pid_or_err))
-			stdout:read_start(function(err, chunk)
-				assert(not err, err)
-				if chunk then
-					vim.schedule(function()
-						--- You could adapt this and send `chunk` to somewhere else
-						require("dap.repl").append(chunk)
-					end)
-				end
-			end)
-			-- Wait for delve to start
-			vim.defer_fn(function()
-				cb({ type = "server", host = "127.0.0.1", port = port })
-			end, 100)
-		end
-
-		dap.configurations.go = {
-			{
-				type = "dlv_spawn",
-				name = "Launch dlv & file",
-				request = "launch",
-				program = "${file}",
+		dap.adapters.delve = {
+			type = "server",
+			port = "${port}",
+			executable = {
+				command = vim.fn.stdpath("data") .. "/mason/packages/delve/dlv",
+				args = { "dap", "-l", "127.0.0.1:${port}" },
 			},
 		}
+		dap.configurations.go = {
+			{
+				type = "delve",
+				name = "Compile module and debug this file",
+				request = "launch",
+				program = "./${relativeFileDirname}",
+			},
+			{
+				type = "delve",
+				name = "Compile module and debug this file (test)",
+				request = "launch",
+				mode = "test",
+				program = "./${relativeFileDirname}",
+			},
+		}
+
+		-- dap.adapters.dlv_spawn = function(cb)
+		-- 	local stdout = vim.loop.new_pipe(false)
+		-- 	local handle
+		-- 	local pid_or_err
+		-- 	local port = 38697
+		-- 	local opts = {
+		-- 		stdio = { nil, stdout },
+		-- 		args = { "dap", "-l", "127.0.0.1:" .. port },
+		-- 		detached = true,
+		-- 	}
+		-- 	handle, pid_or_err = vim.loop.spawn("dlv", opts, function(code)
+		-- 		stdout:close()
+		-- 		handle:close()
+		-- 		if code ~= 0 then
+		-- 			print("dlv exited with code", code)
+		-- 		end
+		-- 	end)
+		-- 	assert(handle, "Error running dlv: " .. tostring(pid_or_err))
+		-- 	stdout:read_start(function(err, chunk)
+		-- 		assert(not err, err)
+		-- 		if chunk then
+		-- 			vim.schedule(function()
+		-- 				--- You could adapt this and send `chunk` to somewhere else
+		-- 				require("dap.repl").append(chunk)
+		-- 			end)
+		-- 		end
+		-- 	end)
+		-- 	-- Wait for delve to start
+		-- 	vim.defer_fn(function()
+		-- 		cb({ type = "server", host = "127.0.0.1", port = port })
+		-- 	end, 100)
+		-- end
+		--
+		-- dap.configurations.go = {
+		-- 	{
+		-- 		type = "dlv_spawn",
+		-- 		name = "Launch dlv & file",
+		-- 		request = "launch",
+		-- 		program = "${file}",
+		-- 	},
+		-- }
 
 		require("persistent-breakpoints").setup({
 			load_breakpoints_event = { "BufReadPost" },

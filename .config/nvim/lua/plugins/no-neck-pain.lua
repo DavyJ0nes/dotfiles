@@ -4,17 +4,14 @@ local function calculate_width()
 	return math.min(width, min_width)
 end
 
-local function curr_file()
-	local filename = vim.fn.expand("%:t")
-	vim.notify(filename, "No file name found")
-	return vim.fn.fnamemodify(filename, ":r") -- ':r' removes the extension
-end
-
 return {
 	"shortcuts/no-neck-pain.nvim",
 	opts = {
 		width = calculate_width(),
 		buffers = {
+			right = {
+				enabled = false,
+			},
 			scratchPad = {
 				enabled = true,
 				pathToFile = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/scratch/scratch.md",
@@ -43,6 +40,31 @@ return {
 			"<leader>zd",
 			"<cmd>NoNeckPainWidthDown<cr>",
 			desc = "Decrease NoNeckPain Width",
+		},
+	},
+	integrations = {
+		neotest = {
+			-- The position of the tree.
+			---@type "right"
+			position = "right",
+			-- When `true`, if the tree was opened before enabling the plugin, we will reopen it.
+			reopen = true,
+		},
+		-- @link https://github.com/rcarriga/nvim-dap-ui
+		NvimDAPUI = {
+			-- The position of the tree.
+			---@type "none"
+			position = "none",
+			-- When `true`, if the tree was opened before enabling the plugin, we will reopen it.
+			reopen = true,
+		},
+		-- @link https://github.com/hedyhli/outline.nvim
+		outline = {
+			-- The position of the tree.
+			---@type "left"|"right"
+			position = "right",
+			-- When `true`, if the tree was opened before enabling the plugin, we will reopen it.
+			reopen = false,
 		},
 	},
 }

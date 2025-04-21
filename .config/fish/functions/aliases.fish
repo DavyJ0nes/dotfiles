@@ -22,7 +22,7 @@ alias walk "walk --icons"
 alias vim "nvim"
 alias vi "vim"
 alias ls "eza"
-alias l "ls -al"
+alias l "eza -al"
 alias du "du -cksh"
 alias df "df -h"
 alias sed "gsed"
@@ -37,6 +37,7 @@ alias idea "goland"
 alias make "gmake"
 alias mux "tmuxinator"
 alias docker "podman"
+alias cat "bat"
 
 # -- Notes ahd Tasks
 alias t "task"
@@ -85,6 +86,7 @@ alias gwip 'git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commi
 alias ghstatus "curl -s https://www.githubstatus.com/api/v2/status.json | jq '{url: .page.url, status: .status.description}'"
 alias ghprstatus "gh pr view --json \"statusCheckRollup\" | jq '.statusCheckRollup[] | {\"name\": .name, \"status\": .status}'"
 # alias ghnewpr "git fetch && git rebase origin/main && gh pr create --title \"$(git log -1 --pretty=%s)\" --body \"_Why?_ $(git log -1 --pretty=%b | grep -v 'Co-authored-by' | awk 'BEGIN {RS=\"\n\n\"; FS=\"\n\"; OFS=\" \"} {for (i=1;i<=NF;i++) printf \"%s\", $i (i==NF ? \\'\n\n\\' : OFS)}')\""
+alias suggest "gh copilot suggest -t shell"
 
 # -- docker
 alias dm "docker-machine"
@@ -107,6 +109,8 @@ alias tf "terraform"
 # -- dirs
 alias goein "cd $GOPATH/src/github.com/einride"
 alias godavy "cd $GOPATH/src/github.com/davyj0nes"
+alias gonotes "cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes"
+alias gozk "cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes/zk"
 
 # -- connect headphones
 alias commbadge "blueutil --connect 68-ca-c4-cc-11-ee"

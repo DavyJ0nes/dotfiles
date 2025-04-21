@@ -47,6 +47,8 @@ return {
 						["<c-W>"] = "cycle_win",
 						["<c-H>"] = "toggle_hidden",
 						["<c-F>"] = "toggle_follow",
+						["<a-s>"] = { "flash", mode = { "n", "i" } },
+						["s"] = { "flash" },
 					},
 				},
 				list = {
@@ -55,6 +57,26 @@ return {
 						["<c-W>"] = "cycle_win",
 					},
 				},
+			},
+			actions = {
+				flash = function(picker)
+					require("flash").jump({
+						pattern = "^",
+						label = { after = { 0, 0 } },
+						search = {
+							mode = "search",
+							exclude = {
+								function(win)
+									return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list"
+								end,
+							},
+						},
+						action = function(match)
+							local idx = picker.list:row2idx(match.pos[1])
+							picker.list:_move(idx, true, true)
+						end,
+					})
+				end,
 			},
 		},
 		quickfile = { enabled = true },
@@ -190,7 +212,7 @@ return {
 			desc = "Command History",
 		},
 		{
-			"<leader>nn",
+			"<leader>un",
 			function()
 				Snacks.picker.notifications()
 			end,
@@ -217,6 +239,24 @@ return {
 				Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
 			end,
 			desc = "Find Config File",
+		},
+		{
+			"<leader>fn",
+			function()
+				Snacks.picker.files({
+					cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes",
+				})
+			end,
+			desc = "Find Notes",
+		},
+		{
+			"<leader>sn",
+			function()
+				Snacks.picker.grep({
+					cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes",
+				})
+			end,
+			desc = "Find Notes",
 		},
 		{
 			"<leader>ff",

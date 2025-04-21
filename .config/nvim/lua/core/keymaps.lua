@@ -6,6 +6,21 @@ vim.g.maplocalleader = " m" -- was being used by conjure
 -- paste without yanking
 set("x", "<leader>p", [["_dP]])
 
+-- Better up/down
+set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+set({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+
+-- Resize window using <ctrl> arrow keys
+set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
+set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
+-- Goto
+set("n", "gl", "$", { desc = "Go to end of line" })
+set("n", "gh", "^", { desc = "Go to start of line" })
+
 -- handle typos
 set("n", ":Wq<CR>", ":wq<CR>", { desc = "write and quit" })
 set("n", ":W<CR>", ":w<CR>", { desc = "write" })
@@ -171,10 +186,15 @@ local function goto_test()
 	-- Elixir: lib/../file.ex <-> test/../file_test.exs
 	elseif filename:match("%.ex$") then -- Source file to test file
 		local test_filename = (filename:gsub("%.ex$", "_test.exs")) -- Use parentheses around gsub
-		local test_dirname = (dirname:gsub("^lib", "test")) -- Replace lib at the start with test
+		local test_dirname = (dirname:gsub("/lib$", "/test")) -- Replace lib at the start with test
 		if test_dirname == dirname then -- Handle cases where 'lib' is not at the start
 			test_dirname = (dirname:gsub("/lib/", "/test/")) -- Replace /lib/ anywhere with /test/
 		end
+		-- DEBUG
+		-- vim.notify(
+		-- 	"sub names. filename: " .. test_filename .. ". dirname: " .. dirname .. ". test_dirname: " .. test_dirname,
+		-- 	vim.log.levels.INFO
+		-- )
 		if test_dirname ~= dirname then -- Only construct path if directory changed
 			derived_path = vim.fs.joinpath(test_dirname, test_filename)
 		else
@@ -184,7 +204,7 @@ local function goto_test()
 		end
 	elseif filename:match("_test.exs$") then -- Test file to source file
 		local source_filename = (filename:gsub("_test.exs$", ".ex")) -- Use parentheses around gsub
-		local source_dirname = (dirname:gsub("^test", "lib")) -- Replace test at the start with lib
+		local source_dirname = (dirname:gsub("/test$", "/lib")) -- Replace test at the start with lib
 		if source_dirname == dirname then -- Handle cases where 'test' is not at the start
 			source_dirname = (dirname:gsub("/test/", "/lib/")) -- Replace /test/ anywhere with /lib/
 		end

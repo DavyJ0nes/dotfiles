@@ -2,6 +2,10 @@ return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
+	init = function()
+		local snacks = require("snacks")
+		vim.ui.input = snacks.input.input
+	end,
 	opts = {
 		bigfile = { enabled = true },
 		explorer = { enabled = true },
@@ -58,6 +62,7 @@ return {
 		scroll = { enabled = true },
 		terminal = { enabled = false }, -- using toggle-term instead.
 		words = { enabled = true },
+		zen = { enabled = false },
 
 		notifier = {
 			enabled = true,

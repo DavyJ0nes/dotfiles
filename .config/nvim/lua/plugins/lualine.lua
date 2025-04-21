@@ -26,8 +26,8 @@ return {
 			},
 			insert = {
 				a = { bg = colors.green, fg = colors.bg, gui = "bold" },
-				b = { bg = colors.fg, fg = colors.bg },
-				c = { bg = colors.fg, fg = colors.bg },
+				b = { bg = colors.bg, fg = colors.fg },
+				c = { bg = colors.bg, fg = colors.fg },
 			},
 			visual = {
 				a = { bg = colors.violet, fg = colors.bg, gui = "bold" },
@@ -96,7 +96,7 @@ return {
 				},
 				lualine_c = { { "filename", path = 4, shortening_target = 20 } },
 
-				lualine_x = { "filetype" },
+				lualine_x = { "filetype", "overseer" },
 				lualine_y = {
 					"lsp_status",
 				},

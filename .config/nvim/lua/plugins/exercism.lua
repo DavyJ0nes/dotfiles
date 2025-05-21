@@ -19,7 +19,7 @@ return {
 	},
 	-- Add your custom configs here, keep it blank for default configs (required)
 	opts = {
-		exercism_workspace = "~/go/src/github.com/davyj0nes/exercism",
+		exercism_workspace = "~/Exercism",
 		default_language = "elixir",
 	},
 }

@@ -9,35 +9,39 @@ return {
 
 		local colors = {
 			blue = "#65D1FF",
+			dark_blue = "#112638",
 			green = "#3EFFDC",
 			violet = "#FF61EF",
+			purple = "#191724",
 			yellow = "#FFDA7B",
 			red = "#FF4A4A",
-			fg = "#c3ccdc",
-			bg = "#112638",
+			white = "#c3ccdc",
 			inactive_bg = "#2c3043",
 		}
 
+		local bg = colors.purple
+		local fg = colors.white
+
 		local lols = {
 			normal = {
-				a = { bg = colors.blue, fg = colors.bg, gui = "bold" },
-				b = { bg = colors.bg, fg = colors.fg },
-				c = { bg = colors.bg, fg = colors.fg },
+				a = { bg = colors.blue, fg = bg, gui = "bold" },
+				b = { bg = bg, fg = fg },
+				c = { bg = bg, fg = fg },
 			},
 			insert = {
-				a = { bg = colors.green, fg = colors.bg, gui = "bold" },
-				b = { bg = colors.bg, fg = colors.fg },
-				c = { bg = colors.bg, fg = colors.fg },
+				a = { bg = colors.green, fg = bg, gui = "bold" },
+				b = { bg = bg, fg = fg },
+				c = { bg = bg, fg = fg },
 			},
 			visual = {
-				a = { bg = colors.violet, fg = colors.bg, gui = "bold" },
-				b = { bg = colors.bg, fg = colors.fg },
-				c = { bg = colors.bg, fg = colors.fg },
+				a = { bg = colors.violet, fg = bg, gui = "bold" },
+				b = { bg = bg, fg = fg },
+				c = { bg = bg, fg = fg },
 			},
 			command = {
-				a = { bg = colors.yellow, fg = colors.bg, gui = "bold" },
-				b = { bg = colors.bg, fg = colors.fg },
-				c = { bg = colors.bg, fg = colors.fg },
+				a = { bg = colors.yellow, fg = bg, gui = "bold" },
+				b = { bg = bg, fg = fg },
+				c = { bg = bg, fg = fg },
 			},
 			replace = {
 				a = { bg = colors.red, fg = colors.bg, gui = "bold" },
@@ -88,11 +92,11 @@ return {
 						-- 	end
 						-- end,
 					},
-					-- {
-					-- 	require("noice").api.statusline.mode.get,
-					-- 	cond = require("noice").api.statusline.mode.has,
-					-- 	color = { fg = "#ff9e64" },
-					-- },
+					{
+						require("noice").api.statusline.mode.get,
+						cond = require("noice").api.statusline.mode.has,
+						color = { fg = "#ff9e64" },
+					},
 				},
 				lualine_c = { { "filename", path = 4, shortening_target = 20 } },
 

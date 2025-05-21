@@ -4,6 +4,13 @@ return {
 
 	config = function()
 		local opts = {
+			size = function(term)
+				if term.direction == "horizontal" then
+					return 15
+				elseif term.direction == "vertical" then
+					return vim.o.columns * 0.4
+				end
+			end,
 			float_opts = {
 				border = "curved",
 				height = math.floor(vim.o.lines - 3),

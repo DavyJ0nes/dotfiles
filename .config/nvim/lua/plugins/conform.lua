@@ -13,11 +13,13 @@ return {
 		"python",
 		"gleam",
 		"ocaml",
+		"markdown",
 	},
 	config = function()
 		require("conform").setup({
 			formatters = {
 				mdformat = {
+					command = "/Users/davy/.local/bin/mdformat",
 					prepend_args = { "--number", "--wrap", "80" },
 				},
 				prettierd = {
@@ -38,7 +40,7 @@ return {
 				html = { "prettierd" },
 				javascript = { "prettierd" },
 				javascriptreact = { "prettierd" },
-				markdown = { "prettierd" },
+				markdown = { "mdformat" },
 				typescript = { "prettierd" },
 				typescriptreact = { "prettierd" },
 				["*"] = { "trim_whitespace" },

@@ -22,10 +22,22 @@ return {
 						},
 					})
 				end,
+				openai = function()
+					return require("codecompanion.adapters").extend("openai", {
+						env = {
+							api_key = "cmd:op read op://Employee/OpenAI/credential --no-newline",
+						},
+						schema = {
+							model = {
+								default = "gpt-4o",
+							},
+						},
+					})
+				end,
 			},
 			strategies = {
 				chat = {
-					adapter = "gemini",
+					adapter = "openai",
 
 					agents = {
 						["go_dev"] = {
@@ -45,7 +57,7 @@ return {
 					},
 				},
 				inline = {
-					adapter = "gemini",
+					adapter = "openai",
 				},
 			},
 			prompt_library = prompt_library,

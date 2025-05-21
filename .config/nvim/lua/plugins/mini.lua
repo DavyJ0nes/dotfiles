@@ -3,6 +3,7 @@ return {
 	config = function()
 		require("mini.basics").setup({})
 		require("mini.comment").setup({})
+		require("mini.surround").setup({})
 
 		local ai = require("mini.ai")
 		ai.setup({

@@ -3,12 +3,14 @@ require("core.keymaps")
 require("core.lazy")
 require("core.options")
 
-require("kanagawa").load("wave")
+vim.cmd.colorscheme("nightfox")
+-- vim.cmd.colorscheme("dawnfox")
 
 vim.lsp.enable({
 	"elixirls", -- Elixir
 	"gopls", -- Go
 	"json", -- JSON
 	"lua_ls", -- Lua
+	"markdown", -- Markdown
 	"ts_ls", -- TypeScript
 })

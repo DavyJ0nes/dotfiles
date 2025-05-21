@@ -56,8 +56,15 @@ set("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "next buffer" })
 set("n", "<leader>bx", "<cmd>bdelete<CR>", { desc = "close buffer" })
 
 -- terminal
+local trim_spaces = true
 set({ "n", "t" }, "<A-t>", "<cmd>ToggleTerm direction=float display_name=term<CR>", { desc = "toggle terminal" })
-set({ "n", "t" }, "<leader>ot", "<cmd>ToggleTerm direction=tab display_name=term<CR>", { desc = "toggle terminal" })
+set({ "n", "t" }, "<leader>ro", "<cmd>ToggleTerm direction=vertical display_name=repl<CR>", { desc = "toggle repl" })
+set({ "n", "t" }, "<A-i>", "<cmd>ToggleTerm direction=vertical display_name=repl<CR>", { desc = "toggle repl" })
+
+set("v", "<leader>rs", function()
+	require("toggleterm").send_lines_to_terminal("visual_lines", trim_spaces, { args = vim.v.count })
+end, { desc = "repl eval" })
+
 set("t", "<C-x>", "<C-\\><C-n>", { desc = "exit term mode" })
 
 -- db ui
@@ -167,10 +174,7 @@ set("n", "<leader>nn", function()
 end, { desc = "new note" })
 
 set("v", "<leader>nt", ":'<,'>ZkNewFromTitleSelection<CR>", { desc = "new note title" })
-
-set("v", "<leader>ns", function()
-	require("zk.commands").get("ZkNewFromContentSelection")()
-end, { desc = "new note selection" })
+set("v", "<leader>ns", ":'<,'>ZkNewFromContentSelection<CR>", { desc = "new note selection" })
 
 set("n", "<leader>nl", function()
 	require("zk.commands").get("ZkInsertLink")()

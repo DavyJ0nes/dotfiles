@@ -19,15 +19,15 @@ return {
 				upgrade_dependency = true,
 				vendor = true,
 			},
-			hints = {
-				assignVariableTypes = true,
-				compositeLiteralFields = true,
-				compositeLiteralTypes = true,
-				constantValues = true,
-				functionTypeParameters = true,
-				parameterNames = true,
-				rangeVariableTypes = true,
-			},
+			-- hints = {
+			-- 	assignVariableTypes = true,
+			-- 	compositeLiteralFields = true,
+			-- 	compositeLiteralTypes = true,
+			-- 	constantValues = true,
+			-- 	functionTypeParameters = false,
+			-- 	parameterNames = false,
+			-- 	rangeVariableTypes = true,
+			-- },
 			-- analyzer docs: https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
 			analyses = {
 				shadow = false,
@@ -36,7 +36,7 @@ return {
 			completeUnimported = true,
 			staticcheck = true,
 			directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-			semanticTokens = true,
+			semanticTokens = false,
 		},
 	},
 }

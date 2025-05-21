@@ -200,9 +200,10 @@ return {
 		{
 			"<leader>/",
 			function()
-				Snacks.picker.grep()
+				-- Snacks.picker.grep()
+				Snacks.picker.lines()
 			end,
-			desc = "Grep",
+			desc = "local grep",
 		},
 		{
 			"<leader>:",
@@ -256,7 +257,16 @@ return {
 					cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes",
 				})
 			end,
-			desc = "Find Notes",
+			desc = "Search Notes",
+		},
+		{
+			"<leader>sz",
+			function()
+				Snacks.picker.grep({
+					cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk",
+				})
+			end,
+			desc = "Search ZettelKesten's",
 		},
 		{
 			"<leader>ff",
@@ -431,18 +441,11 @@ return {
 			desc = "Buffer Diagnostics",
 		},
 		{
-			"<leader>sh",
+			"<leader>sH",
 			function()
 				Snacks.picker.help()
 			end,
 			desc = "Help Pages",
-		},
-		{
-			"<leader>sH",
-			function()
-				Snacks.picker.highlights()
-			end,
-			desc = "Highlights",
 		},
 		{
 			"<leader>si",

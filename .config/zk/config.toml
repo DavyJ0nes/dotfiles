@@ -1,6 +1,10 @@
 [notebook]
 dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"
 
+[note]
+template = "default"
+
 [alias]
 improve = "echo '== light on content' && zk list --format '{{word-count}}\t{{title}}' --sort word-count --limit 10 && echo '== tagless' && zk list --format '{{word-count}}\t{{title}}' --tagless"
 dir = "cd ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"
+nt = 'zk new --title "$*"'

@@ -2,6 +2,14 @@ local Path = require("utils.path")
 
 local M = {}
 
+local function set_diagnostic_signs()
+	local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+	for type, icon in pairs(signs) do
+		local hl = "DiagnosticSign" .. type
+		vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+	end
+end
+
 -- Get default LSP keymaps without any plugin dependencies
 function M.get_default_keymaps()
 	return {
@@ -15,22 +23,13 @@ function M.get_default_keymaps()
 		-- { keys = "gd", func = vim.lsp.buf.definition, desc = "Goto Definition", has = "definitionProvider" },
 		-- { keys = "gD", func = vim.lsp.buf.declaration, desc = "Goto Declaration", has = "declarationProvider" },
 		-- { keys = "gr", func = vim.lsp.buf.references, desc = "Goto References", has = "referencesProvider", nowait = true },
-		{
-			keys = "gi",
-			func = vim.lsp.buf.implementation,
-			desc = "Goto Implementation",
-			has = "implementationProvider",
-		},
-		{
-			keys = "gy",
-			func = vim.lsp.buf.type_definition,
-			desc = "Goto Type Definition",
-			has = "typeDefinitionProvider",
-		},
+		-- { keys = "gi", func = vim.lsp.buf.implementation, desc = "Goto Implementation", has = "implementationProvider" },
+		-- { keys = "gy", func = vim.lsp.buf.type_definition, desc = "Goto Type Definition", has = "typeDefinitionProvider" },
 	}
 end
 
 M.on_attach = function(client, buffer)
+	set_diagnostic_signs()
 	local keymaps = M.get_default_keymaps()
 	for _, keymap in ipairs(keymaps) do
 		if not keymap.has or client.server_capabilities[keymap.has] then

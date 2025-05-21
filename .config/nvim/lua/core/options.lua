@@ -64,3 +64,15 @@ vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (is_windows and ";" or 
 vim.diagnostic.config({
 	virtual_text = { current_line = true },
 })
+
+-- required to not conceal code blocks.
+require("vim.treesitter.query").set(
+	"markdown",
+	"highlights",
+	[[
+;From MDeiml/tree-sitter-markdown
+[
+  (fenced_code_block_delimiter)
+] @punctuation.delimiter
+]]
+)

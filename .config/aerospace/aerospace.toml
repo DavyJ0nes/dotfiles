@@ -205,3 +205,7 @@ run = 'move-node-to-workspace 5'
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
 run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-id = 'com.privateerpress.warmachine.client'
+run = 'move-node-to-workspace 6'

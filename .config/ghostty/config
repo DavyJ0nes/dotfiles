@@ -1,19 +1,24 @@
 font-family = "JetBrainsMono Nerd font Propo"
-font-size = 14
+font-size = 11
+
 window-decoration = false
-window-title-font-family = "Maple Mono"
-window-theme = light
+window-save-state = always
 
 macos-titlebar-style = hidden
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 macos-non-native-fullscreen = true
 
-background-opacity = 0.70
+background-opacity = 1
 background-blur-radius = 50
-theme = kanagawa-wave.conf
 
-cursor-style = block_hollow
+theme = nightfox.conf
+# theme = dawnfox.conf
 
+cursor-style = block
+cursor-color = #f8f8f2
+
+mouse-hide-while-typing = true
 copy-on-select = true
 shell-integration = fish
+

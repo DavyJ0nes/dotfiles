@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+nvim ~/.config/ghostty/config
+nvim ~/.config/task/taskrc
+nvim ~/.config/nvim/lua/core/init.lua
+
+echo "reload ghostty with cmd + shift + ,"
+echo "run: fish_config theme save \"THEME\""
+echo "THEME = kawagawa for dark"
+echo "THEME = Catppuccin for light"
+

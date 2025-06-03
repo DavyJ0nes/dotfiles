@@ -11,9 +11,10 @@ macos-non-native-fullscreen = true
 
 background-opacity = 1
 background-blur-radius = 50
+alpha-blending = linear-corrected
 
 theme = nightfox.conf
-# theme = dawnfox.conf
+# theme = dayfox.conf
 
 cursor-style = block
 cursor-color = #f8f8f2

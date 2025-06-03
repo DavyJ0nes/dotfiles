@@ -13,10 +13,10 @@ end
 -- Get default LSP keymaps without any plugin dependencies
 function M.get_default_keymaps()
 	return {
-		{ keys = "<leader>ca", func = vim.lsp.buf.code_action, desc = "Code Actions" },
-		{ keys = "<leader>cA", func = M.action.source, desc = "Source Actions" },
-		{ keys = "<leader>cr", func = vim.lsp.buf.rename, desc = "Code Rename" },
-		{ keys = "<leader>cf", func = vim.lsp.buf.format, desc = "Code Format" },
+		{ keys = "<leader>ca", mode = { "n", "v" }, func = vim.lsp.buf.code_action, desc = "Code Actions" },
+		{ keys = "<leader>cA", mode = { "n", "v" }, func = M.action.source, desc = "Source Actions" },
+		{ keys = "<leader>cr", mode = { "n", "v" }, func = vim.lsp.buf.rename, desc = "Code Rename" },
+		{ keys = "<leader>cf", mode = { "n", "v" }, func = vim.lsp.buf.format, desc = "Code Format" },
 		{ keys = "K", func = vim.lsp.buf.hover, desc = "Documentation", has = "hoverProvider" },
 		{ keys = "gb", func = "<C-o>", desc = "Go Back", has = "definitionProvider" },
 		-- NOTE: Use snack UI for below keymaps

@@ -20,7 +20,7 @@ return {
 			formatters = {
 				mdformat = {
 					command = "/Users/davy/.local/bin/mdformat",
-					prepend_args = { "--number", "--wrap", "80" },
+					prepend_args = { "--number", "--wrap", "79" },
 				},
 				prettierd = {
 					condition = function()

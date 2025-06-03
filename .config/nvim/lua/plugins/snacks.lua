@@ -9,7 +9,19 @@ return {
 	opts = {
 		bigfile = { enabled = true },
 		explorer = { enabled = true },
-		indent = { enabled = true },
+		indent = {
+			enabled = true,
+			priority = 1,
+			animate = {
+				enabled = false,
+				style = "out",
+				easing = "linear",
+				duration = {
+					step = 20, -- ms per step
+					total = 500, -- maximum duration
+				},
+			},
+		},
 		input = { enabled = true },
 		picker = {
 			enabled = true,
@@ -122,40 +134,19 @@ return {
 					indent = 2,
 					padding = 1,
 				},
-				function()
+				function() -- git related commands
 					local in_git = Snacks.git.get_root() ~= nil
 					local cmds = {
 						-- {
-						-- 	title = "Notifications",
-						-- 	cmd = "gh notify -s -a -n5",
+						-- 	icon = " ",
+						-- 	title = "Open PRs",
+						-- 	cmd = "gh pr list -L 3",
+						-- 	key = "P",
 						-- 	action = function()
-						-- 		vim.ui.open("https://github.com/notifications")
+						-- 		vim.fn.jobstart("gh pr list --web", { detach = true })
 						-- 	end,
-						-- 	key = "n",
-						-- 	icon = " ",
-						-- 	height = 5,
-						-- 	enabled = true,
-						-- },
-						-- {
-						-- 	title = "Open Issues",
-						-- 	cmd = "gh issue list -L 3",
-						-- 	key = "i",
-						-- 	action = function()
-						-- 		vim.fn.jobstart("gh issue list --web", { detach = true })
-						-- 	end,
-						-- 	icon = " ",
 						-- 	height = 7,
 						-- },
-						{
-							icon = " ",
-							title = "Open PRs",
-							cmd = "gh pr list -L 3",
-							key = "P",
-							action = function()
-								vim.fn.jobstart("gh pr list --web", { detach = true })
-							end,
-							height = 7,
-						},
 						{
 							icon = " ",
 							title = "Git Status",
@@ -241,15 +232,15 @@ return {
 			end,
 			desc = "Find Config File",
 		},
-		{
-			"<leader>fn",
-			function()
-				Snacks.picker.files({
-					cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes",
-				})
-			end,
-			desc = "Find Notes",
-		},
+		-- {
+		-- 	"<leader>fn",
+		-- 	function()
+		-- 		Snacks.picker.files({
+		-- 			cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes",
+		-- 		})
+		-- 	end,
+		-- 	desc = "Find Notes",
+		-- },
 		{
 			"<leader>sn",
 			function()

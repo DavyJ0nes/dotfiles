@@ -1,0 +1,34 @@
+layout {
+  /* --- TAB WORK ---------------------------------------------------------- */
+  tab name="work" split_direction="horizontal" focus=true cwd="~/go/src/github.com/feverenergy/" {
+    pane size=1 borderless=true {
+        plugin location="compact-bar"
+    }
+    pane
+    pane
+    pane size=1 borderless=true {
+        plugin location="status-bar"
+    }
+  }
+  /* --- TAB SHELL --------------------------------------------------------- */
+  tab name="shell" cwd="~/" {
+    pane size=1 borderless=true {
+        plugin location="compact-bar"
+    }
+    pane
+    pane
+    pane size=1 borderless=true {
+        plugin location="status-bar"
+    }
+  }
+  /* --- TAB LEARN --------------------------------------------------------- */
+  tab name="learn" cwd="~/go/src/github.com/davyj0nes/micro_toys/" {
+    pane size=1 borderless=true {
+        plugin location="compact-bar"
+    }
+    pane
+    pane size=1 borderless=true {
+        plugin location="status-bar"
+    }
+  }
+}

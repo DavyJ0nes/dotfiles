@@ -33,7 +33,6 @@ set("n", "<leader>w", ":w<CR>", { desc = "write" })
 
 -- clear search highlights
 set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
-
 -- increment/decrement numbers
 set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
 set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
@@ -166,6 +165,8 @@ set("n", "<leader>tw", function()
 	require("neotest").watch.toggle()
 end, { desc = "Toggle test watch" })
 
+set("n", "<leader>vc", "<cmd>CsvViewToggle<cr>", { desc = "Toggle csv view" })
+
 -- notes
 set("n", "<leader>oi", "<cmd>ObsidianToday<cr>", { desc = "Open today's note" })
 set("n", "<leader>oy", "<cmd>ObsidianYesterday<cr>", { desc = "Open yesterday's note" })
@@ -192,7 +193,7 @@ set("n", "<leader>fzb", function()
 	require("zk.commands").get("ZkBacklinks")()
 end, { desc = "find zk backlinks" })
 
-set("n", "<leader>fzn", function()
+set("n", "<leader>fn", function()
 	require("zk.commands").get("ZkNotes")({ sort = { "modified" } })
 end, { desc = "find zk notes" })
 

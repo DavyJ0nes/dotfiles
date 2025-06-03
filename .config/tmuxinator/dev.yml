@@ -3,14 +3,13 @@ root: ~/
 tmux_options: "-u"
 
 windows:
-  - editor:
-      root: ~/go/src/github.com/feverenergy/
-      layout: main-horizontal
+  - work:
+      root: "~/go/src/github.com/feverenergy/"
+      layout: tiled
       panes:
         -
-        -
-  - shell:
-      layout: tiled
+  - other:
+      layout: main-horizontal
       panes:
         -
         -
@@ -20,13 +19,19 @@ windows:
         - vi -c :DBUI
         - ssh -v -N sandbox-jump
   - notes:
-      root: '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes'
+      root: "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
       layout: even-vertical
       panes:
         - vi
         - ttoday
   - config:
       root: "~/dotfiles/.config/"
+      layout: tiled
+      panes:
+        - vi
+
+  - learn:
+      root: "~/go/src/github.com/davyj0nes/micro_toys/"
       layout: tiled
       panes:
         - vi

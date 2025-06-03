@@ -1,0 +1,27 @@
+[language-server.elixir-ls]
+command = "bash"
+args = ["/opt/homebrew/bin/elixir-ls"]
+
+[[language]]
+name = "elixir"
+scope = "source.elixir"
+injection-regex = "elixir"
+file-types = ["ex", "exs"]
+roots = ["mix.exs"]
+auto-format = true
+formatter = ["mix format"]
+diagnostic-severity = "hint"
+comment-token = "#"
+indent = {tab-width = 2, unit = " "}
+language-servers = ["elixir-ls"]
+
+[[language]]
+name = "go"
+roots = ["go.work", "go.mod"]
+auto-format = true
+formatter = ["gofmt"]
+comment-token = "//"
+language-servers = [ "gopls", "golangci-lint-lsp" ]
+
+[language-server.golangci-lint-lsp]
+command = "golangci-lint-langserver"

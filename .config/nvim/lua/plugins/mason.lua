@@ -33,17 +33,20 @@ return {
 				"ruff",
 				"terraformls",
 				"tflint",
-				"elixirls",
-				"ocamllsp",
+				-- "elixirls",
+				-- "ocamllsp",
+				"rust_analyzer",
 			},
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"prettier", -- prettier formatter
+				"prettierd", -- javascript/typescript formatter
 				"stylua", -- lua formatter
 				"gopls", -- go formatter
 				"gci", -- go formatter
+				"delve", -- go debugger
 				"golangci-lint", -- go linter
 				"tflint", -- terraform linter
 				"mdformat", -- markdown formatter
@@ -51,7 +54,7 @@ return {
 				-- "protolint", -- proto linter
 				"pyright", -- python linter
 				"black", -- python formatter
-				"ocamlformat", -- ocaml formatter
+				-- "ocamlformat", -- ocaml formatter
 			},
 		})
 	end,

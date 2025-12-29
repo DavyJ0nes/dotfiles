@@ -1,17 +1,16 @@
-if status is-interactive
-    # Commands to run in interactive sessions can go here
-end
-
 source ~/.config/fish/conf.d/variables.fish
 source ~/.config/fish/conf.d/paths.fish
 source ~/.config/fish/conf.d/exports.fish
 # source ~/.config/fish/conf.d/bindings.fish
 nothelp completion fish | source
 epghelper completion fish | source
+demo-cli completion fish | source
 
 direnv hook fish | source
 set -Ux CARAPACE_BRIDGES 'zsh,fish,bash,inshellisense' # optional
 carapace _carapace | source
+
+fish_vi_key_bindings
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:
@@ -36,3 +35,6 @@ end
 set --erase _asdf_shims
 
 starship init fish | source
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/opt/homebrew/share/google-cloud-sdk/path.fish.inc' ]; . '/opt/homebrew/share/google-cloud-sdk/path.fish.inc'; end

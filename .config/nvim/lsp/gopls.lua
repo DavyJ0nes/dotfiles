@@ -10,7 +10,6 @@ return {
 		gopls = {
 			gofumpt = true,
 			codelenses = {
-				gc_details = false,
 				generate = true,
 				regenerate_cgo = true,
 				run_govulncheck = true,
@@ -31,6 +30,10 @@ return {
 			-- analyzer docs: https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
 			analyses = {
 				shadow = false,
+				staticcheck = true,
+				recursiveiter = true,
+				maprange = true,
+				["ST1000"] = false,
 			},
 			usePlaceholders = true,
 			completeUnimported = true,

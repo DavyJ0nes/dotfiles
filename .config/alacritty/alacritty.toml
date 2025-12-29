@@ -21,7 +21,18 @@ save_to_clipboard = true
 [keyboard]
 bindings = [
   { key = "Q", mods = "Command", action = "None" },
-  { key = "W", mods = "Command", action = "None" }
+  { key = "W", mods = "Command", action = "None" },
+  # Pass Ctrl + Number keys through to the application (e.g., tmux)
+  { key = "Key0", mods = "Control", action = "None" },
+  { key = "Key1", mods = "Control", action = "None" },
+  { key = "Key2", mods = "Control", action = "None" },
+  { key = "Key3", mods = "Control", action = "None" },
+  { key = "Key4", mods = "Control", action = "None" },
+  { key = "Key5", mods = "Control", action = "None" },
+  { key = "Key6", mods = "Control", action = "None" },
+  { key = "Key7", mods = "Control", action = "None" },
+  { key = "Key8", mods = "Control", action = "None" },
+  { key = "Key9", mods = "Control", action = "None" }
 ]
 
 [[hints.enabled]]
@@ -33,16 +44,20 @@ mouse = { enabled = true, mods = "Control" }
 regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
 
 [general]
-
 live_config_reload = true
 import = [
   # "~/.config/alacritty/catppuccin-macchiato.toml"
   # "~/.config/alacritty/catppuccin-latte.toml"
   # "~/.config/alacritty/catppuccin-frappe.toml"
-  "~/.config/alacritty/kanagawa-wave.toml"
-  # "~/.config/alacritty/nightfox.toml"
+  # "~/.config/alacritty/kanagawa-wave.toml"
+  "~/.config/alacritty/nightfox.toml"
   # "~/.config/alacritty/tokyonight-storm.toml"
   # "~/.config/alacritty/oxocarbon.toml"
 ]
 
-[terminal]
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+
+[mouse]
+hide_when_typing = false

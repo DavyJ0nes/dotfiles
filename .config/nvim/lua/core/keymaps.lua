@@ -4,7 +4,19 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " m" -- was being used by conjure
 
 -- paste without yanking
-set("x", "<leader>p", [["_dP]])
+-- set("x", "<leader>p", [["_dP]])
+
+-- enable mouse mode
+function ToggleMouse()
+	if vim.opt.mouse == "a" then
+		vim.opt.mouse = ""
+		print("Mouse mode disabled")
+	else
+		vim.opt.mouse = "a"
+		print("Mouse mode enabled")
+	end
+end
+set("n", "<leader>em", ":lua ToggleMouse()<CR>", { desc = "Enable mouse mode" })
 
 -- Better up/down
 set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
@@ -266,6 +278,4 @@ local function goto_test()
 	end
 end
 
--- Set the keymap
--- Use <leader>st in normal mode to trigger the switch
 vim.keymap.set("n", "gt", goto_test, { noremap = true, silent = true, desc = "Switch to Test/Source File" })

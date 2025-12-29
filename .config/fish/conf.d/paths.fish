@@ -14,10 +14,12 @@ set -gx INFOPATH /opt/homebrew/share/info $INFOPATH
 set -g fish_user_paths $HOMEBREW_PREFIX/bin $fish_user_paths
 set -g fish_user_paths $HOME/bin $fish_user_paths
 set -g fish_user_paths $HOME/.local/bin $fish_user_paths
-set -g fish_user_paths $HOME/.local/nvim-macos-arm64/bin $fish_user_paths
 
 # Homebrew make - gmake - MacOS ships with v3.81
 set -g fish_user_paths /opt/homebrew/opt/make/libexec/gnubin $fish_user_paths
+
+# Elixir
+set -g fish_user_paths /Users/davy/.mix/escripts $fish_user_paths
 
 # GO
 set -x GOPATH $HOME/go

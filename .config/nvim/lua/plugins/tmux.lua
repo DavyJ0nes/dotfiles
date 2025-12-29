@@ -5,13 +5,8 @@ return {
 	-- 		return require("tmux").setup()
 	-- 	end,
 	-- },
-	{
-		"hiasr/vim-zellij-navigator.nvim",
-		config = function()
-			require("vim-zellij-navigator").setup()
-		end,
-	},
-	--
+
+	-- {
 	-- 	-- "christoomey/vim-tmux-navigator",
 	-- 	-- cmd = {
 	-- 	-- 	"TmuxNavigateLeft",
@@ -27,17 +22,28 @@ return {
 	-- 	-- 	{ "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
 	-- 	-- 	{ "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
 	-- 	-- },
-	-- }
-	-- {
-	-- 	"swaits/zellij-nav.nvim",
-	-- 	lazy = true,
-	-- 	event = "VeryLazy",
-	-- 	keys = {
-	-- 		{ "<c-h>", "<cmd>ZellijNavigateLeftTab<cr>", { silent = true, desc = "navigate left or tab" } },
-	-- 		{ "<c-j>", "<cmd>ZellijNavigateDown<cr>", { silent = true, desc = "navigate down" } },
-	-- 		{ "<c-k>", "<cmd>ZellijNavigateUp<cr>", { silent = true, desc = "navigate up" } },
-	-- 		{ "<c-l>", "<cmd>ZellijNavigateRightTab<cr>", { silent = true, desc = "navigate right or tab" } },
-	-- 	},
-	-- 	opts = {},
 	-- },
+
+	-- {
+	-- 	"hiasr/vim-zellij-navigator.nvim",
+	-- 	config = function()
+	-- 		require("vim-zellij-navigator").setup()
+	-- 	end,
+	-- },
+	-- plugins.lua / wherever you declare plugins
+	{
+		"mrjones2014/smart-splits.nvim",
+		config = function()
+			require("smart-splits").setup({
+				multiplexer_integration = "zellij", -- let it talk to zellij
+				zellij_move_focus_or_tab = false,
+			})
+
+			local ss = require("smart-splits")
+			vim.keymap.set("n", "<C-h>", ss.move_cursor_left)
+			vim.keymap.set("n", "<C-j>", ss.move_cursor_down)
+			vim.keymap.set("n", "<C-k>", ss.move_cursor_up)
+			vim.keymap.set("n", "<C-l>", ss.move_cursor_right)
+		end,
+	},
 }

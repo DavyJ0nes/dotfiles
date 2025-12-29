@@ -49,7 +49,7 @@ return {
 			},
 			-- Toggle
 			{
-				"<leader>oo",
+				"<leader>ob",
 				"<CMD>OverseerToggle bottom<CR>",
 				desc = "Toggle at bottom",
 			},

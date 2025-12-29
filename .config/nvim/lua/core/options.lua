@@ -39,7 +39,7 @@ opt.backspace = "indent,eol,start"
 
 -- clipboard
 opt.clipboard:append("unnamedplus") -- use system clipboard as default
---
+
 -- Decrease update time
 opt.updatetime = 250
 vim.wo.signcolumn = "yes"

@@ -6,7 +6,10 @@ data.location=~/notes/tasksdb
 
 # Color theme (uncomment one to use)
 #include light-16.theme
-#include light-256.theme
+
+# include light-256.theme
+include solarized-dark-256.theme
+
 #include bubblegum-256.theme
 #include dark-16.theme
 #include dark-256.theme
@@ -17,9 +20,11 @@ data.location=~/notes/tasksdb
 #include dark-yellow-green.theme
 #include dark-gray-256.theme
 #include dark-gray-blue-256.theme
-include solarized-dark-256.theme
 #include solarized-light-256.theme
 #include no-color.theme
+
+# Verbosity
+verbose=no
 
 # view
 description.count=0
@@ -38,16 +43,70 @@ uda.trelloboardid.label=TrelloBoardID
 uda.trellolistid.type=string
 uda.trellolistid.label=TrelloListID
 uda.trelloboardid.type=string
-#
-# Contexts
-context.today.read=+today or due:today
-context.work.read=project:work or +work
+
+# Today custom ordering
+uda.todayorder.type=numeric
+uda.todayorder.label=Ord
+uda.todayorder.default=1000
+
+# -- Contexts -----------------------------------------------------------------
+## Work = anything tagged as work
+context.work.read=+work
 context.work.write=+work
-context.personal.read=project:daily or +personal
+
+## Personal = anything tagged as personal
+context.personal.read=+personal
 context.personal.write=+personal
+
+## Inbox = uncategorized stuff
 context.inbox.read=+inbox
 context.inbox.write=+inbox
 
-# list view
+# Learning = Personal Development
+context.learning.read=+learning
+context.learning.write=+learning
+
+# Training = Cycling traning
+context.training.read=+training
+context.training.write=+training
+
+# DnD = TTRPG related tasks
+context.dnd.read=+dnd
+context.dnd.write=+dnd
+
+# -- Reports ------------------------------------------------------------------
+
+## list view
 report.list.sort=start-,+today,due+,project+/,urgency-
+
+## Today Report
+
+report.today.description=Today view
+report.today.filter=(status:pending and ((+today) or (due.before:tomorrow) or (scheduled.before:tomorrow))) and -WAITING
+report.today.columns=id,priority,tags.list,project,due.relative,description.desc
+report.today.labels=ID,P,Tags,Proj,Due,Description
+report.today.sort=todayorder+,urgency-,id+
+report.today.limit=12
+
+## Next Report (todo)
+
+report.next.description=Next actions
+report.next.filter=(status:pending and -inbox -today and -WAITING)
+report.next.columns=id,priority,tags.list,project,due.relative,description.desc
+report.next.labels=ID,P,Tags,Proj,Due,Description
+report.next.sort=urgency-
+
+## Inbox Report (backlog)
+
+report.inbox.description=Inbox view
+report.inbox.filter=status:pending and (+inbox or +WAITING)
+report.inbox.columns=id,priority,tags.list,project,due.relative,description.desc
+report.inbox.labels=ID,P,Tags,Proj,Due,Description
+report.inbox.sort=urgency-
+report.inbox.limit=12
+
+report.minimal.columns=id,priority,tags.list,project,due.relative,description.desc
+report.minimal.labels=ID,P,Tags,Proj,Due,Description
+report.minimal.sort=tags,urgency-
+
 default.command=minimal

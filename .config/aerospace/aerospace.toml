@@ -108,7 +108,7 @@ alt-f = 'fullscreen'
 alt-shift-ctrl-f = 'fullscreen'
 # See: https://nikitabobko.github.io/AeroSpace/commands#balance-size
 alt-r = 'balance-sizes'
-alt-shift-ctrl-b = 'fullscreen'
+ # alt-c = 'center'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 alt-shift-h = 'move left'
@@ -127,16 +127,19 @@ alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
 alt-5 = 'workspace 5'
 alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-b = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-z = 'workspace z'
 alt-shift-ctrl-1 = 'workspace 1'
 alt-shift-ctrl-2 = 'workspace 2'
 alt-shift-ctrl-3 = 'workspace 3'
 alt-shift-ctrl-4 = 'workspace 4'
 alt-shift-ctrl-5 = 'workspace 5'
 alt-shift-ctrl-6 = 'workspace 6'
-# alt-7 = 'workspace 7'
+alt-shift-ctrl-7 = 'workspace 7'
 # alt-8 = 'workspace 8'
 # alt-9 = 'workspace 9'
-# alt-shift-ctrl-7 = 'workspace 7'
 # alt-shift-ctrl-8 = 'workspace 8'
 # alt-shift-ctrl-9 = 'workspace 9'
 
@@ -147,8 +150,9 @@ alt-shift-3 = 'move-node-to-workspace 3'
 alt-shift-4 = 'move-node-to-workspace 4'
 alt-shift-5 = 'move-node-to-workspace 5'
 alt-shift-6 = 'move-node-to-workspace 6'
-# alt-shift-7 = 'move-node-to-workspace 7'
-# alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-z = 'move-node-to-workspace z'
 # alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-n = 'move-workspace-to-monitor next'
 alt-shift-p = 'move-workspace-to-monitor prev'
@@ -191,6 +195,10 @@ if.app-id = 'company.thebrowser.Browser'
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace z'
+
+[[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'move-node-to-workspace 3'
 
@@ -199,13 +207,43 @@ if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
 if.app-id = 'com.ableton.live'
-run = 'move-node-to-workspace 5'
+run = 'move-node-to-workspace 7'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
 run = 'move-node-to-workspace 5'
 
 [[on-window-detected]]
-if.app-id = 'com.privateerpress.warmachine.client'
+if.app-id = 'com.apple.iBooksX'
 run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Preview'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'com.privateerpress.warmachine.client'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.zwift.ZwiftLauncher'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'eu.virtualtraining.rouvy.mac'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.valvesoftware.steam'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'com.valvesoftware.steam.helper'
+run = 'move-node-to-workspace 8'
+
+

@@ -1,0 +1,134 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "ui_font_family": "Hack Nerd Font Mono",
+  "buffer_font_family": "Hack Nerd Font Mono",
+  "agent": {
+    "default_profile": "ask",
+    "play_sound_when_agent_done": true,
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4.1"
+    }
+  },
+  "base_keymap": "JetBrains",
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Macchiato"
+  },
+  "icon_theme": {
+    "mode": "system",
+    "dark": "Catppuccin Macchiato",
+    "light": "Catppuccin Latte"
+  },
+  // "inlay_hints": {
+  //   "enabled": true
+  // },
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "vim_mode": true,
+  "vim": {
+    "enable_vim_sneak": true
+  },
+  // use relative line numbers
+  "relative_line_numbers": true,
+  "tab_bar": {
+    "show": true
+  },
+  "scrollbar": {
+    "show": "never"
+  },
+  // Only show error on tab
+  "tabs": {
+    "show_diagnostics": "errors"
+  },
+  // Indentation, rainbow indentation
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware"
+  },
+  "languages": {
+    "Go": {
+      "format_on_save": "on",
+      "formatter": "language_server",
+      "code_actions_on_format": {
+        "source.organizeImports": true
+      }
+    },
+    "Elixir": {
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "mix",
+          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
+        }
+      },
+      "language_servers": ["elixir-ls"]
+    },
+    "HEEX": {
+      "language_servers": [
+        "elixir-ls",
+        "tailwindcss-language-server",
+        "emmet-language-server"
+      ],
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "mix",
+          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"]
+        }
+      }
+    }
+  },
+  "lsp": {
+    "expert": {},
+    "elixir-ls": {
+      "settings": {
+        "dialyzerEnabled": false,
+        "fetchDeps": true
+      }
+    },
+    "gopls": {
+      "gofumpt": true
+      // "codelenses": {
+      //   // "gc_details": true,
+      //   // "generate": true,
+      //   // "regenerate_cgo": true,
+      //   // "run_govulncheck": true,
+      //   // "test": true,
+      //   // "tidy": true,
+      //   // "upgrade_dependency": true,
+      //   // "vendor": true
+      // },
+      // "analyses": {
+      //   "shadow": false,
+      //   "nilness": true,
+      //   "unusedparams": true,
+      //   "unusedvariable": true,
+      //   "unusedwrite": true,
+      //   "useany": true
+      // },
+      // // "usePlaceholders": true,
+      // "completeUnimported": true,
+      // "staticcheck": true,
+      // "directoryFilters": [
+      //   "-.git",
+      //   "-.vscode",
+      //   "-.idea",
+      //   "-.vscode-test",
+      //   "-node_modules"
+      // ],
+      // "semanticTokens": false
+    }
+  }
+}

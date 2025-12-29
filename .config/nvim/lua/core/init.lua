@@ -7,10 +7,10 @@ vim.cmd.colorscheme("nightfox")
 -- vim.cmd.colorscheme("dayfox")
 
 vim.lsp.enable({
-	"elixirls", -- Elixir
 	"gopls", -- Go
 	"json", -- JSON
 	"lua_ls", -- Lua
 	"markdown", -- Markdown
 	"ts_ls", -- TypeScript
+	"superhtml", -- HTML
 })

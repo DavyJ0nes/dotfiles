@@ -32,7 +32,7 @@ alias pse 'ps -eo pid,ppid,pcpu,args'
 alias pingg "ping 8.8.8.8"
 alias here "pwd | pbcopy"
 alias grepip "grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'"
-alias python "python3"
+# alias python "python3"
 alias idea "goland"
 alias make "gmake"
 alias mux "tmuxinator"
@@ -40,25 +40,56 @@ alias docker "podman"
 alias cat "bat"
 
 # -- Notes ahd Tasks
-alias t "task"
-alias tasks "taskwarrior-tui"
-alias tm "task modify"
-alias ta "task add"
-alias td "task delete"
 alias inbox "nothelp today"
 alias start "nothelp start"
 alias stop "nothelp stop"
 alias today "nothelp today"
 alias yesterday "nothelp yesterday"
 alias tsync "task-sync"
-alias twork "task context work; task"
-alias tall "task context none; task"
-alias tinbox "task context inbox; task"
-alias tpersonal "task context personal; task"
-alias ttoday "task context today; task"
-alias topen "taskopen"
-alias done "task done"
 alias notes "cd ~/Library/Mobile\ Documents/iCloud\~md\~obsidian/Documents/notes/"
+
+# -- Taskwarrior aliases
+alias t "task"
+alias ta "task add"
+alias td "task delete"
+alias tm "task modify"
+alias done "task done"
+alias tasks "taskwarrior-tui"
+alias tall "task context none; task"
+alias topen "taskopen"
+
+alias tinbox "task context none; task inbox"
+alias startinbox "task context none; taskwarrior-tui -r inbox"
+alias tai 'task context none; task add +inbox'
+
+alias tpersonal "task context personal; task"
+alias tap 'task context personal; task add +personal'
+
+alias ttoday "task context none; task today"
+
+## Work related
+
+alias twork "task context work; task"
+
+# Default work task
+alias taw 'task context work; task add +work'
+
+## LEARNING / CAREER
+
+alias tlearn "task context learning; task"
+alias tal 'task context learning; task add +learning'
+
+# General tech / long-term growth
+alias tal-elixir 'task context learning; task add +learning project:elixir'
+
+## TTRPG
+
+alias tdnd "task context dnd; task"
+alias tadnd 'task context dnd; task add +dnd +personal'
+
+## TRAINING
+
+alias ttrain "task context training; task"
 
 # -- clojure
 alias crepl "clojure -M:repl/basic"
@@ -82,7 +113,7 @@ alias gaf 'git add -A; git commit -m "WIP: $(w3m whatthecommit.com | head -n 1)"
 alias git-branch-name "git rev-parse --abbrev-ref HEAD"
 alias gfuck "git add . && git commit --amend --no-edit"
 alias gfuckoff "gfuck && git fetch && git rebase origin/main && git push -f"
-alias gwip 'git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
+alias gwip 'git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --message "--wip-- [skip ci]"'
 alias ghstatus "curl -s https://www.githubstatus.com/api/v2/status.json | jq '{url: .page.url, status: .status.description}'"
 alias ghprstatus "gh pr view --json \"statusCheckRollup\" | jq '.statusCheckRollup[] | {\"name\": .name, \"status\": .status}'"
 # alias ghnewpr "git fetch && git rebase origin/main && gh pr create --title \"$(git log -1 --pretty=%s)\" --body \"_Why?_ $(git log -1 --pretty=%b | grep -v 'Co-authored-by' | awk 'BEGIN {RS=\"\n\n\"; FS=\"\n\"; OFS=\" \"} {for (i=1;i<=NF;i++) printf \"%s\", $i (i==NF ? \\'\n\n\\' : OFS)}')\""
@@ -109,6 +140,7 @@ alias tf "terraform"
 # -- dirs
 alias goein "cd $GOPATH/src/github.com/einride"
 alias godavy "cd $GOPATH/src/github.com/davyj0nes"
+alias gofever "cd $GOPATH/src/github.com/feverenergy"
 alias gonotes "cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes"
 alias gozk "cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes/zk"
 

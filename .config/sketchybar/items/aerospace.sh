@@ -10,7 +10,6 @@ status_bracket=(
   background.border_color=$BACKGROUND_2
 )
 
-
 for sid in $(aerospace list-workspaces --all); do
     sketchybar --add item space.$sid left \
         --subscribe space.$sid aerospace_workspace_change \
@@ -20,8 +19,8 @@ for sid in $(aerospace list-workspaces --all); do
         icon.font="$FONT:Bold:19.0" \
         icon=${ICONS_SPACES[$sid]} \
         icon.color=$YELLOW \
-        background.corner_radius=5 \
-        background.height=32 \
+        background.corner_radius=3 \
+        background.height=33 \
         click_script="aerospace workspace $sid" \
         script="$CONFIG_DIR/plugins/aerospace.sh $sid"
 done

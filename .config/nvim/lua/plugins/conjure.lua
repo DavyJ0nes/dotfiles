@@ -1,7 +1,7 @@
 return {
 	{
 		"Olical/conjure",
-		ft = { "clojure", "fennel", "python" }, -- etc
+		ft = { "clojure", "fennel" }, -- etc
 		lazy = true,
 		init = function()
 			local function file_exists(name)

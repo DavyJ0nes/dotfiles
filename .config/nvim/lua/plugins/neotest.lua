@@ -1,6 +1,7 @@
 return {
 	"nvim-neotest/neotest",
 	ft = {
+		"rust",
 		"go",
 		"terraform",
 		"typescript",
@@ -9,12 +10,18 @@ return {
 		"typescriptreact",
 	},
 	dependencies = {
-		"nvim-lua/plenary.nvim",
+		{ "nvim-lua/plenary.nvim", version = "*" },
 		"antoinemadec/FixCursorHold.nvim",
-		"jfpedroza/neotest-elixir",
 		"nvim-treesitter/nvim-treesitter",
-		"nvim-neotest/nvim-nio",
-		{ "fredrikaverpil/neotest-golang", version = "*" },
+		"mrcjkb/rustaceanvim",
+		{ "nvim-neotest/nvim-nio", version = "*" },
+		{
+			"fredrikaverpil/neotest-golang",
+			version = "*",
+			build = function()
+				vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait()
+			end,
+		},
 	},
 	config = function()
 		local neotest_ns = vim.api.nvim_create_namespace("neotest")
@@ -30,12 +37,14 @@ return {
 
 		require("neotest").setup({
 			adapters = {
-				require("neotest-elixir"),
+				require("rustaceanvim.neotest"),
 				require("neotest-golang")({
-					go_test_args = {
-						"-v",
-						"-race",
-					},
+					warn_test_name_dupes = false,
+					runner = "gotestsum",
+					-- go_test_args = {
+					-- 	"-v",
+					-- 	"-race",
+					-- },
 				}),
 			},
 			discovery = {
@@ -55,7 +64,7 @@ return {
 				-- Run tests concurrently when an adapter provides multiple commands to run.
 				concurrent = true,
 			},
-			log_level = vim.log.levels.WARN, -- increase to DEBUG when troubleshooting
+			log_level = vim.log.levels.DEBUG, -- increase to DEBUG when troubleshooting
 			output = {
 				enabled = true,
 				open_on_run = true,

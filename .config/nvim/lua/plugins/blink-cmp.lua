@@ -21,6 +21,7 @@ return {
 		"giuxtaposition/blink-cmp-copilot",
 		"zbirenbaum/copilot.lua",
 		"zbirenbaum/copilot-cmp",
+		"huijiro/blink-cmp-supermaven",
 	},
 
 	-- use a release tag to download pre-built binaries
@@ -66,6 +67,12 @@ return {
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
 			providers = {
+				-- supermaven = {
+				-- 	name = "supermaven",
+				-- 	enabled = enable_copilot,
+				-- 	module = "blink-cmp-supermaven",
+				-- 	async = true,
+				-- },
 				copilot = {
 					name = "copilot",
 					enabled = enable_copilot,

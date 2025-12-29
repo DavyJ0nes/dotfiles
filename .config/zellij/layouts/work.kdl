@@ -1,0 +1,48 @@
+// work
+layout {
+  default_tab_template {
+    pane size=1 borderless=true {
+      plugin location="zjstatus"
+    }
+    children
+    pane size=1 borderless=true {
+      plugin location="compact-bar" {
+        classic false
+      }
+    }
+  }
+  tab name="Work" hide_floating_panes=false {
+    // pane name="Code" cwd="${PROJECTS}"
+    pane split_direction="vertical" {
+      pane name="Code" command="nvim"
+      pane name="Daily Notes" cwd="~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes" size="20%"
+    }
+    floating_panes {
+      pane name="Working Pad" command="git" {
+        args "log" "--pretty=oneline" "-n 20" "--graph" "--abbrev-commit"
+        x "10%"
+        y "10%"
+        width 130
+      }
+    }
+  }
+  tab name="Dashboard" {
+    pane split_direction="vertical" {
+      pane split_direction="horizontal" {
+        pane name="Gratitudes"
+        pane name="ToDos"
+      }
+      pane split_direction="horizontal" {
+        pane name="Achievements"
+        pane name="Fleeting Notes"
+      }
+    }
+  }
+  tab name="Learning" hide_floating_panes=false {
+    // pane name="Code" cwd="${PROJECTS}"
+    pane split_direction="vertical" {
+      pane name="Code" cwd="~/go/src/github.com/davyj0nes/micro_toys/" command="nvim"
+      pane name="Notes" cwd="~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes" size="40%"
+    }
+  }
+}

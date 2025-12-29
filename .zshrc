@@ -337,3 +337,9 @@ function gi() {
 # The following lines were added by compinstall
 
 # End of lines added by compinstall
+
+. "$HOME/.local/share/../bin/env"
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

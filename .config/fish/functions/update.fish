@@ -23,6 +23,10 @@ function update -d "update brew, fish, fisher, gh and mac app store"
     /usr/sbin/softwareupdate -ia
 
     echo "========================"
+    echo 'updating rust'
+    rustup update
+
+    echo "========================"
     echo "updated brew packages:"
     echo -e "$TO_UPDATE"
 end

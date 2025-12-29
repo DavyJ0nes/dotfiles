@@ -1,34 +1,152 @@
 layout {
+  // ISSUE: https://github.com/zellij-org/zellij/issues/3384
+  // default_tab_template {
+  //   pane size=1 borderless=true {
+  //     plugin location="zjstatus"
+  //   }
+  //   children
+  // }
+
   /* --- TAB WORK ---------------------------------------------------------- */
-  tab name="work" split_direction="horizontal" focus=true cwd="~/go/src/github.com/feverenergy/" {
+  tab name="work" split_direction="horizontal" focus=true cwd="~/go/src/github.com/feverenergy/fever-api/" hide_floating_panes=true {
     pane size=1 borderless=true {
-        plugin location="compact-bar"
+      plugin location="zjstatus"
     }
-    pane
-    pane
-    pane size=1 borderless=true {
-        plugin location="status-bar"
+    pane {
+      name "editor"
+      command "yazi"
+      args "~/go/src/github.com/feverenergy/fever-api/"
+      focus true
+    }
+    pane name="other" size="15%"
+    floating_panes {
+      pane {
+        x "12%"
+        y "12%"
+        width "75%"
+        height "75%"
+      }
     }
   }
+
   /* --- TAB SHELL --------------------------------------------------------- */
-  tab name="shell" cwd="~/" {
+  tab name="shell" cwd="~/" hide_floating_panes=true {
     pane size=1 borderless=true {
-        plugin location="compact-bar"
+      plugin location="zjstatus"
     }
-    pane
-    pane
-    pane size=1 borderless=true {
-        plugin location="status-bar"
+
+    pane split_direction="vertical" {
+      pane split_direction="horizontal" {
+        pane name="Gratitudes"
+        pane name="ToDos"
+      }
+      pane split_direction="horizontal" {
+        pane name="Achievements"
+        pane name="Fleeting Notes"
+      }
+    }
+
+    floating_panes {
+      pane {
+        x "12%"
+        y "12%"
+        width "75%"
+        height "75%"
+      }
     }
   }
-  /* --- TAB LEARN --------------------------------------------------------- */
-  tab name="learn" cwd="~/go/src/github.com/davyj0nes/micro_toys/" {
+
+  /* --- TAB DB ------------------------------------------------------------ */
+  tab name="db" cwd="~/go/src/github.com/feverenergy/fever-api/" hide_floating_panes=true {
     pane size=1 borderless=true {
-        plugin location="compact-bar"
+      plugin location="zjstatus"
     }
-    pane
+
+    pane {
+      name "ui"
+      command "nvim"
+      args "-c" ":DBUI"
+      start_suspended true
+      focus true
+    }
+    pane {
+      name "ssh"
+      size "10%"
+      command "ssh"
+      args "-v" "-N" "sandbox-jump"
+      start_suspended true
+    }
+
+    floating_panes {
+      pane {
+        x "12%"
+        y "12%"
+        width "75%"
+        height "75%"
+      }
+    }
+  }
+
+  /* --- TAB NOTES --------------------------------------------------------- */
+  tab name="notes" cwd="~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes" hide_floating_panes=true {
     pane size=1 borderless=true {
-        plugin location="status-bar"
+      plugin location="zjstatus"
+    }
+
+    pane name="notes" command="nvim"
+
+    floating_panes {
+      pane {
+        x "12%"
+        y "12%"
+        width "75%"
+        height "75%"
+      }
+    }
+  }
+
+  /* --- TAB CONFIG -------------------------------------------------------- */
+  tab name="config" cwd="~/dotfiles" hide_floating_panes=true {
+    pane size=1 borderless=true {
+      plugin location="zjstatus"
+    }
+
+    pane name="config" command="nvim"
+
+    floating_panes {
+      pane {
+        x "12%"
+        y "12%"
+        width "75%"
+        height "75%"
+      }
+    }
+  }
+
+  /* --- TAB LEARN --------------------------------------------------------- */
+  tab name="learn" cwd="~/go/src/github.com/davyj0nes" hide_floating_panes=true {
+    pane size=1 borderless=true {
+      plugin location="zjstatus"
+    }
+
+    pane {
+      name "elixir"
+      focus true
+    }
+    pane {
+      name "notes"
+      cwd "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+      command "nvim"
+      size "40%"
+    }
+
+    floating_panes {
+      pane {
+        x "12%"
+        y "12%"
+        width "75%"
+        height "75%"
+      }
     }
   }
 }

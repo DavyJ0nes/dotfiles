@@ -8,6 +8,7 @@ dynamic_padding = false
 opacity = 0.99
 blur = true
 decorations_theme_variant = "Dark"
+option_as_alt = "Both"
 
 [font]
 normal = { family = "JetBrainsMono Nerd font Propo", style = "Regular"}

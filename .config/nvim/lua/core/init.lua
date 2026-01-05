@@ -2,8 +2,10 @@ require("core.autocmds")
 require("core.keymaps")
 require("core.lazy")
 require("core.options")
+require("core.today-note")
 
-vim.cmd.colorscheme("nightfox")
+-- vim.cmd.colorscheme("nightfox")
+vim.cmd.colorscheme("catppuccin")
 -- vim.cmd.colorscheme("dayfox")
 
 vim.lsp.enable({

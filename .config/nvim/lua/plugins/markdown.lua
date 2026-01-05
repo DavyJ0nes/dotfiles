@@ -12,48 +12,48 @@ return {
 			max_file_size = 1.5,
 			-- Capture groups that get pulled from markdown
 			markdown_query = [[
-        (atx_heading [
-            (atx_h1_marker)
-            (atx_h2_marker)
-            (atx_h3_marker)
-            (atx_h4_marker)
-            (atx_h5_marker)
-            (atx_h6_marker)
-        ] @heading)
+	       (atx_heading [
+	           (atx_h1_marker)
+	           (atx_h2_marker)
+	           (atx_h3_marker)
+	           (atx_h4_marker)
+	           (atx_h5_marker)
+	           (atx_h6_marker)
+	       ] @heading)
 
-        (thematic_break) @dash
+	       (thematic_break) @dash
 
-        (fenced_code_block) @code
-        (fenced_code_block (info_string (language) @language))
+	       (fenced_code_block) @code
+	       (fenced_code_block (info_string (language) @language))
 
-        [
-            (list_marker_plus)
-            (list_marker_minus)
-            (list_marker_star)
-        ] @list_marker
+	       [
+	           (list_marker_plus)
+	           (list_marker_minus)
+	           (list_marker_star)
+	       ] @list_marker
 
-        (task_list_marker_unchecked) @checkbox_unchecked
-        (task_list_marker_checked) @checkbox_checked
+	       (task_list_marker_unchecked) @checkbox_unchecked
+	       (task_list_marker_checked) @checkbox_checked
 
-        (block_quote) @quote
+	       (block_quote) @quote
 
-        (pipe_table) @table
-    ]],
+	       (pipe_table) @table
+	   ]],
 			-- Capture groups that get pulled from quote nodes
 			markdown_quote_query = [[
-        [
-            (block_quote_marker)
-            (block_continuation)
-        ] @quote_marker
-    ]],
+	       [
+	           (block_quote_marker)
+	           (block_continuation)
+	       ] @quote_marker
+	   ]],
 			-- Capture groups that get pulled from inline markdown
 			inline_query = [[
-        (code_span) @code
+	       (code_span) @code
 
-        (shortcut_link) @callout
+	       (shortcut_link) @callout
 
-        [(inline_link) (image)] @link
-    ]],
+	       [(inline_link) (image)] @link
+	   ]],
 			-- Query to be able to identify links in nodes
 			inline_link_query = "[(inline_link) (image)] @link",
 			-- The level of logs to write to file: vim.fn.stdpath('state') .. '/render-markdown.log'
@@ -182,9 +182,9 @@ return {
 				--  raw: replaces only the '|' characters in each row, leaving the cells unmodified
 				--  padded: raw + cells are padded with inline extmarks to make up for any concealed text
 				cell = "padded",
-    -- Characters used to replace table border
-    -- Correspond to top(3), delimiter(3), bottom(3), vertical, & horizontal
-    -- stylua: ignore
+	   -- Characters used to replace table border
+	   -- Correspond to top(3), delimiter(3), bottom(3), vertical, & horizontal
+	   -- stylua: ignore
 				-- Highlight for table heading, delimiter, and the line above
 				head = "@markup.heading",
 				-- Highlight for everything else, main table rows and the line below
@@ -246,6 +246,6 @@ return {
 			-- See 'Custom Handlers' document for more info
 			custom_handlers = {},
 		}
-		require("render-markdown").setup({})
+		require("render-markdown").setup(opts)
 	end,
 }

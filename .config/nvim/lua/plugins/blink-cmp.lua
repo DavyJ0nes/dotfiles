@@ -25,7 +25,7 @@ return {
 	},
 
 	-- use a release tag to download pre-built binaries
-	version = "*",
+	version = "v1.8.0",
 	opts = {
 		-- 'default' for mappings similar to built-in completion
 		-- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)

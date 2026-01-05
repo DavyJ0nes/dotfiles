@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+DATA="$HOME/.local/share/nvim"
+
+rm -rf "$DATA/site/parser"
+rm -rf "$DATA/lazy/nvim-treesitter/parser"
+rm -rf "$DATA/site/pack/*/start/nvim-treesitter/parser"
+rm -rf "$DATA/site/pack/*/opt/nvim-treesitter/parser"
+
+nvim --headless \
+          "+Lazy! load nvim-treesitter" \
+          "+lua require('nvim-treesitter').setup({ install_dir = vim.fn.stdpath('data') .. '/site' })" \
+          "+lua require('nvim-treesitter').install({ 'rust' }):wait(300000)" \
+          "+TSInstall! vim" \
+          "+qa"
+
+echo ""
+
+# Sign any parsers that exist (site/parser, lazy/nvim-treesitter/parser, etc.)
+find "$DATA" -type f \( -path "*/parser/*.so" -o -path "*/parser/*.dylib" \) -print0 \
+| while IFS= read -r -d '' f; do
+  xattr -cr "$f" || true
+  codesign -f -s - "$f" >/dev/null 2>&1 || echo "codesign failed: $f"
+done
+
+echo ""
+
+echo "vim parser found at:"
+find "$DATA" -path "*/parser/vim.so" -print || true

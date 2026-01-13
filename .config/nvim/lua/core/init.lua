@@ -1,8 +1,8 @@
 require("core.autocmds")
+require("core.today-note")
 require("core.keymaps")
 require("core.lazy")
 require("core.options")
-require("core.today-note")
 
 -- vim.cmd.colorscheme("nightfox")
 vim.cmd.colorscheme("catppuccin")
@@ -15,4 +15,5 @@ vim.lsp.enable({
 	"markdown", -- Markdown
 	"ts_ls", -- TypeScript
 	"superhtml", -- HTML
+	"gleam", -- Gleam
 })

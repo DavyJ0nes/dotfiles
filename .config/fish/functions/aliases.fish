@@ -43,6 +43,7 @@ alias cat "bat"
 alias inbox "nothelp today"
 alias start "nothelp start"
 alias stop "nothelp stop"
+alias log "nothelp log"
 alias today "nothelp today"
 alias yesterday "nothelp yesterday"
 alias tsync "task-sync"
@@ -118,6 +119,9 @@ alias ghstatus "curl -s https://www.githubstatus.com/api/v2/status.json | jq '{u
 alias ghprstatus "gh pr view --json \"statusCheckRollup\" | jq '.statusCheckRollup[] | {\"name\": .name, \"status\": .status}'"
 # alias ghnewpr "git fetch && git rebase origin/main && gh pr create --title \"$(git log -1 --pretty=%s)\" --body \"_Why?_ $(git log -1 --pretty=%b | grep -v 'Co-authored-by' | awk 'BEGIN {RS=\"\n\n\"; FS=\"\n\"; OFS=\" \"} {for (i=1;i<=NF;i++) printf \"%s\", $i (i==NF ? \\'\n\n\\' : OFS)}')\""
 alias suggest "gh copilot suggest -t shell"
+
+# -- git worktrees
+alias gw 'git worktree list'
 
 # -- docker
 alias dm "docker-machine"

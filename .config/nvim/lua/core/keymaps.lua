@@ -218,6 +218,13 @@ set("n", "<leader>xn", "<cmd>cnext<cr>", { desc = "Next quickfix" })
 set("n", "<leader>xp", "<cmd>cprev<cr>", { desc = "Prev quickfix" })
 set("n", "<leader>xp", "<cmd>cclose<cr>", { desc = "Close quickfix" })
 
+-- git worktree
+set("n", "<leader>gw", function()
+	Snacks.picker.worktrees()
+end)
+
+set("n", "<leader>gW", ":GitWorktreeCreate", { desc = "Create worktree (Snacks)" })
+
 local function goto_test()
 	local current_path = vim.api.nvim_buf_get_name(0)
 	if current_path == "" then

@@ -29,6 +29,8 @@ return {
 			sources = {
 				explorer = {
 					hidden = true, -- show hidden files
+					ignored = false, -- respect .gitignore
+					exclude = { "node_modules" },
 					auto_close = true,
 					win = {
 						list = {
@@ -45,6 +47,9 @@ return {
 				},
 				files = {
 					hidden = true, -- show hidden files
+					ignored = false, -- respect .gitignore
+					cmd = "rg",
+					exclude = { "node_modules" },
 					follow = true,
 				},
 			},

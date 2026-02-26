@@ -32,6 +32,8 @@ vim/vim/.netrwhist
 .config/fish/functions/tide/*
 .config/fish/functions/_*
 .config/fish/fish_variables
+.config/fish/conf.d
+.config/fish/completions
 .config/task/taskrc
 .config/dlv/.dbg_history
 .aider*
@@ -62,3 +64,5 @@ bin/test-vf-csv
 bin/todo
 bin/war_roller
 
+# unneeded caches
+*zed/prompts/prompts*

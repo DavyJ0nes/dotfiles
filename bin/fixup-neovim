@@ -3,19 +3,34 @@ set -euo pipefail
 
 DATA="$HOME/.local/share/nvim"
 
+echo "Cleaning treesitter cache..."
 rm -rf "$DATA/site/parser"
-rm -rf "$DATA/lazy/nvim-treesitter/parser"
+rm -rf "$DATA/lazy/nvim-treesitter"
 rm -rf "$DATA/site/pack/*/start/nvim-treesitter/parser"
 rm -rf "$DATA/site/pack/*/opt/nvim-treesitter/parser"
 
-nvim --headless \
-          "+Lazy! load nvim-treesitter" \
-          "+lua require('nvim-treesitter').setup({ install_dir = vim.fn.stdpath('data') .. '/site' })" \
-          "+lua require('nvim-treesitter').install({ 'rust' }):wait(300000)" \
-          "+TSInstall! vim" \
-          "+qa"
+# nvim --headless \
+#           "+Lazy! load nvim-treesitter" \
+#           "+lua require('nvim-treesitter').setup({ install_dir = vim.fn.stdpath('data') .. '/site' })" \
+#           "+lua require('nvim-treesitter').install({ 'rust' }):wait(300000)" \
+#           "+TSInstall! vim" \
+#           "+qa"
 
-echo ""
+# echo ""
+
+languages=(
+  json yaml markdown graphql bash lua vim dockerfile
+  gitignore query vimdoc go clojure gleam elixir
+  typescript tsx javascript toml
+)
+
+for lang in "${languages[@]}"; do
+  echo "Reinstalling $lang..."
+  nvim --headless "+TSUninstall $lang" +qa
+  nvim --headless "+TSInstall! $lang" +qa
+done
+
+echo "Done!"
 
 # Sign any parsers that exist (site/parser, lazy/nvim-treesitter/parser, etc.)
 find "$DATA" -type f \( -path "*/parser/*.so" -o -path "*/parser/*.dylib" \) -print0 \

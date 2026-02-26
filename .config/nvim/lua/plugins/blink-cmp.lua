@@ -6,113 +6,84 @@ local function sources()
 end
 
 local function enable_copilot()
-	local disabled_filetypes = {
-		"elixir",
-		"markdown",
-	}
+	local disabled_filetypes = { "elixir", "markdown" }
 	return not vim.tbl_contains(disabled_filetypes, vim.bo.filetype)
 end
 
 return {
 	"saghen/blink.cmp",
-	-- optional: provides snippets for the snippet source
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 		"giuxtaposition/blink-cmp-copilot",
 		"zbirenbaum/copilot.lua",
-		"zbirenbaum/copilot-cmp",
-		"huijiro/blink-cmp-supermaven",
 		"onsails/lspkind.nvim",
 	},
-
-	-- use a release tag to download pre-built binaries
 	version = "v1.8.0",
+
+	init = function()
+		vim.opt.completeopt = { "menu", "menuone", "noselect" }
+		vim.opt.shortmess:append("c")
+	end,
+
 	opts = {
-		-- 'default' for mappings similar to built-in completion
-		-- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
-		-- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-		-- See the full "keymap" documentation for information on defining your own keymap.
-		keymap = {
-			preset = "enter",
-		},
-		-- enabled = function()
-		-- 	return not vim.tbl_contains({ "elixir", "markdown" }, vim.bo.filetype)
-		-- end,
+		keymap = { preset = "enter" },
 
 		cmdline = {
 			enabled = true,
-			keymap = {
-				preset = "cmdline",
-			},
+			keymap = { preset = "cmdline" },
 			completion = {
-				menu = {
-					auto_show = false,
-				},
+				menu = { auto_show = false },
 			},
 		},
 
-		signature = {
-			enabled = false,
-		},
+		signature = { enabled = false },
 
 		completion = {
 			menu = {
 				auto_show = true,
+				-- Cleaner border style
+				border = "rounded",
+				-- More compact sizing
+				max_height = 15,
+				scrollbar = true,
 				draw = {
+					columns = {
+						{ "kind_icon" },
+						{ "label", "label_description", gap = 1 },
+						{ "kind" },
+					},
 					components = {
 						kind_icon = {
 							text = function(ctx)
-								local icon = ctx.kind_icon
-								if vim.tbl_contains({ "Path" }, ctx.source_name) then
-									local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-									if dev_icon then
-										icon = dev_icon
-									end
-								else
-									icon = require("lspkind").symbolic(ctx.kind, {
-										mode = "symbol",
-									})
-								end
-
-								return icon .. ctx.icon_gap
-							end,
-
-							-- Optionally, use the highlight groups from nvim-web-devicons
-							-- You can also add the same function for `kind.highlight` if you want to
-							-- keep the highlight groups in sync with the icons.
-							highlight = function(ctx)
-								local hl = ctx.kind_hl
-								if vim.tbl_contains({ "Path" }, ctx.source_name) then
-									local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-									if dev_icon then
-										hl = dev_hl
-									end
-								end
-								return hl
+								return require("lspkind").symbol_map[ctx.kind] or ""
 							end,
 						},
 					},
 				},
 			},
+
+			-- Ghost text configuration
 			ghost_text = {
 				enabled = false,
-				-- Show the ghost text when an item has been selected
 				show_with_selection = true,
-				-- Show the ghost text when no item has been selected, defaulting to the first item
 				show_without_selection = false,
+			},
+
+			-- Documentation window
+			documentation = {
+				auto_show = true,
+				auto_show_delay_ms = 200,
+				window = {
+					border = "rounded",
+					max_width = 80,
+					max_height = 20,
+				},
 			},
 		},
 
-		-- Default list of enabled providers defined so that you can extend it
-		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
+			default = sources(),
 			providers = {
-				-- supermaven = {
-				-- 	name = "supermaven",
-				-- 	enabled = enable_copilot,
-				-- 	module = "blink-cmp-supermaven",
-				-- 	async = true,
-				-- },
 				copilot = {
 					name = "copilot",
 					enabled = enable_copilot,
@@ -130,33 +101,30 @@ return {
 					end,
 				},
 			},
-			default = sources(),
 		},
+
 		appearance = {
+			use_nvim_cmp_as_default = false,
+			nerd_font_variant = "mono",
 			kind_icons = {
-				Copilot = "",
+				Copilot = "",
 				Text = "󰉿",
 				Method = "󰊕",
 				Function = "󰊕",
 				Constructor = "󰒓",
-
 				Field = "󰜢",
 				Variable = "󰆦",
 				Property = "󰖷",
-
 				Class = "󱡠",
 				Interface = "󱡠",
 				Struct = "󱡠",
 				Module = "󰅩",
-
 				Unit = "󰪚",
 				Value = "󰦨",
 				Enum = "󰦨",
 				EnumMember = "󰦨",
-
 				Keyword = "󰻾",
 				Constant = "󰏿",
-
 				Snippet = "󱄽",
 				Color = "󰏘",
 				File = "󰈔",
@@ -168,5 +136,6 @@ return {
 			},
 		},
 	},
+
 	opts_extend = { "sources.default" },
 }

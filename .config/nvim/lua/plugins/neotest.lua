@@ -8,10 +8,14 @@ return {
 		"javascriptreact",
 		"python",
 		"typescriptreact",
+		"elixir",
 	},
 	dependencies = {
 		{ "nvim-lua/plenary.nvim", version = "*" },
 		"antoinemadec/FixCursorHold.nvim",
+		"jfpedroza/neotest-elixir",
+		"jutonz/neotest-bun",
+		"marilari88/neotest-vitest",
 		"nvim-treesitter/nvim-treesitter",
 		"mrcjkb/rustaceanvim",
 		{ "nvim-neotest/nvim-nio", version = "*" },
@@ -37,7 +41,16 @@ return {
 
 		require("neotest").setup({
 			adapters = {
+				require("neotest-bun")({
+					additional_args = {},
+				}),
+				require("neotest-elixir"),
 				require("rustaceanvim.neotest"),
+				require("neotest-vitest")({
+					filter_dir = function(name, _, _)
+						return name ~= "node_modules"
+					end,
+				}),
 				require("neotest-golang")({
 					warn_test_name_dupes = false,
 					runner = "gotestsum",

@@ -39,6 +39,10 @@ alias mux "tmuxinator"
 alias docker "podman"
 alias cat "bat"
 
+# Quick search shortcuts
+abbr -a --position command '?' '__ddg'
+abbr -a --position command '??' '__claude'
+
 # -- Notes ahd Tasks
 alias inbox "nothelp today"
 alias start "nothelp start"
@@ -145,6 +149,7 @@ alias tf "terraform"
 alias goein "cd $GOPATH/src/github.com/einride"
 alias godavy "cd $GOPATH/src/github.com/davyj0nes"
 alias gofever "cd $GOPATH/src/github.com/feverenergy"
+alias goconfig "cd $HOME/dotfiles/"
 alias gonotes "cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes"
 alias gozk "cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes/zk"
 

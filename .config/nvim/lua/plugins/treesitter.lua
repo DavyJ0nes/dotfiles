@@ -59,7 +59,12 @@ return {
 				"vimdoc",
 				"go",
 				"clojure",
-				-- "elixir",
+				"gleam",
+				"elixir",
+				"typescript",
+				"tsx",
+				"javascript",
+				"toml",
 			})
 		end,
 	},

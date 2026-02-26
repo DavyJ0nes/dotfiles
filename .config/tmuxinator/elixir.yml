@@ -1,0 +1,28 @@
+name: elixir
+root: <%= ENV["PROJECT_ROOT"] || "." %>
+tmux_options: "-u"
+
+windows:
+  - editor:
+      layout: main-horizontal
+      panes:
+        - nvim
+        - iex -S mix
+
+  - test:
+      layout: even-horizontal
+      panes:
+        - mix test.watch
+        - # Manual test runner
+
+  - debug:
+      layout: main-horizontal
+      panes:
+        - iex -S mix
+        -
+        -
+
+  - notes:
+      root: "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+      panes:
+        - nvim elixir-cheat-sheet.md

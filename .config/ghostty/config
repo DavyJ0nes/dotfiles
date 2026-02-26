@@ -40,3 +40,8 @@ keybind = global:ctrl+7=unbind
 keybind = global:ctrl+8=unbind
 keybind = global:ctrl+9=unbind
 keybind = global:ctrl+0=unbind
+
+# Enable desktop notifications on bell
+desktop-notifications = true
+bell-features = system
+bold-is-bright = true

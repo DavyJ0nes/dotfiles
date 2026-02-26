@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+# demo_cli generate-peakshavings --org "REAL_vattenfall" --asset-external-id "JBGFEF6ZABGO" --start-time "2024-03-01T00:00:00Z" --end-time "2024-12-31T00:00:00Z"
+# demo_cli generate-savings --org "REAL_vattenfall" --asset-external-id "JBGFEF6ZABGO" --start-time "2024-03-01T00:00:00Z" --end-time "2024-12-31T00:00:00Z"
+# demo_cli generate-earnings --org "REAL_vattenfall" --asset-external-id "JBGFEF6ZABGO" --start-time "2024-03-01T00:00:00Z" --end-time "2024-12-31T00:00:00Z"
+#
+# demo_cli generate-peakshavings --org "REAL_vattenfall" --asset-external-id "TGUTCMOYY5HB" --start-time "2024-03-01T00:00:00Z" --end-time "2024-12-31T00:00:00Z"
+# demo_cli generate-savings --org "REAL_vattenfall" --asset-external-id "TGUTCMOYY5HB" --start-time "2024-03-01T00:00:00Z" --end-time "2024-12-31T00:00:00Z"
+# demo_cli generate-earnings --org "REAL_vattenfall" --asset-external-id "TGUTCMOYY5HB" --start-time "2024-03-01T00:00:00Z" --end-time "2024-12-31T00:00:00Z"
+
+demo_cli generate-health-events --org "REAL_vattenfall" --asset-external-id "TGUTCMOYY5HB" --start-time "2026-01-01T00:00:00Z" --end-time "2025-02-03T00:00:00Z"
+demo_cli generate-health-events --org "REAL_vattenfall" --asset-external-id "JBGFEF6ZABGO" --start-time "2026-01-01T00:00:00Z" --end-time "2026-02-03T00:00:00Z"

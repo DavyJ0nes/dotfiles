@@ -25,6 +25,7 @@ return {
 			automatic_installation = true,
 			ensure_installed = {
 				"bashls",
+				"jsonls",
 				-- "clojure_lsp",
 				"gopls",
 				"lua_ls",
@@ -36,6 +37,9 @@ return {
 				-- "elixirls",
 				-- "ocamllsp",
 				"rust_analyzer",
+				"ts_ls", -- typescript lsp
+				"yamlls",
+				"biome", -- typescript linter/formatter
 			},
 		})
 
@@ -50,10 +54,12 @@ return {
 				"golangci-lint", -- go linter
 				"tflint", -- terraform linter
 				"mdformat", -- markdown formatter
+				"json-lsp", -- JSON language server
 				-- "buf", -- proto formatter and linter
 				-- "protolint", -- proto linter
 				"pyright", -- python linter
 				"black", -- python formatter
+				"yaml-language-server", -- YAML language server
 				-- "ocamlformat", -- ocaml formatter
 			},
 		})

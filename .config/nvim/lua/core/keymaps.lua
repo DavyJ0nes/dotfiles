@@ -258,8 +258,11 @@ local function goto_test()
 			derived_path = vim.fs.joinpath(test_dirname, test_filename)
 		else
 			-- Maybe the test file is in the same directory? (Less common for Elixir)
-			-- derived_path = vim.fs.joinpath(dirname, test_filename)
-			vim.notify("Could not determine Elixir test directory structure from: " .. dirname, vim.log.levels.INFO)
+			local same_dir = vim.fs.joinpath(dirname, test_filename)
+			derived_path = same_dir
+			if vim.fn.filereadable(same_dir) ~= 1 then
+				vim.notify("Could not determine Elixir test directory structure from: " .. dirname, vim.log.levels.INFO)
+			end
 		end
 	elseif filename:match("_test.exs$") then -- Test file to source file
 		local source_filename = (filename:gsub("_test.exs$", ".ex")) -- Use parentheses around gsub
@@ -270,7 +273,69 @@ local function goto_test()
 		if source_dirname ~= dirname then -- Only construct path if directory changed
 			derived_path = vim.fs.joinpath(source_dirname, source_filename)
 		else
-			vim.notify("Could not determine Elixir source directory structure from: " .. dirname, vim.log.levels.INFO)
+			-- Maybe the source file is in the same directory
+			local same_dir = vim.fs.joinpath(dirname, source_filename)
+			derived_path = same_dir
+			if vim.fn.filereadable(same_dir) ~= 1 then
+				vim.notify("Could not determine Elixir source directory structure from: " .. dirname, vim.log.levels.INFO)
+			end
+		end
+	-- TypeScript: src/../file.ts(x) <-> test/../file.test.ts(x) or .spec.ts(x)
+	elseif filename:match("%.test%.tsx?$") or filename:match("%.spec%.tsx?$") then -- Test file to source file
+		local source_filename = filename:gsub("%.test%.tsx?$", ""):gsub("%.spec%.tsx?$", "")
+		local ext = filename:match("%.tsx?$")
+		source_filename = source_filename .. ext
+		local source_dirname = (dirname:gsub("/test$", "/src"))
+		if source_dirname == dirname then
+			source_dirname = (dirname:gsub("/test/([^/].*)$", "/src/%1"))
+		end
+		if source_dirname ~= dirname then
+			derived_path = vim.fs.joinpath(source_dirname, source_filename)
+		else
+			-- Maybe the source file is in the same directory
+			local same_dir = vim.fs.joinpath(dirname, source_filename)
+			derived_path = same_dir
+			if vim.fn.filereadable(same_dir) ~= 1 then
+				vim.notify("Could not determine TypeScript source directory structure from: " .. dirname, vim.log.levels.INFO)
+			end
+		end
+	elseif filename:match("%.tsx?$") and not filename:match("%.d.ts$") then -- Source file to test file
+		local base = (filename:gsub("%.tsx?$", ""))
+		local ext = filename:match("%.tsx?$")
+		local test_dirname = (dirname:gsub("/src$", "/test"))
+		if test_dirname == dirname then
+			test_dirname = (dirname:gsub("/src/([^/].*)$", "/test/%1"))
+		end
+		if test_dirname ~= dirname then
+			local candidates = {
+				vim.fs.joinpath(test_dirname, base .. ".test" .. ext),
+				vim.fs.joinpath(test_dirname, base .. ".spec" .. ext),
+			}
+			for _, candidate in ipairs(candidates) do
+				if vim.fn.filereadable(candidate) == 1 then
+					derived_path = candidate
+					break
+				end
+			end
+			if not derived_path then
+				derived_path = candidates[1]
+			end
+		else
+			-- Maybe the test file is in the same directory (common in Exercism)
+			local candidates = {
+				vim.fs.joinpath(dirname, base .. ".test" .. ext),
+				vim.fs.joinpath(dirname, base .. ".spec" .. ext),
+			}
+			for _, candidate in ipairs(candidates) do
+				if vim.fn.filereadable(candidate) == 1 then
+					derived_path = candidate
+					break
+				end
+			end
+			if not derived_path then
+				derived_path = candidates[1]
+				vim.notify("Could not determine TypeScript test directory structure from: " .. dirname, vim.log.levels.INFO)
+			end
 		end
 	end
 	-- NOTE: Removed Python logic, added Elixir logic. Add more rules as needed.

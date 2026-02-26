@@ -3,12 +3,12 @@ root: ~/
 tmux_options: "-u"
 
 windows:
-  - work:
+  - code:
       root: "~/go/src/github.com/feverenergy/"
       layout: tiled
       panes:
         -
-  - other:
+  - alt:
       layout: main-horizontal
       panes:
         -
@@ -26,12 +26,6 @@ windows:
         - ttoday
   - config:
       root: "~/dotfiles/.config/"
-      layout: tiled
-      panes:
-        - vi
-
-  - learn:
-      root: "~/go/src/github.com/davyj0nes/micro_toys/"
       layout: tiled
       panes:
         - vi

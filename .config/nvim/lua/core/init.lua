@@ -1,8 +1,8 @@
 require("core.autocmds")
-require("core.today-note")
 require("core.keymaps")
 require("core.lazy")
 require("core.options")
+require("core.today-note")
 
 -- vim.cmd.colorscheme("nightfox")
 vim.cmd.colorscheme("catppuccin")
@@ -13,7 +13,9 @@ vim.lsp.enable({
 	"json", -- JSON
 	"lua_ls", -- Lua
 	"markdown", -- Markdown
-	"ts_ls", -- TypeScript
+	-- "ts_ls", -- TypeScript
 	"superhtml", -- HTML
 	"gleam", -- Gleam
+	-- "elixir_ls", -- Elixir
+	"yaml", -- Yaml
 })

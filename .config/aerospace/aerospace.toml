@@ -211,10 +211,6 @@ if.app-id = 'org.mozilla.firefox'
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
-if.app-id = 'com.ableton.live'
-run = 'move-node-to-workspace 7'
-
-[[on-window-detected]]
 if.app-id = 'com.apple.Music'
 run = 'move-node-to-workspace 5'
 
@@ -227,7 +223,7 @@ if.app-id = 'com.apple.Preview'
 run = 'move-node-to-workspace 6'
 
 [[on-window-detected]]
-if.app-id = 'com.privateerpress.warmachine.client'
+if.app-id = 'com.ableton.live'
 run = 'move-node-to-workspace 7'
 
 [[on-window-detected]]
@@ -237,6 +233,14 @@ run = 'move-node-to-workspace 7'
 [[on-window-detected]]
 if.app-id = 'eu.virtualtraining.rouvy.mac'
 run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.WahooFitness.SYSTM.desktop'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.privateerpress.warmachine.client'
+run = 'move-node-to-workspace 8'
 
 [[on-window-detected]]
 if.app-id = 'com.valvesoftware.steam'

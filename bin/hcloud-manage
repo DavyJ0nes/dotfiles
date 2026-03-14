@@ -1,0 +1,267 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# =============================================================================
+# Hetzner K3s Cluster - Save & Restore Scripts
+# =============================================================================
+# Usage:
+#   hcloud-manage save     - Snapshot both servers and delete them
+#   hcloud-manage restore  - Create servers from latest snapshots
+#   hcloud-manage status   - Show current server and snapshot status
+#   hcloud-manage firewall - Update firewall rules to current public IP
+# =============================================================================
+
+# --- Configuration ---
+SERVERS=("node-1" "node-2")
+SERVER_TYPE="cx23"
+LOCATION="nbg1"
+SSH_KEY="davy"
+FIREWALL_ID="10697037"  # from your server describe output
+SNAPSHOT_PREFIX="k3s-cluster"
+
+# Colours
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+log()  { echo -e "${GREEN}[✓]${NC} $1"; }
+warn() { echo -e "${YELLOW}[!]${NC} $1"; }
+err()  { echo -e "${RED}[✗]${NC} $1"; }
+
+# --- Save: Snapshot and delete ---
+cmd_save() {
+    echo ""
+    echo "=== Saving cluster ==="
+    echo ""
+
+    for server in "${SERVERS[@]}"; do
+        # Check server exists
+        if ! hcloud server describe "$server" > /dev/null 2>&1; then
+            warn "Server '$server' not found, skipping"
+            continue
+        fi
+
+        # Delete old snapshots for this server
+        echo ""
+        log "Cleaning up old snapshots for $server..."
+        old_snapshots=$(hcloud image list --type snapshot --selector "server=$server" -o noheader -o columns=id 2>/dev/null || true)
+        if [ -n "$old_snapshots" ]; then
+            for snap_id in $old_snapshots; do
+                log "  Deleting old snapshot $snap_id"
+                hcloud image delete "$snap_id"
+            done
+        fi
+
+        # Graceful shutdown
+        log "Shutting down $server..."
+        hcloud server shutdown "$server" || true
+
+        # Wait for server to stop
+        echo -n "  Waiting for shutdown"
+        for _i in $(seq 1 30); do
+            status=$(hcloud server describe "$server" -o format='{{.Status}}')
+            if [ "$status" = "off" ]; then
+                echo ""
+                log "  Server is off"
+                break
+            fi
+            echo -n "."
+            sleep 2
+        done
+
+        # Force power off if still running
+        status=$(hcloud server describe "$server" -o format='{{.Status}}')
+        if [ "$status" != "off" ]; then
+            warn "  Graceful shutdown timed out, forcing power off..."
+            hcloud server poweroff "$server"
+            sleep 5
+        fi
+
+        # Create snapshot with label for easy lookup
+        log "Creating snapshot of $server..."
+        hcloud server create-image "$server" \
+            --type snapshot \
+            --description "${SNAPSHOT_PREFIX}-${server}-$(date +%Y%m%d-%H%M)" \
+            --label "server=$server" \
+            --label "cluster=$SNAPSHOT_PREFIX"
+
+        log "Snapshot created for $server"
+
+        # Delete the server
+        log "Deleting $server..."
+        hcloud server delete "$server"
+        log "$server deleted"
+    done
+
+    echo ""
+    log "=== Cluster saved. Billing stopped. ==="
+    echo ""
+    cmd_status
+}
+
+# --- Restore: Create servers from snapshots ---
+cmd_restore() {
+    echo ""
+    echo "=== Restoring cluster ==="
+    echo ""
+
+    # Get the network name
+    network_name=$(hcloud network list -o noheader -o columns=name | head -1)
+    if [ -z "$network_name" ]; then
+        err "No private network found. Create one first in Hetzner console."
+        exit 1
+    fi
+    log "Using private network: $network_name"
+
+    for server in "${SERVERS[@]}"; do
+        # Check server doesn't already exist
+        if hcloud server describe "$server" > /dev/null 2>&1; then
+            warn "Server '$server' already exists, skipping"
+            continue
+        fi
+
+        # Find latest snapshot for this server
+        snapshot_id=$(hcloud image list \
+            --type snapshot \
+            --selector "server=$server" \
+            --sort created:desc \
+            -o noheader \
+            -o columns=id \
+            | head -1)
+
+        if [ -z "$snapshot_id" ]; then
+            err "No snapshot found for $server. Cannot restore."
+            exit 1
+        fi
+
+        log "Found snapshot $snapshot_id for $server"
+
+        # Create server from snapshot
+        log "Creating $server from snapshot..."
+        hcloud server create \
+            --name "$server" \
+            --type "$SERVER_TYPE" \
+            --location "$LOCATION" \
+            --image "$snapshot_id" \
+            --ssh-key "$SSH_KEY" \
+            --network "$network_name" \
+            --firewall "$FIREWALL_ID"
+
+        log "$server created"
+    done
+
+    echo ""
+    log "=== Cluster restored ==="
+    echo ""
+
+    # Show new IPs
+    cmd_status
+
+    echo ""
+    warn "Remember to update your kubeconfig with the new IPs:"
+    echo ""
+    for server in "${SERVERS[@]}"; do
+        if hcloud server describe "$server" > /dev/null 2>&1; then
+            ip=$(hcloud server describe "$server" -o format='{{.PublicNet.IPv4.IP}}')
+            echo "  $server: $ip"
+        fi
+    done
+    echo ""
+    echo "  Then run: kubectl config set-cluster default --server=https://<master-ip>:6443"
+    echo ""
+}
+
+# --- Status: Show servers and snapshots ---
+cmd_status() {
+    echo ""
+    echo "=== Servers ==="
+    hcloud server list 2>/dev/null || echo "  No servers found"
+
+    echo ""
+    echo "=== Snapshots ==="
+    hcloud image list --type snapshot --selector "cluster=$SNAPSHOT_PREFIX" 2>/dev/null || echo "  No snapshots found"
+    echo ""
+}
+
+# --- Firewall: Update rules to current public IP ---
+cmd_firewall() {
+    echo ""
+    echo "=== Updating firewall ==="
+    echo ""
+
+    # Get current public IP
+    my_ip=$(curl -s https://ifconfig.me)
+    if [ -z "$my_ip" ]; then
+        err "Could not determine public IP"
+        exit 1
+    fi
+    log "Current public IP: $my_ip"
+
+    # Build firewall rules JSON
+    rules=$(cat <<EOF
+[
+  {
+    "description": "SSH",
+    "direction": "in",
+    "protocol": "tcp",
+    "port": "22",
+    "source_ips": ["${my_ip}/32"],
+    "destination_ips": []
+  },
+  {
+    "description": "K3s API",
+    "direction": "in",
+    "protocol": "tcp",
+    "port": "6443",
+    "source_ips": ["${my_ip}/32"],
+    "destination_ips": []
+  },
+  {
+    "description": "NodePort range",
+    "direction": "in",
+    "protocol": "tcp",
+    "port": "30000-32767",
+    "source_ips": ["${my_ip}/32"],
+    "destination_ips": []
+  },
+  {
+    "description": "ICMP ping",
+    "direction": "in",
+    "protocol": "icmp",
+    "source_ips": ["${my_ip}/32"],
+    "destination_ips": []
+  }
+]
+EOF
+)
+
+    # Write to temp file (hcloud needs a file for --rules-file)
+    tmp_rules=$(mktemp)
+    echo "$rules" > "$tmp_rules"
+
+    log "Applying firewall rules to firewall $FIREWALL_ID..."
+    hcloud firewall replace-rules "$FIREWALL_ID" --rules-file "$tmp_rules"
+
+    rm -f "$tmp_rules"
+
+    log "Firewall updated — only $my_ip can reach SSH, K3s API, and NodePorts"
+    echo ""
+}
+
+# --- Main ---
+case "${1:-help}" in
+    save)    cmd_save ;;
+    restore) cmd_restore ;;
+    status)  cmd_status ;;
+    firewall) cmd_firewall ;;
+    *)
+        echo "Usage: $0 {save|restore|status}"
+        echo ""
+        echo "  save     - Snapshot both servers and delete them (stops billing)"
+        echo "  restore  - Create servers from latest snapshots"
+        echo "  status   - Show servers and snapshots"
+        echo "  firewall - Update firewall rules to current public IP"
+        exit 1
+        ;;
+esac

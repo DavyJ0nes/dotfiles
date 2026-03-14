@@ -142,6 +142,44 @@ alias kb "kubectl"
 alias k "kubectl"
 alias mk "minikube"
 
+## Context & Config
+alias kctx "kubectl config get-contexts"
+alias kcc "kubectl config use-context"
+alias kcur "kubectl config current-context"
+alias kns "kubectl config set-context --current --namespace"
+
+## Pods
+alias kgp "kubectl get pods"
+alias kgpa "kubectl get pods --all-namespaces"
+alias kgpw "kubectl get pods --watch"
+alias kgpwide "kubectl get pods -o wide"
+alias kdp "kubectl describe pod"
+
+## Deployments
+alias kgd "kubectl get deployments"
+alias kdd "kubectl describe deployment"
+alias krd "kubectl rollout restart deployment"
+
+## Services
+alias kgs "kubectl get services"
+alias kds "kubectl describe service"
+
+## Nodes
+alias kgn "kubectl get nodes"
+alias kdn "kubectl describe node"
+
+## Namespaces
+alias kgns "kubectl get namespaces"
+
+## Logs
+alias kl "kubectl logs"
+alias klf "kubectl logs --follow"
+
+## General
+alias kaf "kubectl apply -f"
+alias kdf "kubectl delete -f"
+alias kex "kubectl exec -it"
+
 # -- terraform
 alias tf "terraform"
 

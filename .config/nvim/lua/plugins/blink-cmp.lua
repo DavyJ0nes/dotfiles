@@ -26,7 +26,11 @@ return {
 	end,
 
 	opts = {
-		keymap = { preset = "enter" },
+		keymap = {
+			preset = "enter",
+			["<C-space>"] = {},
+			["<C-x>"] = { "show", "fallback" },
+		},
 
 		cmdline = {
 			enabled = true,

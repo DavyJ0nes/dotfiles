@@ -14,8 +14,12 @@ return {
 				enable = false,
 				url = "",
 			},
-			schemas = require("schemastore").yaml.schemas(),
+			schemas = vim.tbl_extend("force", require("schemastore").yaml.schemas(), {
+				kubernetes = { "*.yaml", "*.yml" },
+			}),
 			validate = true,
+			completion = true,
+			hover = true,
 		},
 	},
 }

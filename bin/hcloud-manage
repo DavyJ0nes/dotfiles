@@ -249,19 +249,57 @@ EOF
     echo ""
 }
 
+# --- Hosts: Update /etc/hosts with node-1 IP ---
+cmd_hosts() {
+    echo ""
+    echo "=== Updating /etc/hosts ==="
+    echo ""
+
+    # Sudo check
+    if ! sudo -v; then
+        err "sudo access required"
+        exit 1
+    fi
+
+    for server in "${SERVERS[@]}"; do
+        if ! hcloud server describe "$server" > /dev/null 2>&1; then
+            warn "Server '$server' not found, skipping"
+            continue
+        fi
+        ip=$(hcloud server describe "$server" -o format='{{.PublicNet.IPv4.IP}}')
+        if [ -z "$ip" ]; then
+            err "Could not determine IP for $server"
+            continue
+        fi
+        log "$server IP: $ip"
+
+        if grep -qE "[[:space:]]${server}([[:space:]]|$)" /etc/hosts; then
+            sudo sed -i '' "s/^[0-9a-f.:]*[[:space:]].*${server}.*/${ip} ${server}/" /etc/hosts
+            log "Updated existing $server entry in /etc/hosts"
+        else
+            echo "${ip} ${server}" | sudo tee -a /etc/hosts > /dev/null
+            log "Added $server entry to /etc/hosts"
+        fi
+    done
+
+    echo ""
+}
+
 # --- Main ---
 case "${1:-help}" in
     save)    cmd_save ;;
     restore) cmd_restore ;;
     status)  cmd_status ;;
     firewall) cmd_firewall ;;
+    hosts)   cmd_hosts ;;
     *)
-        echo "Usage: $0 {save|restore|status}"
+        echo "Usage: $0 {save|restore|status|firewall|hosts}"
         echo ""
         echo "  save     - Snapshot both servers and delete them (stops billing)"
         echo "  restore  - Create servers from latest snapshots"
         echo "  status   - Show servers and snapshots"
         echo "  firewall - Update firewall rules to current public IP"
+        echo "  hosts    - Update /etc/hosts with current node-1 IP"
         exit 1
         ;;
 esac

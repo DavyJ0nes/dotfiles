@@ -26,6 +26,7 @@ windows:
         - ttoday
   - config:
       root: "~/dotfiles/.config/"
-      layout: tiled
+      layout: 81e7,382x65,0,0[382x59,0,0,2,382x5,0,60,13
       panes:
         - vi
+        -

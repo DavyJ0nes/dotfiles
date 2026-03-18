@@ -2,7 +2,6 @@
 # zmodload zsh/zprof
 
 # -- basic set up
-export CC=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/gcc-14
 export GPG_TTY=$(tty)
 export LANG=en_US.UTF-8
 export LC_ALL="en_US.UTF-8"

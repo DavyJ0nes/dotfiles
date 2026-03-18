@@ -1,4 +1,4 @@
-#files: 1172	version: 5.9
+#files: 1177	version: 5.9
 
 _comps=(
 '_arguments' '__arguments'
@@ -302,6 +302,7 @@ _comps=(
 'clang++' '_gcc'
 'clay' '_clay'
 'clear' '_nothing'
+'cloud-provider-kind' '_cloud-provider-kind'
 'cloudkitty' '_openstack'
 'clusterdb' '_postgresql'
 'cmake' '_cmake'
@@ -396,7 +397,7 @@ _comps=(
 'debuild' '_debuild'
 'declare' '_typeset'
 'defaults' '_defaults'
-'delta' '_sccs'
+'delta' '_delta'
 'designate' '_openstack'
 'devtodo' '_devtodo'
 'df' '_df'
@@ -1270,6 +1271,7 @@ _comps=(
 'play' '_play'
 'pldd' '_pids'
 'plutil' '_plutil'
+'pluto' '_pluto'
 'pm2' '_pm2'
 'pmake' '_make'
 'pman' '_perl_modules'
@@ -1291,6 +1293,7 @@ _comps=(
 'policytool' '_java'
 'pon' '_pon'
 'popd' '_directory_stack'
+'popeye' '_popeye'
 'port' '_port'
 'portaudit' '_portaudit'
 'portlint' '_portlint'
@@ -1344,6 +1347,7 @@ _comps=(
 'pswrap' '_postscript'
 'ptree' '_ptree'
 'ptx' '_ptx'
+'pulumi' '_pulumi'
 'pump' '_pump'
 'pushd' '_cd'
 'putclip' '_putclip'
@@ -2090,12 +2094,13 @@ autoload -Uz _afew _android _archlinux-java _artisan _atach \
             _yarn _zcash-cli _act _aerospace _aichat \
             _aider _alacritty _argocd _asdf _aws \
             _bat _bazel _brew _carapace _cdktf \
-            _exercism _eza _fd _gci _gh \
-            _ghostty _git _golangci-lint _hcloud _helm \
-            _hg _jj _jqp _k9s _kind \
-            _kn _ko _kubectl _kubectx _kubens \
-            _luarocks _minikube _opam _p11-kit _pipx \
-            _podman _posting _rg _ruff _runme \
+            _cloud-provider-kind _delta _exercism _eza _fd \
+            _gci _gh _ghostty _git _golangci-lint \
+            _hcloud _helm _hg _jj _jqp \
+            _k9s _kind _kn _ko _kubectl \
+            _kubectx _kubens _luarocks _minikube _opam \
+            _p11-kit _pipx _pluto _podman _popeye \
+            _posting _pulumi _rg _ruff _runme \
             _starship _stern _task _taskwarrior-tui _tea \
             _temporal _tmuxinator _tree-sitter _trust _xh \
             _ya _yazi _yq _zoxide __arguments \

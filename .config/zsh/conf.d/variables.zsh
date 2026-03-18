@@ -40,4 +40,5 @@ export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
 export TESTCONTAINERS_RYUK_DISABLED=true
 
 # GCC (for native extensions)
-export CC=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/gcc-14
+# export CC=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/gcc-14
+export CC=clang

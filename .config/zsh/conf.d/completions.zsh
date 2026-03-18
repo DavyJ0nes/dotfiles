@@ -4,9 +4,9 @@ fpath=($HOMEBREW_PREFIX/share/zsh-completions $HOMEBREW_PREFIX/share/zsh/site-fu
 autoload -Uz compinit
 # Only rebuild .zcompdump once a day for faster startup
 if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
+  compinit -u
 else
-  compinit -C
+  compinit -uC
 fi
 
 _comp_options+=(globdots)   # complete hidden files
@@ -44,6 +44,7 @@ source <(carapace _carapace zsh)
 command -v nothelp  &>/dev/null && source <(nothelp completion zsh)
 command -v epghelper &>/dev/null && source <(epghelper completion zsh)
 command -v demo-cli  &>/dev/null && source <(demo-cli completion zsh)
+command -v pulumi  &>/dev/null && source <(pulumi completion zsh)
 
 # ── zsh-autosuggestions (fish-style inline ghost text) ────────────────────────
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -51,5 +52,16 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 bindkey '^F' autosuggest-accept        # Ctrl+F accepts suggestion
-bindkey '^[[C' autosuggest-accept      # Right arrow also accepts suggestion
+bindkey '^I' autosuggest-accept        # Tab accepts suggestion
+
+# Right arrow: move cursor if mid-line, accept suggestion if at end
+_forward_char_or_autosuggest() {
+  if [[ -n $RBUFFER ]]; then
+    zle forward-char
+  else
+    zle autosuggest-accept
+  fi
+}
+zle -N _forward_char_or_autosuggest
+bindkey '^[[C' _forward_char_or_autosuggest
 # Tab is left as expand-or-complete (default) so cd <Tab> works properly

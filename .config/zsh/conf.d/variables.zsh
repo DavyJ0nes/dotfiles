@@ -35,6 +35,9 @@ export NVM_DIR="$HOME/.nvm"
 export NOTES_DIR="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/"
 export ZK_NOTEBOOK_DIR="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"
 
+# Kubernetes
+export DO='--dry-run=client -o yaml'
+
 # Testcontainers
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
 export TESTCONTAINERS_RYUK_DISABLED=true

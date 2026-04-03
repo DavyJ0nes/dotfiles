@@ -65,4 +65,6 @@ bin/todo
 bin/war_roller
 
 # unneeded caches
-*zed/prompts/prompts*
+*zed/prompts/prompts-*
+.config/zsh/.zcompdump
+.config/zed/prompts/prompts-*

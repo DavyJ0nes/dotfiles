@@ -1,4 +1,12 @@
 -------------------------------------- autocmds -------------------------------
+-- nvim-treesitter main branch doesn't auto-attach highlight — do it explicitly
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "markdown", "lua", "go", "typescript", "javascript", "bash", "yaml", "toml", "json" },
+	callback = function()
+		pcall(vim.treesitter.start)
+	end,
+})
+
 -- diagnostic config
 vim.diagnostic.config({
 	virtual_text = { current_line = true },

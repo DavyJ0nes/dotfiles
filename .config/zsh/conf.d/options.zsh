@@ -19,7 +19,7 @@ setopt PUSHD_SILENT
 setopt CDABLE_VARS
 
 # ── Globbing ──────────────────────────────────────────────────────────────────
-setopt EXTENDED_GLOB
+# setopt EXTENDED_GLOB
 setopt NO_CASE_GLOB
 
 # ── UX ────────────────────────────────────────────────────────────────────────

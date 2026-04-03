@@ -190,3 +190,21 @@ function update() {
   echo "updated brew packages:"
   echo "$TO_UPDATE"
 }
+
+# ── Taskwarrior ───────────────────────────────────────────────────────────────
+function ttprio() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: ttprio <id> <order>" >&2
+    return 1
+  fi
+  local id=$1 ord=$2
+  if ! [[ $id =~ ^[0-9]+$ ]]; then
+    echo "ttprio: <id> must be a number (got '$id')" >&2
+    return 1
+  fi
+  if ! [[ $ord =~ ^-?[0-9]+$ ]]; then
+    echo "ttprio: <order> must be an integer (got '$ord')" >&2
+    return 1
+  fi
+  command task $id modify todayorder:$ord
+}

@@ -19,7 +19,7 @@ rm -rf "$DATA/site/pack/*/opt/nvim-treesitter/parser"
 # echo ""
 
 languages=(
-  json yaml markdown graphql bash lua vim dockerfile
+  json yaml markdown markdown_inline graphql bash lua vim dockerfile
   gitignore query vimdoc go clojure gleam elixir
   typescript tsx javascript toml
 )

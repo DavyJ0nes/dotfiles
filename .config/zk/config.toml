@@ -5,6 +5,31 @@ dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"
 template = "default"
 
 [alias]
-improve = "echo '== light on content' && zk list --format '{{word-count}}\t{{title}}' --sort word-count --limit 10 && echo '== tagless' && zk list --format '{{word-count}}\t{{title}}' --tagless"
+
 dir = "cd ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"
+
 nt = 'zk new --title "$*"'
+
+# Surface notes that need attention: orphaned (no links), light on content, or untagged
+improve = """echo '== orphaned (no links or backlinks)' && zk list --format '{{title}}' --no-linked-by '*' --no-link-to '*' --sort modified && echo '' && echo '== light on content' && zk list --format '{{word-count}}\t{{title}}' --sort word-count --limit 10 && echo '' && echo '== tagless' && zk list --format '{{word-count}}\t{{title}}' --tagless"""
+
+# What did I write recently? Good for weekly review
+recent = "zk list --format '{{format-date modified}}\t{{title}}' --sort modified --limit 15"
+
+# Most connected notes — your best thinking lives here
+hubs = "zk list --format '{{link-count}}\t{{title}}' --sort link-count- --limit 10"
+
+# What links to this note? (use: zk backlinks "some title")
+backlinks = "zk list --link-to $1 --format '{{title}}'"
+
+# Open a random note to review — good for spaced repetition
+random = "zk edit --sort random --limit 1"
+
+# Notes created but never modified — probably need fleshing out or deleting
+stale = "zk list --format '{{format-date modified}}\t{{title}}' --created-before '2 weeks ago' --modified-before '2 weeks ago' --sort modified --limit 10"
+
+# Weekly review: combines recent, orphaned, and stale into one view
+review = """echo '== recent notes' && zk list --format '{{format-date modified}}\t{{title}}' --sort modified --limit 10 && echo '' && echo '== orphaned' && zk list --format '{{title}}' --no-linked-by '*' --no-link-to '*' --sort modified --limit 10 && echo '' && echo '== stale (untouched 2+ weeks)' && zk list --format '{{format-date modified \"2006-01-02\"}}\t{{title}}' --created-before '2 weeks ago' --modified-before '2 weeks ago' --sort modified --limit 10"""
+
+# List all tags sorted by usage count (ascending) — spot inconsistencies and rarely used tags
+tag-list = "zk tag list --format '{{note-count}}\t{{name}}' --sort note-count+"

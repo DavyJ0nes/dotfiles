@@ -55,7 +55,7 @@ return {
 	       [(inline_link) (image)] @link
 	   ]],
 			-- Query to be able to identify links in nodes
-			inline_link_query = "[(inline_link) (image)] @link",
+			-- inline_link_query = "[(inline_link) (image)] @link",
 			-- The level of logs to write to file: vim.fn.stdpath('state') .. '/render-markdown.log'
 			-- Only intended to be used for plugin development / debugging
 			log_level = "error",
@@ -102,16 +102,41 @@ return {
 				},
 			},
 			code = {
-				-- Turn on / off code block & inline code rendering
 				enabled = true,
-				-- Determines how code blocks & inline code are rendered:
-				--  none: disables all rendering
-				--  normal: adds highlight group to code blocks & inline code
-				--  language: adds language icon to sign column and icon + name above code blocks
-				--  full: normal + language
+				render_modes = true,
+				sign = true,
+				conceal_delimiters = true,
+				language = true,
+				position = "left",
+				language_icon = true,
+				language_name = true,
+				language_info = true,
+				language_pad = 0,
+				disable = {},
+				disable_background = { "diff" },
+				width = "block",
+				left_margin = 0,
+				left_pad = 0,
+				right_pad = 0,
+				min_width = 80,
+				border = "thin",
+				language_border = "█",
+				language_left = "",
+				language_right = "",
+				above = "▄",
+				below = "▀",
+				inline = true,
+				inline_left = "",
+				inline_right = "",
+				inline_pad = 0,
+				priority = 140,
+				highlight = "RenderMarkdownCode",
+				highlight_info = "RenderMarkdownCodeInfo",
+				highlight_language = nil,
+				highlight_border = "RenderMarkdownCodeBorder",
+				highlight_fallback = "RenderMarkdownCodeFallback",
+				highlight_inline = "RenderMarkdownCodeInline",
 				style = "full",
-				-- Highlight for code blocks & inline code
-				highlight = "ColorColumn",
 			},
 			dash = {
 				-- Turn on / off thematic break rendering
@@ -232,14 +257,14 @@ return {
 					-- Used when not being rendered, get user setting
 					default = vim.api.nvim_get_option_value("conceallevel", {}),
 					-- Used when being rendered, concealed text is completely hidden
-					rendered = 3,
+					rendered = 1,
 				},
 				-- See :h 'concealcursor'
 				concealcursor = {
 					-- Used when not being rendered, get user setting
 					default = vim.api.nvim_get_option_value("concealcursor", {}),
-					-- Used when being rendered, conceal text in all modes
-					rendered = "nvic",
+					-- Used when being rendered, conceal text in all modes except insert
+					rendered = "nvc",
 				},
 			},
 			-- Mapping from treesitter language to user defined handlers

@@ -1,155 +1,114 @@
 #!/bin/bash
 set -e
 
-## -- Home Folders ------------------------------------------------------------
-echo "setting up default folders"
-cd $HOME && mkdir -p {elixir,go,scratch,tmp,work_notes}
-cd $HOME && mkdir -p elixir/src
-cd $HOME && mkdir -p go/{src,bin,pkg}
-cd $HOME && mkdir -p go/src/github.com/{davyj0nes,fever}
+echo "==> Starting dotfiles setup..."
+
+## -- Xcode Command Line Tools ------------------------------------------------
+if ! xcode-select -p &>/dev/null; then
+  echo "==> Installing Xcode Command Line Tools..."
+  xcode-select --install
+  echo "    Re-run this script after the installation completes."
+  exit 0
+fi
+echo "==> Xcode Command Line Tools already installed"
 ## ----------------------------------------------------------------------------
 
 ## -- Homebrew ----------------------------------------------------------------
-echo "installing Homebrew packages..."
-brew install adr-tools
-brew install awscli
-brew install bash
-brew install bat
-brew install blueutil
-brew install cmake
-brew install coreutils
-brew install diffutils
-brew install docker-compose
-brew install elixir
-brew install exercism
-brew install eza
-brew install fd
-brew install fish
-brew install fisher
-brew install fzf
-brew install gcc
-brew install gh
-brew install git
-brew install gnu-sed
-brew install gnupg
-brew install go
-brew install gofumpt
-brew install golangci-lint
-brew install golines
-brew install grep
-brew install jq
-brew install kn
-brew install ko
-brew install kubernetes-cli
-brew install lazygit
-brew install make
-brew install mdcat
-brew install minikube
-brew install neovim
-brew install opam
-brew install pinentry-mac
-brew install podman
-brew install pyenv
-brew install ripgrep
-brew install shellcheck
-brew install shfmt
-brew install socat
-brew install stow
-brew install switchaudio-osx
-brew install task
-brew install taskopen
-brew install taskwarrior-tui
-brew install tfenv
-brew install tmux
-brew install tmuxinator
-brew install tree
-brew install walk
-brew install watch
-brew install wget
-brew install yq
-brew install zoxide
-
-echo "installing Homebrew casks..."
-
-brew tap FelixKratz/formulae
-brew install sketchybar
-
-brew install --cask nikitabobko/tap/aerospace
-brew install --cask alacritty
-brew install --cask ghostty
-brew install --cask livebook
-brew install --cask font-hack-nerd-font
-brew install --cask font-jetbrains-mono-nerd-font
-brew install --cask font-lilex-nerd-font
-brew install --cask font-sf-pro
-brew install --cask google-chrome
-brew install --cask google-cloud-sdk
-brew install --cask raycast
-brew install --cask sf-symbols
-
-echo "homebrew packages installed successfully!"
+if ! command -v brew &>/dev/null; then
+  echo "==> Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  # Add Homebrew to PATH for Apple Silicon Macs
+  if [[ -f /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+fi
+echo "==> Homebrew already installed"
 ## ----------------------------------------------------------------------------
 
-## -- Dotfiles ----------------------------------------------------------------
-echo "configuring dotfiles..."
+## -- Clone dotfiles ----------------------------------------------------------
+DOTFILES_DIR="$HOME/dotfiles"
+if [[ ! -d "$DOTFILES_DIR" ]]; then
+  echo "==> Cloning dotfiles..."
+  git clone https://github.com/DavyJ0nes/dotfiles.git "$DOTFILES_DIR"
+fi
+cd "$DOTFILES_DIR"
+## ----------------------------------------------------------------------------
+
+## -- Home Folders ------------------------------------------------------------
+echo "==> Creating default folders..."
+mkdir -p "$HOME"/{elixir,go,scratch,tmp,work_notes}
+mkdir -p "$HOME/elixir/src"
+mkdir -p "$HOME/go"/{src,bin,pkg}
+mkdir -p "$HOME/go/src/github.com/davyj0nes"
+## ----------------------------------------------------------------------------
+
+## -- Homebrew Packages (via Brewfile) ----------------------------------------
+echo "==> Installing Homebrew packages via Brewfile..."
+brew bundle --file="$DOTFILES_DIR/Brewfile"
+echo "==> Homebrew packages installed"
+## ----------------------------------------------------------------------------
+
+## -- Dotfiles (stow) ---------------------------------------------------------
+echo "==> Configuring dotfiles with stow..."
 stow .
-echo "dotfiles configured successfully!"
+echo "==> Dotfiles configured"
 ## ----------------------------------------------------------------------------
 
-## -- Fish --------------------------------------------------------------------
-echo "setting up fish..."
-sudo bash -c "echo '/usr/local/bin/fish' >> /etc/shells"
-sudo chsh -s /usr/local/bin/fish
-echo "fish setup successfully!"
-## ----------------------------------------------------------------------------
-
-## -- Sketchybar --------------------------------------------------------------
-echo "enabling sketchybar..."
-brew services start sketchybar
-echo "sketchybar enabled successfully!"
-## ----------------------------------------------------------------------------
-
-## -- Git ---------------------------------------------------------------------
-echo "setting up git config..."
+## -- GitHub CLI auth ---------------------------------------------------------
+echo "==> Setting up GitHub CLI..."
 gh auth login
 gh config set git_protocol ssh
 gh config set editor nvim
 gh auth setup-git
 ## ----------------------------------------------------------------------------
 
-## -- note helper -------------------------------------------------------------
-echo "installing nothelp..."
-go install github.com/davyj0nes/nothelp@latest
-## ----------------------------------------------------------------------------
-
 ## -- OCaml -------------------------------------------------------------------
-echo "setting up ocaml..."
+echo "==> Setting up OCaml..."
 opam init -a
 opam install ocaml-lsp-server odoc ocamlformat utop
 ## ----------------------------------------------------------------------------
-echo "installations complete!"
 
-echo "now clone notes repo and check that taskwarrior is working"
+## -- Go tools ----------------------------------------------------------------
+echo "==> Installing Go tools..."
+go install github.com/rhysd/actionlint/cmd/actionlint@latest
+go install golang.org/x/tools/cmd/callgraph@latest
+go install github.com/go-delve/delve/cmd/dlv@latest
+go install github.com/davidrjenni/reftools/cmd/fillswitch@latest
+go install github.com/davyj0nes/partner-validate@latest
+go install github.com/onsi/ginkgo/v2/ginkgo@latest
+go install github.com/abice/go-enum@latest
+go install mvdan.cc/gofumpt@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/segmentio/golines@latest
+go install github.com/fatih/gomodifytags@latest
+go install github.com/abenz1267/gomvp@latest
+go install golang.org/x/tools/cmd/gonew@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install github.com/cweill/gotests/gotests@latest
+go install gotest.tools/gotestsum@latest
+go install golang.org/x/vuln/cmd/govulncheck@latest
+go install github.com/koron/iferr@latest
+go install github.com/josharian/impl@latest
+go install github.com/tmc/json-to-struct@latest
+go install go.uber.org/mock/mockgen@latest
+go install github.com/davyj0nes/nothelp@latest
+go install github.com/kyoh86/richgo@latest
+echo "==> Go tools installed"
+## ----------------------------------------------------------------------------
 
-while true; do
-    read -p "Type 'yes' to continue: " input
-    if [ "$input" == "yes" ]; then
-        echo "Continuing..."
-        break
-    else
-        echo "Please type 'yes' to continue."
-    fi
-done
+## -- Sketchybar --------------------------------------------------------------
+echo "==> Starting sketchybar..."
+brew services start sketchybar
+## ----------------------------------------------------------------------------
 
-echo "adding remaining tasks to taskwarrior..."
-
-task add "Update Caps Lock to Escape" due:today
-task add "Install Slack" due:today
-task add "Install Keymapp" due:today
-task add "Hide Dock and menu bar" due:today
-task add "Rearrange dock applications" due:today
-task add "Set background image" due:today
-task add "Restore raycast settings" due:today
-task add "Sort out raycast shortcut" due:today
-
-echo "done..."
+## -- Manual steps reminder ---------------------------------------------------
+echo ""
+echo "==> Setup complete! A few manual steps remain:"
+echo ""
+echo "    [ ] Restore Raycast settings"
+echo "    [ ] Set Caps Lock → Escape in System Settings > Keyboard"
+echo "    [ ] Install Slack (App Store or slack.com)"
+echo "    [ ] Install Keymapp (keymapp.app)"
+echo "    [ ] Set desktop background"
+echo "    [ ] Hide Dock and menu bar"
+echo ""

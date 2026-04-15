@@ -1,5 +1,4 @@
 return {
-	"nvim-lua/plenary.nvim", -- lua functions that many plugins use
+	"nvim-lua/plenary.nvim",
 	"nvim-tree/nvim-web-devicons",
-	"neovim/nvim-lspconfig",
 }

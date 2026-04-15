@@ -36,10 +36,11 @@ cd "$DOTFILES_DIR"
 
 ## -- Home Folders ------------------------------------------------------------
 echo "==> Creating default folders..."
-mkdir -p "$HOME"/{elixir,go,scratch,tmp,work_notes}
+mkdir -p "$HOME"/{elixir,go,rust,scratch,tmp,work_notes}
 mkdir -p "$HOME/elixir/src"
 mkdir -p "$HOME/go"/{src,bin,pkg}
 mkdir -p "$HOME/go/src/github.com/davyj0nes"
+mkdir -p "$HOME/rust/davyj0nes"
 ## ----------------------------------------------------------------------------
 
 ## -- Homebrew Packages (via Brewfile) ----------------------------------------

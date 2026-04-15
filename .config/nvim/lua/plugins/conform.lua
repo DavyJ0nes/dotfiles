@@ -2,26 +2,24 @@ return {
 	"stevearc/conform.nvim",
 	event = { "BufReadPre", "BufWritePre" },
 	ft = {
-		"clojure",
 		"go",
 		"rust",
-		"elixir",
-		"terraform",
 		"javascript",
 		"typescript",
 		"javascriptreact",
 		"typescriptreact",
 		"python",
-		"gleam",
-		"ocaml",
+		"lua",
 		"markdown",
 		"html",
+		"terraform",
+		"dockerfile",
 	},
 	config = function()
 		require("conform").setup({
 			formatters = {
 				mdformat = {
-					command = "/Users/davy/.local/bin/mdformat",
+					command = "mdformat",
 					prepend_args = { "--number", "--wrap", "79" },
 				},
 				prettierd = {
@@ -34,9 +32,8 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				terraform = { "terraform_fmt" },
+				rust = { "rustfmt" },
 				go = { "gofmt", "gci", "goimports" },
-				elixir = { "mix" },
-				ocaml = { "ocamlformat" },
 				html = { "superhtml" },
 				markdown = { "mdformat" },
 				typescript = { "biome" },
@@ -44,6 +41,7 @@ return {
 				javascript = { "biome" },
 				javascriptreact = { "biome" },
 				json = { "biome" },
+				dockerfile = { "hadolint" },
 				["*"] = { "trim_whitespace" },
 			},
 			format_on_save = {

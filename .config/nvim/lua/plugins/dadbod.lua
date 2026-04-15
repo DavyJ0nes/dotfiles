@@ -3,16 +3,10 @@ return {
 	dependencies = {
 		{ "tpope/vim-dadbod", lazy = true },
 		{ "tpope/vim-dispatch" },
-		{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true }, -- Optional
+		{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
 	},
-	cmd = {
-		"DBUI",
-		"DBUIToggle",
-		"DBUIAddConnection",
-		"DBUIFindBuffer",
-	},
+	cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
 	init = function()
-		-- Your DBUI configuration
 		vim.g.db_ui_use_nerd_fonts = 1
 		vim.g.db_ui_save_location = "~/.local/dadbod/connections"
 	end,

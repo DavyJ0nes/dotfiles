@@ -1,16 +1,7 @@
 return {
 	"williamboman/mason.nvim",
-	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-	},
 	config = function()
-		local mason = require("mason")
-		local mason_lspconfig = require("mason-lspconfig")
-		local mason_tool_installer = require("mason-tool-installer")
-
-		-- enable mason and configure icons
-		mason.setup({
+		require("mason").setup({
 			ui = {
 				icons = {
 					package_installed = "✓",
@@ -18,49 +9,33 @@ return {
 					package_uninstalled = "✗",
 				},
 			},
-		})
-
-		mason_lspconfig.setup({
-			-- list of servers for mason to install
-			automatic_installation = true,
 			ensure_installed = {
-				"bashls",
-				"jsonls",
-				-- "clojure_lsp",
+				-- LSP servers
+				"bash-language-server",
+				"dockerfile-language-server",
 				"gopls",
-				"lua_ls",
-				"markdown_oxide",
+				"helm-ls",
+				"json-lsp",
+				"lua-language-server",
 				"pyright",
-				"ruff",
-				"terraformls",
-				"tflint",
-				-- "elixirls",
-				-- "ocamllsp",
-				"rust_analyzer",
-				"ts_ls", -- typescript lsp
-				"yamlls",
-				"biome", -- typescript linter/formatter
-			},
-		})
+				"terraform-ls",
+				"typescript-language-server",
+				"yaml-language-server",
+				-- rust-analyzer is managed by rustaceanvim
 
-		mason_tool_installer.setup({
-			ensure_installed = {
-				"prettier", -- prettier formatter
-				"prettierd", -- javascript/typescript formatter
-				"stylua", -- lua formatter
-				"gopls", -- go formatter
-				"gci", -- go formatter
-				"delve", -- go debugger
-				"golangci-lint", -- go linter
-				"tflint", -- terraform linter
-				"mdformat", -- markdown formatter
-				"json-lsp", -- JSON language server
-				-- "buf", -- proto formatter and linter
-				-- "protolint", -- proto linter
-				"pyright", -- python linter
-				"black", -- python formatter
-				"yaml-language-server", -- YAML language server
-				-- "ocamlformat", -- ocaml formatter
+				-- Formatters / linters / tools
+				"stylua",
+				"goimports",
+				"gci",
+				"delve",
+				"golangci-lint",
+				"hadolint",   -- Dockerfile linter
+				"biome",
+				"prettier",
+				"prettierd",
+				"black",
+				"tflint",
+				"mdformat",
 			},
 		})
 	end,

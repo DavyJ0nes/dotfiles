@@ -1,31 +1,15 @@
 return {
 	"nvim-neotest/neotest",
-	ft = {
-		"rust",
-		"go",
-		"terraform",
-		"typescript",
-		"javascriptreact",
-		"python",
-		"typescriptreact",
-		"elixir",
-	},
+	ft = { "go", "rust", "typescript", "typescriptreact", "javascriptreact" },
 	dependencies = {
 		{ "nvim-lua/plenary.nvim", version = "*" },
 		"antoinemadec/FixCursorHold.nvim",
-		"jfpedroza/neotest-elixir",
 		"jutonz/neotest-bun",
 		"marilari88/neotest-vitest",
 		"nvim-treesitter/nvim-treesitter",
 		"mrcjkb/rustaceanvim",
 		{ "nvim-neotest/nvim-nio", version = "*" },
-		{
-			"fredrikaverpil/neotest-golang",
-			version = "*",
-			build = function()
-				vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait()
-			end,
-		},
+		{ "fredrikaverpil/neotest-golang", version = "*" },
 	},
 	config = function()
 		local neotest_ns = vim.api.nvim_create_namespace("neotest")
@@ -33,69 +17,42 @@ return {
 		vim.diagnostic.config({
 			virtual_text = {
 				format = function(diagnostic)
-					local message = diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
-					return message
+					return diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
 				end,
 			},
 		}, neotest_ns)
 
 		require("neotest").setup({
 			adapters = {
-				require("neotest-bun")({
-					additional_args = {},
-				}),
-				require("neotest-elixir"),
+				require("neotest-bun")({ additional_args = {} }),
 				require("rustaceanvim.neotest"),
-				require("neotest-vitest")({
-					filter_dir = function(name, _, _)
-						return name ~= "node_modules"
-					end,
-				}),
+				(function()
+					-- neotest-vitest crashes with nil rootPath in non-JS projects;
+					-- wrap root() with pcall so it returns nil gracefully instead.
+					local vitest = require("neotest-vitest")({
+						filter_dir = function(name, _, _)
+							return name ~= "node_modules"
+						end,
+					})
+					local orig_root = vitest.root
+					vitest.root = function(...)
+						local ok, result = pcall(orig_root, ...)
+						return ok and result or nil
+					end
+					return vitest
+				end)(),
 				require("neotest-golang")({
 					warn_test_name_dupes = false,
 					runner = "gotestsum",
-					-- go_test_args = {
-					-- 	"-v",
-					-- 	"-race",
-					-- },
 				}),
 			},
-			discovery = {
-				-- Drastically improve performance in ginormous projects by
-				-- only AST-parsing the currently opened buffer.
-				enabled = true,
-				-- Number of workers to parse files concurrently.
-				-- A value of 0 automatically assigns number based on CPU.
-				-- Set to 1 if experiencing lag.
-				concurrent = 0,
-			},
-			diagnostic = {
-				enabled = true,
-				severity = vim.diagnostic.severity.ERROR,
-			},
-			running = {
-				-- Run tests concurrently when an adapter provides multiple commands to run.
-				concurrent = true,
-			},
-			log_level = vim.log.levels.DEBUG, -- increase to DEBUG when troubleshooting
-			output = {
-				enabled = true,
-				open_on_run = true,
-			},
-			run = {
-				enabled = true,
-			},
-			status = {
-				enabled = true,
-				signs = true, -- Sign after function signature
-				virtual_text = false,
-			},
-			strategies = {
-				integrated = {
-					height = 40,
-					width = 120,
-				},
-			},
+			discovery = { enabled = true, concurrent = 0 },
+			diagnostic = { enabled = true, severity = vim.diagnostic.severity.ERROR },
+			running = { concurrent = true },
+			log_level = vim.log.levels.WARN,
+			output = { enabled = true, open_on_run = true },
+			status = { enabled = true, signs = true, virtual_text = false },
+			strategies = { integrated = { height = 40, width = 120 } },
 			summary = {
 				enabled = true,
 				animated = true,

@@ -1,76 +1,28 @@
--- local Lsp = require("utils.lsp")
--- NOTE: npm install -g typescript typescript-language-server
 return {
-	-- on_attach = Lsp.on_attach,
-	-- init_options = { hostInfo = "neovim" },
-	-- cmd = { "typescript-language-server", "--stdio" },
-	-- filetypes = {
-	-- 	"javascript",
-	-- 	"javascriptreact",
-	-- 	"javascript.jsx",
-	-- 	"typescript",
-	-- 	"typescriptreact",
-	-- 	"typescript.tsx",
-	-- 	"vue",
-	-- },
-	-- root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-	-- settings = {
-	-- 	typescript = {
-	-- 		-- Inlay Hints preferences
-	-- 		inlayHints = {
-	-- 			-- You can set this to 'all' or 'literals' to enable more hints
-	-- 			includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
-	-- 			includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-	-- 			includeInlayFunctionParameterTypeHints = true,
-	-- 			includeInlayVariableTypeHints = true,
-	-- 			includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-	-- 			includeInlayPropertyDeclarationTypeHints = false,
-	-- 			includeInlayFunctionLikeReturnTypeHints = true,
-	-- 			includeInlayEnumMemberValueHints = true,
-	-- 		},
-	-- 		-- Code Lens preferences
-	-- 		implementationsCodeLens = {
-	-- 			enabled = true,
-	-- 		},
-	-- 		referencesCodeLens = {
-	-- 			enabled = true,
-	-- 			showOnAllFunctions = true,
-	-- 		},
-	-- 		format = {
-	-- 			indentSize = vim.o.shiftwidth,
-	-- 			convertTabsToSpaces = vim.o.expandtab,
-	-- 			tabSize = vim.o.tabstop,
-	-- 		},
-	-- 	},
-	-- 	javascript = {
-	-- 		-- Inlay Hints preferences
-	-- 		inlayHints = {
-	-- 			-- You can set this to 'all' or 'literals' to enable more hints
-	-- 			includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-	-- 			includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
-	-- 			includeInlayVariableTypeHints = true,
-	-- 			includeInlayFunctionParameterTypeHints = true,
-	-- 			includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-	-- 			includeInlayPropertyDeclarationTypeHints = true,
-	-- 			includeInlayFunctionLikeReturnTypeHints = true,
-	-- 			includeInlayEnumMemberValueHints = true,
-	-- 		},
-	-- 		-- Code Lens preferences
-	-- 		implementationsCodeLens = {
-	-- 			enabled = true,
-	-- 		},
-	-- 		referencesCodeLens = {
-	-- 			enabled = true,
-	-- 			showOnAllFunctions = true,
-	-- 		},
-	-- 		format = {
-	-- 			indentSize = vim.o.shiftwidth,
-	-- 			convertTabsToSpaces = vim.o.expandtab,
-	-- 			tabSize = vim.o.tabstop,
-	-- 		},
-	-- 	},
-	-- 	completions = {
-	-- 		completeFunctionCalls = true,
-	-- 	},
-	-- },
+	cmd = { "typescript-language-server", "--stdio" },
+	filetypes = {
+		"javascript",
+		"javascriptreact",
+		"javascript.jsx",
+		"typescript",
+		"typescriptreact",
+		"typescript.tsx",
+	},
+	root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+	settings = {
+		typescript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "literals",
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayVariableTypeHints = false,
+			},
+		},
+		javascript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "literals",
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayVariableTypeHints = false,
+			},
+		},
+	},
 }

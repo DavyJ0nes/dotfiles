@@ -1,13 +1,13 @@
 local function sources()
-	if vim.tbl_contains({ "elixir", "markdown" }, vim.bo.filetype) then
+	if vim.tbl_contains({ "markdown" }, vim.bo.filetype) then
 		return { "lsp", "path", "buffer" }
 	end
 	return { "lsp", "path", "snippets", "copilot", "buffer" }
 end
 
 local function enable_copilot()
-	local disabled_filetypes = { "elixir", "markdown" }
-	return not vim.tbl_contains(disabled_filetypes, vim.bo.filetype)
+	local disabled = { "markdown" }
+	return not vim.tbl_contains(disabled, vim.bo.filetype)
 end
 
 return {
@@ -45,9 +45,7 @@ return {
 		completion = {
 			menu = {
 				auto_show = true,
-				-- Cleaner border style
 				border = "rounded",
-				-- More compact sizing
 				max_height = 15,
 				scrollbar = true,
 				draw = {
@@ -65,15 +63,7 @@ return {
 					},
 				},
 			},
-
-			-- Ghost text configuration
-			ghost_text = {
-				enabled = false,
-				show_with_selection = true,
-				show_without_selection = false,
-			},
-
-			-- Documentation window
+			ghost_text = { enabled = false },
 			documentation = {
 				auto_show = true,
 				auto_show_delay_ms = 200,

@@ -1,21 +1,21 @@
-require("core.autocmds")
-require("core.keymaps")
-require("core.lazy")
 require("core.options")
-require("core.today-note")
+require("core.keymaps")
+require("core.autocmds")
+require("core.statusline")
+require("core.lazy")
 
--- vim.cmd.colorscheme("nightfox")
-vim.cmd.colorscheme("catppuccin")
--- vim.cmd.colorscheme("dayfox")
+vim.cmd.colorscheme("tokyonight")
 
 vim.lsp.enable({
-	"gopls", -- Go
-	"json", -- JSON
-	"lua_ls", -- Lua
-	"markdown", -- Markdown
-	-- "ts_ls", -- TypeScript
-	"superhtml", -- HTML
-	"gleam", -- Gleam
-	-- "elixir_ls", -- Elixir
-	"yaml", -- Yaml
+	"bashls",
+	"dockerls",
+	"gopls",
+	"helm_ls",
+	"jsonls",
+	"lua_ls",
+	"pyright",
+	"terraformls",
+	"ts_ls",
+	"yamlls",
+	-- rust_analyzer is managed by rustaceanvim
 })

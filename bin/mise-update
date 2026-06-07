@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Update everything on this machine: brew, gh extensions, macOS, rust, mise.
+# Gum-styled port of the `update` zsh function.
+set -uo pipefail
+
+section() {
+  gum style \
+    --foreground 212 --bold \
+    --border rounded --border-foreground 212 \
+    --padding "0 2" --margin "1 0" \
+    "▶ $1"
+}
+
+note()  { gum style --foreground 244 "$*"; }
+done_() { gum style --foreground 42  --bold "✓ $*"; }
+warn()  { gum style --foreground 214 --bold "! $*"; }
+
+gum style \
+  --foreground 212 --bold --align center \
+  --border double --border-foreground 212 \
+  --padding "1 4" --margin "1 0" \
+  "mise-update" "updating everything"
+
+to_update="$(brew outdated -v 2>/dev/null || true)"
+
+section "homebrew"
+brew update
+brew upgrade --greedy
+brew cleanup --prune=all
+done_ "homebrew up to date"
+
+section "gh extensions"
+if command -v gh >/dev/null 2>&1; then
+  gh extension upgrade --all
+  done_ "gh extensions up to date"
+else
+  warn "gh not installed — skipping"
+fi
+
+section "macOS software updates"
+/usr/sbin/softwareupdate -ia
+
+section "rust"
+if command -v rustup >/dev/null 2>&1; then
+  rustup update
+  done_ "rust up to date"
+else
+  note "rustup not installed — skipping"
+fi
+
+section "mise"
+mise self-update --yes
+mise plugins update
+mise upgrade
+done_ "mise up to date"
+
+section "summary"
+if [ -n "$to_update" ]; then
+  note "brew packages that were outdated at start:"
+  printf "%s\n" "$to_update"
+else
+  done_ "brew had nothing outdated"
+fi

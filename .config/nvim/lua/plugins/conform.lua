@@ -18,9 +18,15 @@ return {
 	config = function()
 		require("conform").setup({
 			formatters = {
-				mdformat = {
-					command = "mdformat",
-					prepend_args = { "--number", "--wrap", "79" },
+				rumdl = {
+					command = "rumdl",
+					-- Run from the buffer's own directory so rumdl discovers the nearest
+					-- .rumdl.toml (it walks upward) — e.g. the notes config — regardless of
+					-- Neovim's cwd. Pass the real path via --stdin-filename so [per-file-flavor]
+					-- and exclude/include globs resolve under stdin (they can't match "<stdin>").
+					cwd = function(_, ctx) return ctx.dirname end,
+					args = function(_, ctx) return { "fmt", "--stdin-filename", ctx.filename, "-" } end,
+					stdin = true,
 				},
 				prettierd = {
 					condition = function()
@@ -35,7 +41,7 @@ return {
 				rust = { "rustfmt" },
 				go = { "gofmt", "gci", "goimports" },
 				html = { "superhtml" },
-				markdown = { "mdformat" },
+				markdown = { "rumdl" },
 				typescript = { "biome" },
 				typescriptreact = { "biome" },
 				javascript = { "biome" },

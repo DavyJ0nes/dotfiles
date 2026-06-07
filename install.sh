@@ -25,14 +25,6 @@ fi
 echo "==> Homebrew already installed"
 ## ----------------------------------------------------------------------------
 
-## -- Clone dotfiles ----------------------------------------------------------
-DOTFILES_DIR="$HOME/dotfiles"
-if [[ ! -d "$DOTFILES_DIR" ]]; then
-  echo "==> Cloning dotfiles..."
-  git clone https://github.com/DavyJ0nes/dotfiles.git "$DOTFILES_DIR"
-fi
-cd "$DOTFILES_DIR"
-## ----------------------------------------------------------------------------
 
 ## -- Home Folders ------------------------------------------------------------
 echo "==> Creating default folders..."
@@ -45,7 +37,7 @@ mkdir -p "$HOME/rust/davyj0nes"
 
 ## -- Homebrew Packages (via Brewfile) ----------------------------------------
 echo "==> Installing Homebrew packages via Brewfile..."
-brew bundle --file="$DOTFILES_DIR/Brewfile"
+brew bundle
 echo "==> Homebrew packages installed"
 ## ----------------------------------------------------------------------------
 
@@ -61,12 +53,6 @@ gh auth login
 gh config set git_protocol ssh
 gh config set editor nvim
 gh auth setup-git
-## ----------------------------------------------------------------------------
-
-## -- OCaml -------------------------------------------------------------------
-echo "==> Setting up OCaml..."
-opam init -a
-opam install ocaml-lsp-server odoc ocamlformat utop
 ## ----------------------------------------------------------------------------
 
 ## -- Go tools ----------------------------------------------------------------

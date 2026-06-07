@@ -20,6 +20,9 @@ export GOPATH="$HOME/go"
 export GOBIN="$HOME/go/bin"
 export PATH="$GOPATH/bin:$PATH"
 
+# K8s
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
 # ASDF shims
 if [[ -z "$ASDF_DATA_DIR" ]]; then
   export PATH="$HOME/.asdf/shims:$PATH"

@@ -1,32 +1,26 @@
-# ─── Taps ────────────────────────────────────────────────────────────────────
 tap "danvergara/tools"             # dblab - database TUI client
-tap "elixir-tools/tap"             # Elixir language tools
 tap "felixkratz/formulae"          # sketchybar - macOS menu bar customization
 tap "nikitabobko/tap"              # Aerospace - tiling window manager
 tap "oven-sh/bun"                  # Bun - JavaScript runtime
 tap "pantsbuild/tap"               # Pants - monorepo build system
 tap "pulumi/tap"                   # Pulumi - infrastructure as code
 tap "remotemobprogramming/brew"    # mob - mob/pair programming tool
-tap "steipete/tap"
 tap "thezoraiz/ascii-image-converter"
+tap "elixir-tools/tap"            # (tap for Elixir tooling)
 
-# ─── AI / LLM Tools ──────────────────────────────────────────────────────────
 brew "aichat"                      # AI chat in the terminal (multi-provider)
 brew "aider"                       # AI pair programming in the terminal
 brew "gemini-cli"                  # Google Gemini CLI
 
-# ─── Version Control ─────────────────────────────────────────────────────────
 brew "git"                         # Version control
 brew "git-delta"                   # Syntax-highlighted diffs
 brew "lazygit"                     # Git TUI
 brew "jj"                          # Jujutsu - experimental VCS
 
-# ─── Cloud ───────────────────────────────────────────────────────────────────
 brew "hcloud"                      # Hetzner Cloud CLI
 brew "awslogs"                     # CloudWatch Logs viewer
 brew "temporal"                    # Temporal workflow orchestration CLI
 
-# ─── Kubernetes ──────────────────────────────────────────────────────────────
 brew "argocd"                      # GitOps continuous delivery for Kubernetes
 brew "cloud-provider-kind"         # Kubernetes cloud provider for kind clusters
 brew "helm"                        # Kubernetes package manager
@@ -59,7 +53,6 @@ brew "gopls"                       # Go language server (LSP)
 brew "wxwidgets@3.2"               # C++ GUI library (Erlang/Elixir dependency)
 brew "elixir"                      # Elixir programming language
 brew "erlang@27"                   # Erlang runtime
-brew "elixir-tools/tap"            # (tap for Elixir tooling)
 
 # ─── Python Development ──────────────────────────────────────────────────────
 brew "pyenv"                       # Python version manager
@@ -207,7 +200,6 @@ cask "sf-symbols"                  # Apple SF Symbols reference app
 cask "steam"                       # Gaming platform
 cask "zed"                         # High-performance code editor
 
-# ─── Go Tools (installed via `go install`) ────────────────────────────────────
 go "github.com/rhysd/actionlint/cmd/actionlint"      # GitHub Actions workflow linter
 go "golang.org/x/tools/cmd/callgraph"                # Go call graph analysis
 go "github.com/go-delve/delve/cmd/dlv"               # Go debugger

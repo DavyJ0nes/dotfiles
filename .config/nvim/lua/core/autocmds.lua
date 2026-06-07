@@ -25,6 +25,17 @@ autocmd("BufReadPre", {
 	end,
 })
 
+-- Detect Helm chart templates
+autocmd({ "BufRead", "BufNewFile" }, {
+	group = augroup("helm_filetype", { clear = true }),
+	pattern = { "*/templates/*.yaml", "*/templates/*.tpl", "*/templates/**/*.yaml", "*/templates/**/*.tpl" },
+	callback = function()
+		if vim.fs.find("Chart.yaml", { upward = true, path = vim.fn.expand("%:p:h") })[1] then
+			vim.bo.filetype = "helm"
+		end
+	end,
+})
+
 -- Close certain windows with q
 autocmd("FileType", {
 	group = augroup("close_with_q", { clear = true }),

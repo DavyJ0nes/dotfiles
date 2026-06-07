@@ -1,0 +1,20 @@
+# rumdl — shared Markdown standard.
+#
+# Stowed to ~/.config/rumdl/rumdl.toml, so it applies to every Markdown file you
+# format — including conform's `rumdl fmt -` in Neovim — regardless of cwd.
+# A repository can override this by committing its own .rumdl.toml at its root
+# (project config beats user config).
+#
+# Primary rule: wrap prose at 80 columns.
+
+[global]
+flavor = "mkdocs"
+
+[per-file-flavor]
+"**/Documents/notes/*.md" = "obsidian"
+"**/Documents/notes/**/*.md" = "obsidian"
+
+[MD013]
+line-length = 80      # wrap width
+reflow = true          # reflow prose to line-length on `rumdl fmt` (off by default)
+code-blocks = false    # don't enforce width inside code fences — code can run long

@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+# ai-sessions — see your AI coding sessions across oh-my-pi and Claude Code.
+#
+#   ai-sessions            Project directories with session history, newest first.
+#   ai-sessions --active   Sessions running RIGHT NOW (live processes, via lsof).
+#
+# History sources (one row per project directory):
+#   omp     ~/.omp/agent/sessions/<enc-cwd>/<ts>_<id>.jsonl  (real cwd from JSON header)
+#   claude  ~/.claude/projects/<enc-cwd>/<uuid>.jsonl        (real cwd from transcript)
+# The encoded directory names aren't reliably reversible, so the real project
+# path is read from the session files themselves.
+#
+# --active enumerates actually-running `claude`/`omp` processes (matched on the
+# executable basename) and resolves each one's working directory from the kernel
+# via `lsof -d cwd`. This is the truthful "is it live now" view; ~/.claude/sessions/
+# *.json is a stale per-process registry and is deliberately ignored.
+#
+# Overrides: OMP_SESSIONS_DIR, CLAUDE_PROJECTS_DIR.
+set -uo pipefail
+
+omp_dir="${OMP_SESSIONS_DIR:-$HOME/.omp/agent/sessions}"
+claude_projects="${CLAUDE_PROJECTS_DIR:-$HOME/.claude/projects}"
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+banner() {
+  if have gum; then
+    gum style --foreground 212 --bold --border rounded --border-foreground 212 \
+      --padding "0 2" --margin "1 0" "$1"
+  else
+    echo "$1"
+  fi
+}
+
+usage() {
+  cat <<'EOF'
+Usage: ai-sessions [--active|-a]
+
+  (no flags)   List project directories with omp/Claude session history,
+               newest first: SOURCE, AGE, LAST TOUCHED, SESSIONS, DIRECTORY.
+  --active,-a  List omp/Claude sessions running right now, resolved from live
+               processes via lsof: SOURCE, PID, UPTIME, DIRECTORY.
+  --help,-h    Show this help.
+EOF
+}
+
+# Friendly relative age from an epoch delta (seconds).
+relage() {
+  local s=$1
+  if   (( s < 60 ));      then echo "just now"
+  elif (( s < 3600 ));    then echo "$(( s / 60 ))m ago"
+  elif (( s < 86400 ));   then echo "$(( s / 3600 ))h ago"
+  elif (( s < 604800 ));  then echo "$(( s / 86400 ))d ago"
+  elif (( s < 2592000 )); then echo "$(( s / 604800 ))w ago"
+  else                         echo "$(( s / 2592000 ))mo ago"
+  fi
+}
+
+# Collect one row per project directory under a sessions root (appends to $rows).
+collect() {
+  local label="$1" base="$2"
+  [[ -d "$base" ]] || return 0
+  local dir f m newest newest_mtime cwd disp age when count files
+  shopt -s nullglob
+  for dir in "$base"/*/; do
+    files=("$dir"*.jsonl)
+    (( ${#files[@]} )) || continue
+
+    newest=""; newest_mtime=0
+    for f in "${files[@]}"; do
+      m=$(stat -f '%m' "$f" 2>/dev/null) || continue
+      if (( m > newest_mtime )); then newest_mtime=$m; newest=$f; fi
+    done
+    [[ -n "$newest" ]] || continue
+
+    # Real project path: first session record carrying a "cwd"; else dir name.
+    cwd=""
+    if have jq; then
+      cwd=$(head -n 40 "$newest" | jq -r 'select(.cwd) | .cwd' 2>/dev/null | head -n1)
+    fi
+    [[ -n "$cwd" ]] || cwd="${dir%/}"
+
+    disp="$cwd"
+    [[ "$disp" == "$HOME"* ]] && disp="~${disp#"$HOME"}"
+
+    age=$(relage $(( now - newest_mtime )))
+    when=$(stat -f '%Sm' -t '%Y-%m-%d %H:%M' "$newest" 2>/dev/null)
+    count=${#files[@]}
+
+    rows+=("${newest_mtime}	${label}	${age}	${when}	${count}	${disp}")
+  done
+  shopt -u nullglob
+}
+
+show_recent() {
+  now=$(date +%s)
+  rows=()
+  collect omp    "$omp_dir"
+  collect claude "$claude_projects"
+
+  if (( ${#rows[@]} == 0 )); then
+    echo "No AI sessions found (looked in $omp_dir and $claude_projects)." >&2
+    return 0
+  fi
+
+  banner "ai sessions"
+  {
+    printf 'SOURCE\tAGE\tLAST TOUCHED\tSESSIONS\tDIRECTORY\n'
+    printf '%s\n' "${rows[@]}" | sort -t$'\t' -k1,1nr | cut -f2-
+  } | if have column; then column -t -s$'\t'; else cat; fi
+}
+
+show_active() {
+  local rows=() pid etime cmd exe base src cwd disp
+  while read -r pid etime cmd; do
+    [[ -n "$pid" ]] || continue
+    exe=${cmd%% *}; base=${exe##*/}
+    case "$base" in
+      claude) src=claude ;;
+      omp)    src=omp ;;
+      *)      continue ;;
+    esac
+    cwd=$(lsof -a -p "$pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p' | head -n1)
+    [[ -n "$cwd" ]] || cwd="?"
+    disp="$cwd"
+    [[ "$disp" == "$HOME"* ]] && disp="~${disp#"$HOME"}"
+    rows+=("${src}	${pid}	${etime}	${disp}")
+  done < <(ps -axww -o pid=,etime=,command=)
+
+  if (( ${#rows[@]} == 0 )); then
+    echo "No running omp or Claude sessions found." >&2
+    return 0
+  fi
+
+  banner "active sessions"
+  {
+    printf 'SOURCE\tPID\tUPTIME\tDIRECTORY\n'
+    printf '%s\n' "${rows[@]}" | sort -t$'\t' -k1,1 -k4,4
+  } | if have column; then column -t -s$'\t'; else cat; fi
+}
+
+case "${1:-}" in
+  -a|--active) show_active ;;
+  -h|--help)   usage ;;
+  "")          show_recent ;;
+  *)           echo "ai-sessions: unknown option '$1'" >&2; usage >&2; exit 2 ;;
+esac

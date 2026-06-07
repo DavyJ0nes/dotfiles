@@ -18,12 +18,17 @@ export LC_ALL=en_US.UTF-8
 
 # GPG
 export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 # Terminal
 export TERM=alacritty
 
 # Go
-export GOPRIVATE="github.com/einride/*"
+export GOPRIVATE="github.com/einride/*,github.com/playgroundtech/*"
+
+# Github
+export GITHUB_TOKEN="$(gh auth token)"
+# export MISE_GITHUB_TOKEN="$GITHUB_TOKEN"
 
 # Erlang/Elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
@@ -37,6 +42,9 @@ export ZK_NOTEBOOK_DIR="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Docume
 
 # Kubernetes
 export DO='--dry-run=client -o yaml'
+
+# Jira
+export JIRA_API_TOKEN=$(op-cached "op://Employee/JIRA_API_TOKEN/credential")
 
 # Testcontainers
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock

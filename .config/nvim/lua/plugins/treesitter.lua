@@ -8,6 +8,8 @@ return {
 			"windwp/nvim-ts-autotag",
 		},
 		config = function()
+			vim.treesitter.language.register("yaml", "helm")
+
 			local ts = require("nvim-treesitter")
 			ts.setup({
 				highlight = { enable = true, use_languagetree = true },

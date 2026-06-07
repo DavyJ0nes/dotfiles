@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# myprs — print a Slack-ready message asking for reviews on your open GitHub PRs.
+#
+# Finds open PRs you authored across every repo, then SKIPS:
+#   - drafts
+#   - PRs already reviewed by someone else (APPROVED / CHANGES_REQUESTED / COMMENTED)
+# Sorts freshest first and prints a copy-paste message for Slack.
+# Bare URLs are used on purpose so Slack unfurls them; *repo* renders bold.
+set -uo pipefail
+
+command -v gh >/dev/null 2>&1 || { echo "myprs: gh (GitHub CLI) is required." >&2; exit 1; }
+command -v jq >/dev/null 2>&1 || { echo "myprs: jq is required." >&2; exit 1; }
+
+# Editable review-request line.
+intro=":eyes: Could I get some eyes on these when you have a moment? :pray:"
+
+me=$(gh api user --jq .login 2>/dev/null) \
+  || { echo "myprs: not logged in — check 'gh auth status'." >&2; exit 1; }
+
+# One round-trip: open PRs I authored, with their latest reviews per reviewer.
+json=$(gh api graphql -f query='
+query($q: String!) {
+  search(query: $q, type: ISSUE, first: 50) {
+    nodes {
+      ... on PullRequest {
+        number title url isDraft updatedAt
+        repository { name }
+        latestReviews(first: 20) { nodes { state author { login } } }
+      }
+    }
+  }
+}' -f q="is:pr is:open author:$me" 2>/dev/null) \
+  || { echo "myprs: failed to query GitHub — check 'gh auth status'." >&2; exit 1; }
+
+# Drop drafts and already-reviewed PRs (a review by anyone other than you, in
+# state APPROVED / CHANGES_REQUESTED / COMMENTED, counts as reviewed). Newest first.
+body=$(printf '%s' "$json" | jq -r --arg me "$me" '
+  .data.search.nodes
+  | map(select(.isDraft | not))
+  | map(select(
+      [ .latestReviews.nodes[]?
+        | select(.author.login != $me)
+        | .state
+      ]
+      | map(. == "APPROVED" or . == "CHANGES_REQUESTED" or . == "COMMENTED")
+      | any
+      | not
+    ))
+  | sort_by(.updatedAt) | reverse
+  | .[]
+  | "• *\(.repository.name)* #\(.number): \(.title)\n  \(.url)"
+')
+
+if [[ -z "$body" ]]; then
+  echo "No open PRs awaiting review — all caught up. :tada:"
+  exit 0
+fi
+
+printf '%s\n\n%s\n' "$intro" "$body"

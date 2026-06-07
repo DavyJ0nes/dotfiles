@@ -3,6 +3,11 @@
 # ── UV (Python) ───────────────────────────────────────────────────────────────
 [[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 
+# -- Mise en Place ------------------------------------------------------------
+# Use shim mode: prepend the shim dir so mise-managed tools always win over
+# Homebrew (the activate hook gets shadowed by earlier prepends in paths.zsh).
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
 # ── Direnv ────────────────────────────────────────────────────────────────────
 command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
 
@@ -34,4 +39,4 @@ command -v atuin &>/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
 
 # ── zsh-syntax-highlighting (must be sourced last) ────────────────────────────
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
+gpgconf --launch gpg-agent

@@ -8,6 +8,8 @@ vim/vim/spell/
 # Icon must end with two \r
 Icon
 
+.config/zsh/.zcompdump*
+.config/zsh/.zsh_history
 
 # Thumbnails
 ._*

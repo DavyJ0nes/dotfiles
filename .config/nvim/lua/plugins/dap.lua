@@ -7,16 +7,19 @@ return {
 		},
 		keys = {
 			{ "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+			{ "<leader>dx", function() require("dap").clear_breakpoints() end, desc = "Clear Breakpoints" },
 			{ "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
 			{ "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
 			{ "<leader>do", function() require("dap").step_over() end, desc = "Step Over" },
 			{ "<leader>dO", function() require("dap").step_out() end, desc = "Step Out" },
-			{ "<leader>dr", function() require("dap").repl.open() end, desc = "REPL" },
+			{ "<leader>dr", function() require("dap").run_last() end, desc = "Rerun" },
 			{ "<leader>du", function() require("dapui").toggle() end, desc = "DAP UI" },
+			{ "<leader>dq", function() require("dap").terminate() require("dapui").close() end, desc = "Quit Debugger" },
 		},
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
+      vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
 			dapui.setup()
 

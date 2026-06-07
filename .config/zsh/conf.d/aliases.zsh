@@ -11,6 +11,7 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 
 # ── File operations ───────────────────────────────────────────────────────────
+alias rm='trash'
 alias cp='cp -Ri'
 alias mv='mv -i'
 alias md='mkdir -p'
@@ -36,6 +37,7 @@ alias mux='tmuxinator'
 alias docker='podman'
 alias cat='bat'
 alias suggest='gh copilot suggest -t shell'
+alias btfix='sudo pkill bluetoothd'
 
 # Search shortcuts (noglob prevents ? from expanding as a glob)
 alias '?'='noglob __ddg'
@@ -67,7 +69,7 @@ alias t='task'
 alias ta='task add'
 alias td='task delete'
 alias tm='task modify'
-alias done='task done'
+alias tdone='task done'
 alias tasks='taskwarrior-tui'
 alias tall='task context none; task'
 alias topen='taskopen'
@@ -113,12 +115,38 @@ alias gaf='git add -A; git commit -m "WIP: $(w3m whatthecommit.com | head -n 1)"
 alias gitdock='docker run -v "$PWD":/srv/app davyj0nes/git'
 alias ghstatus="curl -s https://www.githubstatus.com/api/v2/status.json | jq '{url: .page.url, status: .status.description}'"
 alias ghprstatus='gh pr view --json "statusCheckRollup" | jq '"'"'.statusCheckRollup[] | {"name": .name, "status": .status}'"'"''
+ghprme() {
+  local owner repo
+  owner=$(gh repo view --json owner --jq .owner.login)
+  repo=$(gh repo view --json name --jq .name)
+
+  {
+    printf "PR\tTitle\tBranch\tReview\tPass\tFail\tPend\tUnres\n"
+    gh pr list --author "@me" --state "open" \
+      --json number,title,headRefName,statusCheckRollup,reviewDecision \
+      | jq -r '.[] |
+        [.number, .title, .headRefName, (.reviewDecision // "—"),
+         ([.statusCheckRollup[] | select(.conclusion == "SUCCESS" or .state == "SUCCESS")] | length),
+         ([.statusCheckRollup[] | select(.conclusion == "FAILURE" or .conclusion == "CANCELLED" or .conclusion == "TIMED_OUT" or .state == "FAILURE" or .state == "ERROR")] | length),
+         ([.statusCheckRollup[] | select(.status == "IN_PROGRESS" or .status == "QUEUED" or .state == "PENDING")] | length)
+        ] | @tsv' \
+      | while IFS=$'\t' read -r num title branch review pass fail pend; do
+          local unresolved=$(gh api graphql \
+            -f query='query($o:String!,$r:String!,$n:Int!){repository(owner:$o,name:$r){pullRequest(number:$n){reviewThreads(first:100){nodes{isResolved}}}}}' \
+            -f o="$owner" -f r="$repo" -F n="$num" \
+            --jq '[.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved == false)] | length')
+          printf "#%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$num" "$title" "$branch" "$review" "$pass" "$fail" "$pend" "$unresolved"
+        done
+  } | column -t -s $'\t'
+}
+ghprmerge() { gh pr merge "$1" --auto --squash }
 
 # ── Docker ────────────────────────────────────────────────────────────────────
 alias dm='docker-machine'
 alias dps='docker ps'
 alias drm='docker rm'
 alias dkill='docker kill'
+alias docker-compose='podman compose'
 alias dco='docker-compose'
 alias dockernotary='notary -s https://notary.docker.io -d ~/.docker/trust'
 alias pgport="jq '.[0].NetworkSettings.Ports.\"5432/tcp\"[0].HostPort' | tr -d '\"'"
@@ -129,9 +157,12 @@ alias k='kubectl'
 alias kb='kubectl'
 alias mk='minikube'
 alias kctx='kubectl config get-contexts'
+alias kx='kubectx'
 alias kcc='kubectl config use-context'
 alias kcur='kubectl config current-context'
 alias kns='kubectl config set-context --current --namespace'
+alias kx-dev='kubectx minikube'
+alias kgall='kbgetall'
 alias kgp='kubectl get pods'
 alias kgpa='kubectl get pods --all-namespaces'
 alias kgpw='kubectl get pods --watch'
@@ -155,15 +186,11 @@ alias kex='kubectl exec -it'
 alias tf='terraform'
 
 # ── Directory shortcuts ───────────────────────────────────────────────────────
-alias goein="cd $GOPATH/src/github.com/einride"
 alias godavy="cd $GOPATH/src/github.com/davyj0nes"
-alias gofever="cd $GOPATH/src/github.com/feverenergy"
+alias goplay="cd $GOPATH/src/github.com/playgroundtech"
 alias goconfig="cd $HOME/dotfiles/"
 alias gonotes="cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes"
 alias gozk="cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes/zk"
 
-# ── Headphones ────────────────────────────────────────────────────────────────
-alias commbadge='blueutil --connect 68-ca-c4-cc-11-ee'
-alias cb='commbadge'
-alias whsony='blueutil --connect 94-db-56-5f-d2-fe'
-alias wh='whsony'
+# -- AWS --
+alias assume=". assume"

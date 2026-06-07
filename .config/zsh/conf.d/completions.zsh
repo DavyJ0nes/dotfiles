@@ -41,11 +41,14 @@ export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
 source <(carapace _carapace zsh)
 
 # ── Custom CLI completions ─────────────────────────────────────────────────────
-command -v nothelp  &>/dev/null && source <(nothelp completion zsh)
+command -v nothelp   &>/dev/null && source <(nothelp completion zsh)
 command -v epghelper &>/dev/null && source <(epghelper completion zsh)
 command -v demo-cli  &>/dev/null && source <(demo-cli completion zsh)
-command -v pulumi  &>/dev/null && source <(pulumi completion zsh)
-command -v mo  &>/dev/null && source <(mo completion zsh)
+command -v pulumi    &>/dev/null && source <(pulumi completion zsh)
+command -v mo        &>/dev/null && source <(mo completion zsh)
+command -v helm      &>/dev/null && source <(helm completion zsh)
+command -v mise      &>/dev/null && source <(mise completion zsh)
+command -v sesh      &>/dev/null && source <(sesh completion zsh)
 
 # ── zsh-autosuggestions (fish-style inline ghost text) ────────────────────────
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -53,16 +56,6 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 bindkey '^F' autosuggest-accept        # Ctrl+F accepts suggestion
-# Tab: accept suggestion if one is showing, otherwise open completion menu
-_tab_or_autosuggest() {
-  if [[ -n $POSTDISPLAY ]]; then
-    zle autosuggest-accept
-  else
-    zle expand-or-complete
-  fi
-}
-zle -N _tab_or_autosuggest
-bindkey '^I' _tab_or_autosuggest
 
 # Right arrow: move cursor if mid-line, accept suggestion if at end
 _forward_char_or_autosuggest() {

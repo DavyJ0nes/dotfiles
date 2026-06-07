@@ -1,0 +1,20 @@
+# Personal mise config — per-developer extras.
+#
+# This file is auto-merged with conf.d/playground.toml (shared, from
+# pgt-shd-mise-config). Per-repo mise.toml files sit on top of both.
+#
+# Convention: use this file for ADDITIONS — your own tools, tasks, env.
+# Avoid overriding shared tool pins here; if a shared pin is wrong, fix
+# it in pgt-shd-mise-config so the whole team benefits.
+
+[tools]
+"github:can1357/oh-my-pi" = "latest"
+pulumi = "3.237.0"
+rumdl = "0.2.3"
+
+[env]
+PGT_SHARED_DIR = "{{ env.HOME }}/go/src/github.com/playgroundtech"
+
+[tasks.mise-update]
+description = "Update everything: brew, gh extensions, macOS, rust, mise"
+run = "mise-update"

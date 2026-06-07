@@ -1,26 +1,41 @@
 prSections:
-- title: My Pull Requests
-  filters: is:open author:@me
-- title: Needs My Review
-  filters: is:open review-requested:@me
-- title: Involved
-  filters: is:open involves:@me -author:@me
+  - title: My PRs
+    filters: is:open author:@me draft:false
+  - title: My Drafts
+    filters: is:open author:@me draft:true
+  - title: Needs My Review
+    filters: is:open review-requested:@me
+  - title: Failing Checks
+    filters: is:open author:@me status:failure
+  - title: Stale (no activity 7d+)
+    filters: is:open author:@me sort:updated-asc
+  - title: Involved
+    filters: is:open involves:@me -author:@me -review-requested:@me
+
 issuesSections:
-- title: My Issues
-  filters: is:open author:@me
-- title: Assigned
-  filters: is:open assignee:@me
-- title: Involved
-  filters: is:open involves:@me -author:@me
+  - title: My Issues
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+  - title: Mentioned
+    filters: is:open mentions:@me -author:@me -assignee:@me
+
 defaults:
   preview:
     open: true
-    width: 50
-  prsLimit: 20
-  issuesLimit: 20
+    width: 70
+  prsLimit: 50
+  issuesLimit: 30
   view: prs
+  refetchIntervalMinutes: 30
+
 keybindings:
-  prs: []
+  prs:
+    - key: C
+      command: >
+        tmux split-window -h "gh pr view {{.PrNumber}} --comments -R {{.RepoName}} | less -R"
+
 repoPaths: {}
+
 pager:
   diff: ""

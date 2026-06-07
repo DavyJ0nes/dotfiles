@@ -3,7 +3,7 @@ return {
 	version = "*",
 	config = function()
 		require("zk").setup({
-			picker = "fzf_lua",
+			picker = "select",
 			lsp = {
 				config = {
 					cmd = { "zk", "lsp" },

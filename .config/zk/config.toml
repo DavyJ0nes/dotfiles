@@ -5,8 +5,7 @@ dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"
 template = "default"
 
 [alias]
-
-dir = "cd ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"
+dir = 'cd "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/zk"'
 
 nt = 'zk new --title "$*"'
 

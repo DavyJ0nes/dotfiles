@@ -16,5 +16,8 @@ return {
 			down_and_jump = "j",
 			up_and_jump = "k",
 		},
+		providers = {
+			priority = { "lsp", "treesitter", "markdown", "norg" },
+		},
 	},
 }

@@ -161,6 +161,137 @@ function ai-chat-claude() {
   printf '\033]2;AI: Closed\033\\'
 }
 
+# ── Tmux task session ─────────────────────────────────────────────────────────
+# Spawn (or attach) a tmux session named <name> with an omp pane on the left
+# and two helper panes stacked on the right. Usage: tasksesh <name> [start-dir]
+function tasksesh() {
+  local name="${1:?Usage: tasksesh <session-name> [start-dir]}"
+  local dir="${2:-$PWD}"
+
+  if tmux has-session -t "$name" 2>/dev/null; then
+    if [[ -n "$TMUX" ]]; then
+      tmux switch-client -t "$name"
+    else
+      tmux attach -t "$name"
+    fi
+    return
+  fi
+
+  tmux new-session -d -s "$name" -c "$dir" -n work
+  tmux split-window -h -t "$name:work" -c "$dir"
+  tmux split-window -v -t "$name:work.2" -c "$dir"
+  tmux select-pane -t "$name:work.1"
+  tmux send-keys -t "$name:work.1" "omp" C-m
+
+  if [[ -n "$TMUX" ]]; then
+    tmux switch-client -t "$name"
+  else
+    tmux attach -t "$name"
+  fi
+}
+
+# ── Jira → branch ─────────────────────────────────────────────────────────────
+# Pick a branch type, then pick (or type custom) a Jira ticket. Slugs the
+# summary and creates the branch as <type>/<TICKET>-<slug>.
+function jbranch() {
+  local type ticket summary slug branch
+  local types=(chore feat fix refactor docs test perf)
+
+  type=$(gum choose --header "Branch type" "${types[@]}") || return 1
+  [[ -z "$type" ]] && return 1
+
+  local list result query selection
+  list=$(jira issue list -a "$(jira me)" -q "status != Done" --plain --columns KEY,SUMMARY 2>/dev/null | tail -n +2)
+  result=$(printf '%s\n' "$list" | fzf --print-query --prompt "ticket> " --header "Pick a ticket or type custom (e.g. no-tkt)")
+  query=$(printf '%s\n' "$result"   | sed -n '1p')
+  selection=$(printf '%s\n' "$result" | sed -n '2p')
+
+  if [[ -n "$selection" ]]; then
+    ticket=$(awk -F'\t' '{print $1}' <<< "$selection")
+    summary=$(awk -F'\t' '{print $2}' <<< "$selection")
+  else
+    [[ -z "$query" ]] && return 1
+    ticket="$query"
+    summary=$(gum input --placeholder "Description" --prompt "desc> ")
+    [[ -z "$summary" ]] && return 1
+  fi
+
+  slug=$(echo "$summary" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//' | cut -c1-50)
+  branch="$type/$ticket-$slug"
+
+  if gum confirm "Create branch '$branch'?"; then
+    git checkout -b "$branch"
+  fi
+}
+
+# ── AI commit message ─────────────────────────────────────────────────────────
+# Generate a conventional commit message for STAGED changes via Claude.
+# Pulls the ticket ID from the current branch (e.g. chore/PNO-4122-...).
+function ai-commit() {
+  if git diff --cached --quiet; then
+    echo "ai-commit: nothing staged. Run 'git add' first." >&2
+    return 1
+  fi
+
+  local branch ticket diff prompt msg tmp
+  branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  ticket=$(echo "$branch" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+  diff=$(git diff --cached)
+
+  prompt="Generate a conventional commit message for the following git diff.
+
+Required format:
+<type>(<scope>): <short description>
+
+<short explanation>
+
+Rules:
+- <type>: feat, fix, chore, refactor, docs, test, perf, style, build, ci
+- <scope>: ${ticket:-derive a meaningful scope from the changes}
+- Subject in imperative mood, no trailing period, under 72 chars
+- Body explains *why*, not *what* — wrap at 80 cols, max 4 lines
+- Output ONLY the message: no markdown fences, no preamble
+
+Writing style — assume an auditor will read this:
+- Be precise and factual; no hyperbole or marketing language
+- State the change neutrally; avoid 'cleanup', 'improvements', 'tweaks' — say
+  exactly what changed and why
+- Surface anything an auditor would want flagged: security-relevant changes,
+  permission/IAM/RBAC adjustments, dependency upgrades with CVE relevance,
+  data-handling or PII changes, changes to encryption or auth flows
+- Reference the driver of the change (ticket, incident, policy, CVE) when
+  identifiable from the diff or branch context
+- Do not fabricate motivation: if the *why* isn't determinable from the diff,
+  describe the change at a higher level and stop there
+
+--- DIFF ---
+$diff"
+
+  msg=$(claude -p "$prompt" 2>/dev/null)
+  if [[ -z "$msg" ]]; then
+    echo "ai-commit: claude returned no output." >&2
+    return 1
+  fi
+
+  echo "─── proposed commit message ───"
+  echo "$msg"
+  echo "───────────────────────────────"
+  echo
+
+  case $(gum choose "Commit as-is" "Edit then commit" "Cancel") in
+    "Commit as-is")
+      printf '%s\n' "$msg" | git commit -F -
+      ;;
+    "Edit then commit")
+      tmp=$(mktemp -t ai-commit.XXXXXX)
+      printf '%s\n' "$msg" > "$tmp"
+      ${EDITOR:-vi} "$tmp"
+      git commit -F "$tmp"
+      rm -f "$tmp"
+      ;;
+  esac
+}
+
 # ── Update everything ─────────────────────────────────────────────────────────
 function update() {
   echo 'start updating ...'
@@ -185,6 +316,12 @@ function update() {
   echo "========================"
   echo 'updating rust'
   rustup update
+
+  echo "========================"
+  echo 'updating mise'
+  mise self-update --yes
+  mise plugins update
+  mise upgrade
 
   echo "========================"
   echo "updated brew packages:"

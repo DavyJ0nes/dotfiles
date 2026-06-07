@@ -110,3 +110,4 @@ report.minimal.labels=ID,P,Tags,Proj,Due,Description
 report.minimal.sort=tags,urgency-
 
 default.command=minimal
+context=work

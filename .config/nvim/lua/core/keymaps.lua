@@ -152,6 +152,8 @@ set("n", "<leader>fzt", function()
 	require("zk.commands").get("ZkTags")()
 end, { desc = "find zk tags" })
 
+set("n", "<leader>mm", ":lua require('toggle-checkbox').toggle()<CR>")
+
 -- quickfix
 set("n", "<leader>xn", "<cmd>cnext<cr>", { desc = "Next quickfix" })
 set("n", "<leader>xp", "<cmd>cprev<cr>", { desc = "Prev quickfix" })

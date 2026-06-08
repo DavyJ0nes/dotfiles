@@ -52,6 +52,7 @@ section "mise"
 mise self-update --yes
 mise plugins update
 mise upgrade
+mise prune --yes 2>/dev/null || true
 done_ "mise up to date"
 
 section "summary"

@@ -70,4 +70,5 @@ bin/war_roller
 *zed/prompts/prompts-*
 .config/zsh/.zcompdump
 .config/zed/prompts/prompts-*
+*erl_crash.dump
 

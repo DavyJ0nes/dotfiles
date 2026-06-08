@@ -1,0 +1,12 @@
+# Language runtimes managed by mise (was previously Homebrew).
+#
+# Pin major.minor for predictability; bump deliberately. For tools that move
+# fast and where breakage is cheap (zig, bun), use "latest".
+
+[tools]
+go     = "1.26"
+elixir = "1.20"
+erlang = "27"
+python = "3.13"
+zig    = "latest"
+bun    = "latest"

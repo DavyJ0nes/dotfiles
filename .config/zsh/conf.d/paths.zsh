@@ -23,13 +23,6 @@ export PATH="$GOPATH/bin:$PATH"
 # K8s
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# ASDF shims
-if [[ -z "$ASDF_DATA_DIR" ]]; then
-  export PATH="$HOME/.asdf/shims:$PATH"
-else
-  export PATH="$ASDF_DATA_DIR/shims:$PATH"
-fi
-
 # FZF / FD
 export FZF_DEFAULT_COMMAND="fd --type f"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

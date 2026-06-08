@@ -1,0 +1,27 @@
+# Kubernetes + IaC tools managed by mise (was previously Homebrew).
+#
+# Pin major.minor for things where a surprise upgrade can break a workflow
+# (kubectl, helm, terraform). Leave ancillary tooling at "latest".
+
+[tools]
+# Kubernetes
+argocd   = "3.4"
+helm     = "4.2"
+kind     = "latest"
+kn       = "latest"
+ko       = "latest"
+kubectl  = "1.36"
+kubectx  = "latest"
+k9s      = "latest"
+minikube = "latest"
+pluto    = "latest"
+popeye   = "latest"
+stern    = "latest"
+
+# Knative cloud provider for kind — not in the default mise registry, so
+# resolve via aqua. Verify with `mise install --dry-run` after edits.
+"aqua:kubernetes-sigs/cloud-provider-kind" = "latest"
+
+# IaC (pulumi is pinned in personal.toml — leave it there as the source of truth)
+terraform = "1.14"
+tflint    = "latest"

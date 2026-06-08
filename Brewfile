@@ -1,12 +1,9 @@
 tap "danvergara/tools"             # dblab - database TUI client
 tap "felixkratz/formulae"          # sketchybar - macOS menu bar customization
 tap "nikitabobko/tap"              # Aerospace - tiling window manager
-tap "oven-sh/bun"                  # Bun - JavaScript runtime
 tap "pantsbuild/tap"               # Pants - monorepo build system
-tap "pulumi/tap"                   # Pulumi - infrastructure as code
 tap "remotemobprogramming/brew"    # mob - mob/pair programming tool
 tap "thezoraiz/ascii-image-converter"
-tap "elixir-tools/tap"            # (tap for Elixir tooling)
 
 brew "aichat"                      # AI chat in the terminal (multi-provider)
 brew "aider"                       # AI pair programming in the terminal
@@ -21,41 +18,26 @@ brew "hcloud"                      # Hetzner Cloud CLI
 brew "awslogs"                     # CloudWatch Logs viewer
 brew "temporal"                    # Temporal workflow orchestration CLI
 
-brew "argocd"                      # GitOps continuous delivery for Kubernetes
-brew "cloud-provider-kind"         # Kubernetes cloud provider for kind clusters
-brew "helm"                        # Kubernetes package manager
-brew "k9s"                         # Kubernetes cluster TUI
-brew "kind"                        # Kubernetes in Docker (local clusters)
-brew "kn"                          # Knative CLI
-brew "ko"                          # Build and deploy Go container images
-brew "kubectx"                     # Switch between Kubernetes contexts/namespaces
-brew "kubernetes-cli"              # kubectl
-brew "minikube"                    # Local Kubernetes cluster
-brew "pluto"                       # Detect deprecated Kubernetes API versions
+# Container engine (k8s CLIs themselves are managed by mise — see
+# .config/mise/conf.d/cloud.toml)
 brew "podman"                      # Container engine (Docker alternative)
-brew "popeye"                      # Kubernetes cluster sanitizer
-brew "stern"                       # Multi-pod log tailing for Kubernetes
 
 # ─── Infrastructure as Code ───────────────────────────────────────────────────
-brew "pulumi/tap/pulumi"           # Pulumi - infrastructure as code
-brew "tfenv"                       # Terraform version manager
-brew "tflint"                      # Terraform linter
+# pulumi/terraform/tflint live in mise (personal.toml + cloud.toml).
 
 # ─── Go Development ──────────────────────────────────────────────────────────
-brew "go"                          # Go programming language
-brew "gci"                         # Go import formatter
-brew "golangci-lint"               # Go meta-linter
-brew "golangci-lint-langserver"    # LSP server for golangci-lint
-brew "golines"                     # Go formatter for long lines
-brew "gopls"                       # Go language server (LSP)
+# Go toolchain and all Go developer tools (gopls, golangci-lint, gci, golines,
+# delve, gofumpt, etc.) are managed by mise — see
+# .config/mise/conf.d/runtimes.toml and .config/mise/conf.d/go-tools.toml.
 
 # ─── Elixir / Erlang Development ─────────────────────────────────────────────
+# Elixir and Erlang are pinned via mise (.config/mise/conf.d/runtimes.toml).
+# wxwidgets stays on brew — it's a build-time C++ dep that mise's Erlang
+# compile step picks up from the system.
 brew "wxwidgets@3.2"               # C++ GUI library (Erlang/Elixir dependency)
-brew "elixir"                      # Elixir programming language
-brew "erlang@27"                   # Erlang runtime
 
 # ─── Python Development ──────────────────────────────────────────────────────
-brew "pyenv"                       # Python version manager
+# Python itself is pinned via mise; pipx, python-lsp-server, ruff stay on brew.
 brew "pipx"                        # Install Python apps in isolated environments
 brew "python-lsp-server"           # Python LSP server
 brew "ruff"                        # Fast Python linter/formatter
@@ -104,8 +86,7 @@ brew "gcc@14"                       # GNU C/C++ compiler (version 14)
 brew "llvm"                         # LLVM compiler infrastructure
 brew "luarocks"                     # Lua package manager
 brew "opam"                         # OCaml package manager
-brew "zig"                          # Zig programming language
-brew "oven-sh/bun/bun", link: false # Bun JavaScript runtime
+# zig and bun are pinned via mise (.config/mise/conf.d/runtimes.toml).
 
 # ─── Data & API Tools ────────────────────────────────────────────────────────
 brew "httpx"                       # HTTP toolkit / security testing
@@ -132,7 +113,8 @@ brew "taskopen"                    # Open files/URLs linked in Taskwarrior tasks
 brew "taskwarrior-tui"             # Taskwarrior TUI
 
 # ─── dotfiles & Environment ──────────────────────────────────────────────────
-brew "asdf"                        # Multi-language version manager
+# asdf removed — mise reads .tool-versions files natively, so legacy projects
+# keep working.
 brew "direnv"                      # Per-directory environment variables
 brew "stow"                        # Symlink manager (used for dotfiles)
 brew "rtk"                         # Rust Token Killer - token-optimized CLI proxy
@@ -200,27 +182,5 @@ cask "sf-symbols"                  # Apple SF Symbols reference app
 cask "steam"                       # Gaming platform
 cask "zed"                         # High-performance code editor
 
-go "github.com/rhysd/actionlint/cmd/actionlint"      # GitHub Actions workflow linter
-go "golang.org/x/tools/cmd/callgraph"                # Go call graph analysis
-go "github.com/go-delve/delve/cmd/dlv"               # Go debugger
-go "github.com/davidrjenni/reftools/cmd/fillswitch"  # Fill missing switch cases in Go
-go "github.com/onsi/ginkgo/v2/ginkgo"                # Ginkgo BDD test framework CLI
-go "github.com/abice/go-enum"                        # Generate enums for Go
-go "golang.org/dl/go1.27.0"                          # Go 1.27 toolchain downloader
-go "mvdan.cc/gofumpt"                                # Stricter gofmt formatter
-go "golang.org/x/tools/cmd/goimports"                # Auto-manage Go imports
-go "github.com/segmentio/golines"                    # Go formatter for long lines
-go "github.com/fatih/gomodifytags"                   # Modify Go struct tags
-go "github.com/abenz1267/gomvp"                      # Go MVP scaffolding
-go "golang.org/x/tools/cmd/gonew"                    # Scaffold new Go modules
-go "github.com/gopherjs/gopherjs"                    # Compile Go to JavaScript
-go "golang.org/x/tools/cmd/gorename"                 # Rename identifiers in Go code
-go "github.com/cweill/gotests/gotests"               # Generate Go test boilerplate
-go "gotest.tools/gotestsum"                          # Better go test output / formatting
-go "golang.org/x/vuln/cmd/govulncheck"               # Go vulnerability checker
-go "github.com/koron/iferr"                          # Generate if err != nil blocks
-go "github.com/josharian/impl"                       # Generate Go interface implementations
-go "github.com/tmc/json-to-struct"                   # Convert JSON to Go structs
-go "go.uber.org/mock/mockgen"                        # Generate Go mocks
-go "github.com/davyj0nes/nothelp"                    # Personal tool
-go "github.com/kyoh86/richgo"                        # Colorized go test output
+# Go tools are managed by mise via the `go:` backend — see
+# .config/mise/conf.d/go-tools.toml.

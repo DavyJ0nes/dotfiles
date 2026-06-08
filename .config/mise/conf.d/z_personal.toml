@@ -7,6 +7,11 @@
 # Avoid overriding shared tool pins here; if a shared pin is wrong, fix
 # it in pgt-shd-mise-config so the whole team benefits.
 
+[settings]
+lockfile = true
+lockfile_platforms = ["macos-arm64", "linux-x64"]
+minimum_release_age = "2d"
+
 [tools]
 "github:can1357/oh-my-pi" = "latest"
 pulumi = "3.237.0"

@@ -42,9 +42,19 @@ echo "==> Homebrew packages installed"
 ## ----------------------------------------------------------------------------
 
 ## -- Dotfiles (stow) ---------------------------------------------------------
+# Stow must run before `mise install` so the conf.d/*.toml files are in place
+# under ~/.config/mise/ for mise to pick up.
 echo "==> Configuring dotfiles with stow..."
 stow .
 echo "==> Dotfiles configured"
+## ----------------------------------------------------------------------------
+
+## -- Mise-managed tools ------------------------------------------------------
+# Installs everything pinned in ~/.config/mise/conf.d/*.toml: language
+# runtimes, k8s/IaC CLIs, and Go developer tools.
+echo "==> Installing mise-managed tools..."
+mise install
+echo "==> mise tools installed"
 ## ----------------------------------------------------------------------------
 
 ## -- GitHub CLI auth ---------------------------------------------------------
@@ -53,34 +63,6 @@ gh auth login
 gh config set git_protocol ssh
 gh config set editor nvim
 gh auth setup-git
-## ----------------------------------------------------------------------------
-
-## -- Go tools ----------------------------------------------------------------
-echo "==> Installing Go tools..."
-go install github.com/rhysd/actionlint/cmd/actionlint@latest
-go install golang.org/x/tools/cmd/callgraph@latest
-go install github.com/go-delve/delve/cmd/dlv@latest
-go install github.com/davidrjenni/reftools/cmd/fillswitch@latest
-go install github.com/davyj0nes/partner-validate@latest
-go install github.com/onsi/ginkgo/v2/ginkgo@latest
-go install github.com/abice/go-enum@latest
-go install mvdan.cc/gofumpt@latest
-go install golang.org/x/tools/cmd/goimports@latest
-go install github.com/segmentio/golines@latest
-go install github.com/fatih/gomodifytags@latest
-go install github.com/abenz1267/gomvp@latest
-go install golang.org/x/tools/cmd/gonew@latest
-go install golang.org/x/tools/cmd/gorename@latest
-go install github.com/cweill/gotests/gotests@latest
-go install gotest.tools/gotestsum@latest
-go install golang.org/x/vuln/cmd/govulncheck@latest
-go install github.com/koron/iferr@latest
-go install github.com/josharian/impl@latest
-go install github.com/tmc/json-to-struct@latest
-go install go.uber.org/mock/mockgen@latest
-go install github.com/davyj0nes/nothelp@latest
-go install github.com/kyoh86/richgo@latest
-echo "==> Go tools installed"
 ## ----------------------------------------------------------------------------
 
 ## -- Sketchybar --------------------------------------------------------------

@@ -15,7 +15,7 @@ function __claude_search() {
     echo "Usage: ?? <prompt>"
     return 1
   fi
-  command claude "$prompt"
+  command omp "$prompt"
 }
 
 # ── Eza: git-aware ll ─────────────────────────────────────────────────────────
@@ -149,12 +149,12 @@ function man() {
 
 # ── Claude with tmux notifications ───────────────────────────────────────────
 function ai-chat-claude() {
-  printf '\033]2;AI: Claude\033\\'
+  printf '\033]2;AI: OMP\033\\'
   if [[ -n "$TMUX" ]]; then
     tmux set-window-option -t "$TMUX_PANE" monitor-silence 3
     tmux set-window-option -t "$TMUX_PANE" monitor-activity on
   fi
-  claude
+  omp
   if [[ -n "$TMUX" ]]; then
     tmux set-window-option -t "$TMUX_PANE" monitor-silence 0
   fi
@@ -267,9 +267,16 @@ Writing style — assume an auditor will read this:
 --- DIFF ---
 $diff"
 
-  msg=$(claude -p "$prompt" 2>/dev/null)
+  local -a omp_flags=(
+    -p
+    --model anthropic/claude-sonnet-4-5
+    --system-prompt 'You are a git commit message generator. Output only the raw commit message text — no preamble, no explanation, no tool calls, no markdown fences.'
+    --no-tools --no-session --no-title --no-lsp --no-skills --no-rules
+    --thinking minimal
+  )
+  msg=$(omp "${omp_flags[@]}" "$prompt")
   if [[ -z "$msg" ]]; then
-    echo "ai-commit: claude returned no output." >&2
+    echo "ai-commit: omp returned no output." >&2
     return 1
   fi
 

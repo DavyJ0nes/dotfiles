@@ -12,7 +12,7 @@ command -v gh >/dev/null 2>&1 || { echo "myprs: gh (GitHub CLI) is required." >&
 command -v jq >/dev/null 2>&1 || { echo "myprs: jq is required." >&2; exit 1; }
 
 # Editable review-request line.
-intro=":eyes: Could I get some eyes on these when you have a moment? :pray:"
+intro="Hey :wave: Could I get a :goat: :eye: on these when you have a moment? :pray:"
 
 me=$(gh api user --jq .login 2>/dev/null) \
   || { echo "myprs: not logged in — check 'gh auth status'." >&2; exit 1; }
@@ -48,7 +48,7 @@ body=$(printf '%s' "$json" | jq -r --arg me "$me" '
     ))
   | sort_by(.updatedAt) | reverse
   | .[]
-  | "• *\(.repository.name)* #\(.number): \(.title)\n  \(.url)"
+  | "- \(.repository.name) #\(.number): \(.title)\n  \(.url)"
 ')
 
 if [[ -z "$body" ]]; then

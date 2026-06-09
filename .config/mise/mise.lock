@@ -98,18 +98,18 @@ version = "2.92.0"
 backend = "aqua:cli/cli"
 
 [[tools."github:can1357/oh-my-pi"]]
-version = "15.9.5"
+version = "15.10.1"
 backend = "github:can1357/oh-my-pi"
 
 [tools."github:can1357/oh-my-pi"."platforms.linux-x64"]
-checksum = "sha256:9b2487a235402c3879dd4c6a4e6d29ac9b3d9d3b2554369424aff48766000fdf"
-url = "https://github.com/can1357/oh-my-pi/releases/download/v15.9.5/omp-linux-x64"
-url_api = "https://api.github.com/repos/can1357/oh-my-pi/releases/assets/439760915"
+checksum = "sha256:509b1ea991ccc8f3ace001dcaf986294c175d0c94ef5aa923dffb1f021704b9d"
+url = "https://github.com/can1357/oh-my-pi/releases/download/v15.10.1/omp-linux-x64"
+url_api = "https://api.github.com/repos/can1357/oh-my-pi/releases/assets/441019575"
 
 [tools."github:can1357/oh-my-pi"."platforms.macos-arm64"]
-checksum = "sha256:274de9f0923ae2d6a0769e9f0252d275df9395ac6797034a9aa0301eecaff1fe"
-url = "https://github.com/can1357/oh-my-pi/releases/download/v15.9.5/omp-darwin-arm64"
-url_api = "https://api.github.com/repos/can1357/oh-my-pi/releases/assets/439760891"
+checksum = "sha256:b5e86e0d2296d9fbf00bcc116c372115755516cd8b5abfdd40a09d47e5c61af0"
+url = "https://github.com/can1357/oh-my-pi/releases/download/v15.10.1/omp-darwin-arm64"
+url_api = "https://api.github.com/repos/can1357/oh-my-pi/releases/assets/441019578"
 
 [[tools."github:cloudnative-pg/cloudnative-pg"]]
 version = "1.29.1"
@@ -251,16 +251,16 @@ version = "1.8.1"
 backend = "aqua:jqlang/jq"
 
 [[tools.k9s]]
-version = "0.50.18"
+version = "0.51.0"
 backend = "aqua:derailed/k9s"
 
 [tools.k9s."platforms.linux-x64"]
-checksum = "sha256:0b697ed4aa80997f7de4deeed6f1fba73df191b28bf691b1f28d2f45fa2a9e9b"
-url = "https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_Linux_amd64.tar.gz"
+checksum = "sha256:c3752ad51a5a4015a113819c4eeb6e55a4d0e4b8e652494797532f6fc8161dd7"
+url = "https://github.com/derailed/k9s/releases/download/v0.51.0/k9s_Linux_amd64.tar.gz"
 
 [tools.k9s."platforms.macos-arm64"]
-checksum = "sha256:68ff1541c60620466989019e86101805c1b6c70a746b1561261a403801f7fd48"
-url = "https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_Darwin_arm64.tar.gz"
+checksum = "sha256:9b8c0e8f461e5d33aeee43a67f5ef4aff646a008a786887b8266cbb153c610cc"
+url = "https://github.com/derailed/k9s/releases/download/v0.51.0/k9s_Darwin_arm64.tar.gz"
 
 [[tools.kind]]
 version = "0.32.0"

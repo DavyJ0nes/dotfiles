@@ -246,6 +246,20 @@ url = "https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz"
 checksum = "sha256:f13f959015447b6bc309f9fd506509926543988a39035c088b52522ec95e2acb"
 url = "https://get.helm.sh/helm-v4.2.0-darwin-arm64.tar.gz"
 
+[[tools.herdr]]
+version = "0.6.9"
+backend = "github:ogulcancelik/herdr"
+
+[tools.herdr."platforms.linux-x64"]
+checksum = "sha256:e159a0facbe0a17ce8b0419724d24bb8477d7345caba5165f75941c126a8b4b9"
+url = "https://github.com/ogulcancelik/herdr/releases/download/v0.6.9/herdr-linux-x86_64"
+url_api = "https://api.github.com/repos/ogulcancelik/herdr/releases/assets/444040783"
+
+[tools.herdr."platforms.macos-arm64"]
+checksum = "sha256:6513b75b754733fab870059fad8b7ef67ae73f5d811250ec45ad991fcd9f7794"
+url = "https://github.com/ogulcancelik/herdr/releases/download/v0.6.9/herdr-macos-aarch64"
+url_api = "https://api.github.com/repos/ogulcancelik/herdr/releases/assets/444040782"
+
 [[tools.jq]]
 version = "1.8.1"
 backend = "aqua:jqlang/jq"

@@ -14,8 +14,8 @@ minimum_release_age = "2d"
 
 [tools]
 "github:can1357/oh-my-pi" = "latest"
-pulumi = "3.237.0"
 rumdl = "0.2.3"
+herdr = "0.6.9"
 
 [env]
 PGT_SHARED_DIR = "{{ env.HOME }}/go/src/github.com/playgroundtech"

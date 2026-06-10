@@ -16,6 +16,7 @@ k9s      = "latest"
 minikube = "latest"
 pluto    = "latest"
 popeye   = "latest"
+pulumi = "3.237.0"
 stern    = "latest"
 
 # Knative cloud provider for kind — not in the default mise registry, so

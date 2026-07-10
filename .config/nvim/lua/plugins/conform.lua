@@ -3,6 +3,8 @@ return {
 	event = { "BufReadPre", "BufWritePre" },
 	ft = {
 		"go",
+		"elixir",
+		"heex",
 		"rust",
 		"javascript",
 		"typescript",
@@ -47,6 +49,8 @@ return {
 				javascript = { "biome" },
 				javascriptreact = { "biome" },
 				json = { "biome" },
+				elixir = { "mix" },
+				heex = { "mix" },
 				dockerfile = { "hadolint" },
 				["*"] = { "trim_whitespace" },
 			},

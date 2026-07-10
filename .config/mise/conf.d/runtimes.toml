@@ -5,7 +5,10 @@
 
 [tools]
 go     = "1.26"
-elixir = "1.20"
+# Pin the OTP flavor to match `erlang` below — a bare "1.20" resolves to the
+# highest available OTP build (otp-29) which won't boot on OTP 27. The
+# "1.20-otp-27" form still tracks 1.20.x patch releases.
+elixir = "1.20-otp-27"
 erlang = "27"
 python = "3.13"
 zig    = "latest"

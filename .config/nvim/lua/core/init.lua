@@ -9,6 +9,7 @@ vim.cmd.colorscheme("tokyonight")
 vim.lsp.enable({
 	"bashls",
 	"dockerls",
+	"elixirls",
 	"gopls",
 	"helm_ls",
 	"jsonls",

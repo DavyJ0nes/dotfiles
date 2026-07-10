@@ -271,8 +271,8 @@ $diff"
     -p
     --model anthropic/claude-sonnet-4-5
     --system-prompt 'You are a git commit message generator. Output only the raw commit message text — no preamble, no explanation, no tool calls, no markdown fences.'
+    --thinking off
     --no-tools --no-session --no-title --no-lsp --no-skills --no-rules
-    --thinking minimal
   )
   msg=$(omp "${omp_flags[@]}" "$prompt")
   if [[ -z "$msg" ]]; then

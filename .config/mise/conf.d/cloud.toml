@@ -9,7 +9,11 @@ argocd   = "3.4"
 helm     = "4.2"
 kind     = "latest"
 kn       = "latest"
-ko       = "latest"
+# ko: use the github backend, not the registry default (aqua). The aqua
+# registry's SLSA config points at a `multiple.intoto.jsonl` provenance asset
+# that ko's releases no longer ship, so aqua hard-fails. The github backend
+# verifies GitHub attestations + SLSA provenance and installs cleanly.
+"github:ko-build/ko" = "latest"
 kubectl  = "1.36"
 kubectx  = "latest"
 k9s      = "latest"

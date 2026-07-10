@@ -44,6 +44,6 @@
 "go:github.com/rhysd/actionlint/cmd/actionlint"              = "latest"
 
 # Personal
-"go:github.com/davyj0nes/nothelp"                            = "latest"
+# "go:github.com/davyj0nes/nothelp"                            = "latest"
 # partner-validate intentionally omitted: no tagged releases. Install ad-hoc
 # with `go install github.com/davyj0nes/partner-validate@latest` if needed.

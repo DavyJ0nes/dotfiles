@@ -2,20 +2,13 @@ local function sources()
 	if vim.tbl_contains({ "markdown" }, vim.bo.filetype) then
 		return { "lsp", "path", "buffer" }
 	end
-	return { "lsp", "path", "snippets", "copilot", "buffer" }
-end
-
-local function enable_copilot()
-	local disabled = { "markdown" }
-	return not vim.tbl_contains(disabled, vim.bo.filetype)
+	return { "lsp", "path", "snippets", "buffer" }
 end
 
 return {
 	"saghen/blink.cmp",
 	dependencies = {
 		"rafamadriz/friendly-snippets",
-		"giuxtaposition/blink-cmp-copilot",
-		"zbirenbaum/copilot.lua",
 		"onsails/lspkind.nvim",
 	},
 	version = "v1.8.0",
@@ -28,8 +21,21 @@ return {
 	opts = {
 		keymap = {
 			preset = "enter",
-			["<C-space>"] = {},
+			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 			["<C-x>"] = { "show", "fallback" },
+			["<Tab>"] = {
+				function()
+					local ok, sm = pcall(require, "supermaven-nvim.completion_preview")
+					if ok and sm.has_suggestion() then
+						-- blink maps <Tab> as an expr mapping (textlock); defer the
+						-- buffer-mutating accept so it runs outside that context
+						vim.schedule(sm.on_accept_suggestion)
+						return true
+					end
+				end,
+				"snippet_forward",
+				"fallback",
+			},
 		},
 
 		cmdline = {
@@ -77,31 +83,12 @@ return {
 
 		sources = {
 			default = sources(),
-			providers = {
-				copilot = {
-					name = "copilot",
-					enabled = enable_copilot,
-					module = "blink-cmp-copilot",
-					score_offset = 100,
-					async = true,
-					transform_items = function(_, items)
-						local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-						local kind_idx = #CompletionItemKind + 1
-						CompletionItemKind[kind_idx] = "Copilot"
-						for _, item in ipairs(items) do
-							item.kind = kind_idx
-						end
-						return items
-					end,
-				},
-			},
 		},
 
 		appearance = {
 			use_nvim_cmp_as_default = false,
 			nerd_font_variant = "mono",
 			kind_icons = {
-				Copilot = "",
 				Text = "󰉿",
 				Method = "󰊕",
 				Function = "󰊕",

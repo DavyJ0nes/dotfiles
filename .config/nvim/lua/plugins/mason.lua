@@ -13,6 +13,7 @@ return {
 				-- LSP servers
 				"bash-language-server",
 				"dockerfile-language-server",
+				"elixir-ls",
 				"gopls",
 				"helm-ls",
 				"json-lsp",

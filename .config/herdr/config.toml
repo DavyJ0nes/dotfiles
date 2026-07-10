@@ -1,0 +1,61 @@
+# herdr configuration — mirrors my tmux setup (~/.config/tmux/tmux.conf).
+# Stow-managed: ~/.config/herdr/config.toml is a symlink back to this file.
+# herdr reads + writes through the symlink (in-place writes, so the link and
+# these comments survive in-app setting changes).
+# Apply edits to a running server with:  herdr server reload-config
+# Print every default option with:        herdr --default-config
+
+[theme]
+# tmux: @catppuccin_flavour 'mocha'.
+# herdr's "catppuccin" IS the mocha/dark palette ("catppuccin-latte" is the
+# light one; frappe/macchiato aren't built in).
+name = "catppuccin"
+
+[terminal]
+# tmux: set-option -g default-shell /bin/zsh
+default_shell = "zsh"
+# Login shell on macOS so Homebrew/mise/path_helper PATH setup runs in new panes.
+shell_mode = "auto"
+# tmux split-window -c "#{pane_current_path}": new panes/tabs inherit focused cwd.
+new_cwd = "follow"
+
+[ui]
+# Sidebar shows agents across every workspace (your existing setting).
+agent_panel_scope = "all"
+# tmux: set -g mouse on
+mouse_capture = true
+
+[keys]
+# tmux: set -g prefix C-Space  (Ctrl+Space decodes the same here)
+prefix = "ctrl+space"
+
+# --- Splits: matched to tmux pane orientation -------------------------------
+# tmux `prefix -` = split-window -v = new pane BELOW.
+# tmux `prefix |` = split-window -h = new pane to the RIGHT.
+# herdr names splits by the *divider axis* (the opposite of tmux's -v/-h flags),
+# so tmux-below == herdr split_horizontal, tmux-right == herdr split_vertical.
+split_horizontal = "prefix+minus"          # `prefix -`  -> pane below
+split_vertical   = ["prefix+|", "prefix+v"] # `prefix |` (or default v) -> pane right
+
+# tmux detaches with `prefix d`; keep herdr's `prefix q` too.
+detach = ["prefix+d", "prefix+q"]
+
+# --- Already identical to your tmux (herdr defaults, pinned for clarity) -----
+zoom            = "prefix+z"   # tmux: bind z resize-pane -Z
+copy_mode       = "prefix+["   # tmux vi copy-mode; herdr copy uses vi keys (h/j/k/l, v, y)
+new_tab         = "prefix+c"   # tmux: new-window  (herdr "tab" ~= tmux "window")
+next_tab        = "prefix+n"
+previous_tab    = "prefix+p"
+focus_pane_left  = "prefix+h"
+focus_pane_down  = "prefix+j"
+focus_pane_up    = "prefix+k"
+focus_pane_right = "prefix+l"
+goto             = "prefix+g"  # tmux: bind g (sesh picker) ~= herdr session navigator
+workspace_picker = "prefix+w"
+
+# --- No clean tmux parity (noted so I remember why) -------------------------
+# - Resize: tmux repeatable `prefix H/J/K/L`. herdr uses a resize MODE
+#   (`prefix r`, then h/l width, j/k height); prefix+shift+hjkl is swap-pane here.
+# - Pane focus: tmux uses vim-tmux-navigator (Ctrl+h/j/k/l, vim-aware). herdr
+#   can't hop into vim splits, so pane focus stays prefix+h/j/k/l above.
+# - Floating term (floax, M-t) and tmux-thumbs (`/`) have no herdr equivalent.

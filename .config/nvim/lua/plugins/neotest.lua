@@ -42,8 +42,16 @@ return {
 					return vitest
 				end)(),
 				require("neotest-golang")({
-					warn_test_name_dupes = false,
+					go_test_args = {
+						"-v",
+						"-count=1",
+						"-race",
+						"-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
+						"-parallel=1",
+					},
 					runner = "gotestsum",
+					gotestsum_args = { "--format=standard-verbose" },
+					warn_test_name_dupes = false,
 				}),
 			},
 			discovery = { enabled = true, concurrent = 0 },

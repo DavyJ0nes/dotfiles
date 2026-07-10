@@ -10,12 +10,12 @@
 [settings]
 lockfile = true
 lockfile_platforms = ["macos-arm64", "linux-x64"]
-minimum_release_age = "2d"
 
 [tools]
 "github:can1357/oh-my-pi" = "latest"
 rumdl = "0.2.3"
 herdr = "0.6.9"
+istioctl = "1.28.10"
 
 [env]
 PGT_SHARED_DIR = "{{ env.HOME }}/go/src/github.com/playgroundtech"

@@ -22,6 +22,8 @@ defmodule IExHelpers do
   Custom helper functions for IEx productivity.
   """
 
+  @compile {:no_warn_undefined, :dbg}
+
   @doc "Reload the current project (stops, recompiles, starts)"
   def reload! do
     app = Mix.Project.config()[:app]
@@ -171,6 +173,33 @@ defmodule IExHelpers do
     IO.puts("Cleared tracing flags for all processes.")
     :ok
   end
+
+  @doc """
+  Start :observer, loading the required OTP apps (wx, observer, runtime_tools)
+  even when they're not in the project's Mix dependency tree.
+  """
+  def observer do
+    otp_lib = :code.lib_dir() |> to_string()
+
+    for app <- [:wx, :runtime_tools, :observer] do
+      case :code.lib_dir(app) do
+        {:error, _} ->
+          # App not on code path — find it in OTP lib dir and add it
+          case Path.wildcard(Path.join(otp_lib, "#{app}-*/ebin")) do
+            [ebin | _] ->
+              :code.add_patha(~c"#{ebin}")
+
+            [] ->
+              IO.puts("⚠ #{app} not found in #{otp_lib}")
+          end
+
+        _ ->
+          :ok
+      end
+    end
+
+    :observer.start()
+  end
 end
 
 defmodule Timer do
@@ -302,6 +331,7 @@ IO.puts("""
   • copy(value)            - Copy to clipboard (macOS)
   • read("path")           - Read file contents
   • parse_csv(string)      - Quick CSV parsing
+  • observer()             - Start :observer GUI (works in Mix)
 
 #{IO.ANSI.green()}Sample data available:#{IO.ANSI.reset()}
   • sample_rides           - List of cycling ride maps

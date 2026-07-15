@@ -1,6 +1,6 @@
 return {
 	"nvim-neotest/neotest",
-	ft = { "go", "rust", "typescript", "typescriptreact", "javascriptreact" },
+	ft = { "go", "rust", "typescript", "typescriptreact", "javascriptreact", "elixir" },
 	dependencies = {
 		{ "nvim-lua/plenary.nvim", version = "*" },
 		"antoinemadec/FixCursorHold.nvim",
@@ -10,6 +10,7 @@ return {
 		"mrcjkb/rustaceanvim",
 		{ "nvim-neotest/nvim-nio", version = "*" },
 		{ "fredrikaverpil/neotest-golang", version = "*" },
+		"jfpedroza/neotest-elixir",
 	},
 	config = function()
 		local neotest_ns = vim.api.nvim_create_namespace("neotest")
@@ -53,12 +54,13 @@ return {
 					gotestsum_args = { "--format=standard-verbose" },
 					warn_test_name_dupes = false,
 				}),
+				require("neotest-elixir"),
 			},
 			discovery = { enabled = true, concurrent = 0 },
 			diagnostic = { enabled = true, severity = vim.diagnostic.severity.ERROR },
 			running = { concurrent = true },
 			log_level = vim.log.levels.WARN,
-			output = { enabled = true, open_on_run = true },
+			output = { enabled = true, open_on_run = false }, -- was true; auto-opening a terminal float on failed tests dropped nvim into terminal/insert mode. Use <leader>to on demand.
 			status = { enabled = true, signs = true, virtual_text = false },
 			strategies = { integrated = { height = 40, width = 120 } },
 			summary = {

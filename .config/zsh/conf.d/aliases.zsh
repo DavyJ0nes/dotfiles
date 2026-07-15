@@ -38,6 +38,7 @@ alias docker='podman'
 alias cat='bat'
 alias suggest='gh copilot suggest -t shell'
 alias btfix='sudo pkill bluetoothd'
+alias tt='timer toggle'
 
 # Search shortcuts (noglob prevents ? from expanding as a glob)
 alias '?'='noglob __ddg'

@@ -9,5 +9,7 @@ return {
 		{ "<leader>xL", "<cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
 		{ "<leader>xQ", "<cmd>Trouble qflist toggle<CR>", desc = "Quickfix (Trouble)" },
 	},
-	opts = {},
+	opts = {
+		win = { wo = { wrap = true } }, -- wrap long diagnostics so full errors are readable
+	},
 }

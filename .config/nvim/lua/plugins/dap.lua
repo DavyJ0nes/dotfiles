@@ -23,16 +23,23 @@ return {
       vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
 
 			dapui.setup({
-				-- Custom window layout: a single left column only.
-				-- Dropped the REPL, Watches and Console panes — no bottom panel.
 				layouts = {
 					{
 						position = "left",
-						size = 50, -- columns; wider than the default 40 to give the variables view room
+						size = 50,
 						elements = {
-							{ id = "scopes", size = 0.55 }, -- variables view; given the most space
+							{ id = "scopes", size = 0.50 },
 							{ id = "stacks", size = 0.25 },
-							{ id = "breakpoints", size = 0.20 },
+							{ id = "watches", size = 0.10 },
+							{ id = "breakpoints", size = 0.15 },
+						},
+					},
+					{
+						position = "bottom",
+						size = 12,
+						elements = {
+							{ id = "console", size = 0.5 },
+							{ id = "repl", size = 0.5 },
 						},
 					},
 				},

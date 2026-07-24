@@ -298,6 +298,19 @@ local function goto_test()
 				derived_path = candidates[1]
 			end
 		end
+
+	-- C#: src/Project/File.cs <-> tests/Project.Tests/FileTests.cs
+	elseif filename:match("Tests%.cs$") then
+		local source_filename = (filename:gsub("Tests%.cs$", ".cs"))
+		-- Greedy (.*) targets the last /tests/ — avoids hitting e.g. GOPATH /go/src/
+		local source_dirname = (dirname:gsub("(.*)/tests/", "%1/src/", 1))
+		source_dirname = (source_dirname:gsub("%.Tests", ""))
+		derived_path = vim.fs.joinpath(source_dirname, source_filename)
+	elseif filename:match("%.cs$") then
+		local test_filename = (filename:gsub("%.cs$", "Tests.cs"))
+		local test_dirname = (dirname:gsub("(.*)/src/", "%1/tests/", 1))
+		test_dirname = (test_dirname:gsub("(/tests/[^/]+)", "%1.Tests", 1))
+		derived_path = vim.fs.joinpath(test_dirname, test_filename)
 	end
 
 	if derived_path and vim.fn.filereadable(derived_path) == 1 then

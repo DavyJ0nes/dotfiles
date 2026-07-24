@@ -21,12 +21,14 @@ return {
 		end,
 		config = function()
 			vim.treesitter.language.register("yaml", "helm")
+			vim.treesitter.language.register("c_sharp", "cs")
 
 			local ts = require("nvim-treesitter")
 			local installed = require("nvim-treesitter.config").get_installed()
 			local wanted = {
 				"bash",
 				"dockerfile",
+				"c_sharp",
 				"elixir",
 				"gitignore",
 				"go",

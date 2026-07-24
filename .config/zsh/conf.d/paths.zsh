@@ -20,6 +20,9 @@ export GOPATH="$HOME/go"
 export GOBIN="$HOME/go/bin"
 export PATH="$GOPATH/bin:$PATH"
 
+# .NET global tools (roslyn-language-server, csharpier, etc.)
+export PATH="$HOME/.dotnet/tools:$PATH"
+
 # K8s
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 

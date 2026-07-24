@@ -7,6 +7,10 @@ return {
 			ignore_filetypes = {
         markdown = true,
         go = false,
+        cs = false,
+        c_sharp = false,
+        elixir = false,
+        zig = false,
       },
 			color = {
 				suggestion_color = "#565f89", -- tokyonight "night" comment gray; cosmetic, adjust to taste

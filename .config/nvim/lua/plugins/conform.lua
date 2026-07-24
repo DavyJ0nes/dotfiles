@@ -1,7 +1,7 @@
 return {
 	"stevearc/conform.nvim",
-	event = { "BufReadPre", "BufWritePre" },
 	ft = {
+		"cs",
 		"go",
 		"elixir",
 		"heex",
@@ -52,6 +52,7 @@ return {
 				elixir = { "mix" },
 				heex = { "mix" },
 				dockerfile = { "hadolint" },
+				cs = { "csharpier" },
 				["*"] = { "trim_whitespace" },
 			},
 			format_on_save = {

@@ -33,6 +33,11 @@ export GITHUB_TOKEN="$(gh auth token)"
 # Erlang/Elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
 
+# .NET — DOTNET_ROOT tells native .NET apps (roslyn-language-server, netcoredbg)
+# where mise installed the SDK, since it's not in the default /usr/local/share/dotnet.
+export DOTNET_ROOT="$HOME/.local/share/mise/dotnet-root"
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
 # NVM (fallback if not using asdf for node)
 export NVM_DIR="$HOME/.nvm"
 

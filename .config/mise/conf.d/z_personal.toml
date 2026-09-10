@@ -17,6 +17,7 @@ rumdl = "0.2.3"
 herdr = "0.6.9"
 istioctl = "1.28.10"
 ffmpeg = "8.1.2"
+ollama = "0.32.3"
 
 [env]
 PGT_SHARED_DIR = "{{ env.HOME }}/go/src/github.com/playgroundtech"

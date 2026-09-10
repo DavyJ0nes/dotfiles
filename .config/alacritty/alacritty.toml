@@ -47,11 +47,11 @@ regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:
 [general]
 live_config_reload = true
 import = [
-  # "~/.config/alacritty/catppuccin-macchiato.toml"
+  "~/.config/alacritty/catppuccin-mocha.toml"
   # "~/.config/alacritty/catppuccin-latte.toml"
+  # "~/.config/alacritty/catppuccin-macchiato.toml"
   # "~/.config/alacritty/catppuccin-frappe.toml"
-  # "~/.config/alacritty/kanagawa-wave.toml"
-  "~/.config/alacritty/nightfox.toml"
+  # "~/.config/alacritty/nightfox.toml"
   # "~/.config/alacritty/tokyonight-storm.toml"
   # "~/.config/alacritty/oxocarbon.toml"
 ]

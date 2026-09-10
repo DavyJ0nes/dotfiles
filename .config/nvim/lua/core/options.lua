@@ -23,7 +23,18 @@ opt.cursorline = true
 
 -- UI
 opt.termguicolors = true
-opt.background = "dark"
+-- Auto-detect theme from ~/.config/theme-mode
+local theme_file = vim.fn.expand("~/.config/theme-mode")
+if vim.fn.filereadable(theme_file) == 1 then
+	local mode = vim.fn.readfile(theme_file)[1]
+	if mode == "light" then
+		opt.background = "light"
+	else
+		opt.background = "dark"
+	end
+else
+	opt.background = "dark"
+end
 opt.signcolumn = "yes"
 opt.colorcolumn = "79,119"
 opt.mouse = ""

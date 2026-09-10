@@ -1,0 +1,131 @@
+#!/bin/bash
+set -euo pipefail
+
+# theme — unified dark/light theme switcher
+# Usage: theme [dark|light|toggle|auto|status]
+#
+# Services managed:
+#   Ghostty, Alacritty, tmux (catppuccin), Neovim (catppuccin),
+#   Helix, K9s, Fish, Sketchybar, Borders, Taskwarrior
+#
+# Zed handles light/dark via its own system-aware setting.
+
+STATE_FILE="$HOME/.config/theme-mode"
+CONFIG_DIR="$HOME/.config"
+
+# -- Resolve desired mode -----------------------------------------------------
+
+case "${1:-status}" in
+  dark|light)
+    MODE="$1"
+    ;;
+  toggle)
+    CURRENT=$(cat "$STATE_FILE" 2>/dev/null || echo "dark")
+    [[ "$CURRENT" == "dark" ]] && MODE="light" || MODE="dark"
+    ;;
+  auto)
+    if defaults read -g AppleInterfaceStyle &>/dev/null; then
+      MODE="dark"
+    else
+      MODE="light"
+    fi
+    ;;
+  status|"")
+    echo "$(cat "$STATE_FILE" 2>/dev/null || echo "not set")"
+    exit 0
+    ;;
+  *)
+    echo "Usage: theme [dark|light|toggle|auto|status]"
+    exit 1
+    ;;
+esac
+
+# -- Persist state ------------------------------------------------------------
+
+echo "$MODE" > "$STATE_FILE"
+
+# -- Derive per-service values ------------------------------------------------
+
+if [[ "$MODE" == "dark" ]]; then
+  GHOSTTY_THEME="catppuccin-mocha.conf"
+  ALACRITTY_IMPORT="catppuccin-mocha.toml"
+  ALACRITTY_DECORATIONS="Dark"
+  TMUX_FLAVOR="mocha"
+  HELIX_THEME="catppuccin_mocha"
+  K9S_SKIN="catppuccin-mocha"
+  TASK_THEME="solarized-dark-256.theme"
+  FISH_THEME="catppuccin-mocha"
+  BORDER_ACTIVE="0xc0f5c2e7"
+  BORDER_INACTIVE="0xc0313244"
+  BORDER_BG="0x30313244"
+  VIM_BG="dark"
+else
+  GHOSTTY_THEME="catppuccin-latte.conf"
+  ALACRITTY_IMPORT="catppuccin-latte.toml"
+  ALACRITTY_DECORATIONS="Light"
+  TMUX_FLAVOR="latte"
+  HELIX_THEME="catppuccin_latte"
+  K9S_SKIN="catppuccin-latte"
+  TASK_THEME="solarized-light-256.theme"
+  FISH_THEME="catppuccin-latte"
+  BORDER_ACTIVE="0xc0ea76cb"
+  BORDER_INACTIVE="0xc0ccd0da"
+  BORDER_BG="0x30ccd0da"
+  VIM_BG="light"
+fi
+
+# -- Apply per-service --------------------------------------------------------
+
+# Ghostty (live-reloads on config change)
+sed -i '' 's/^theme = .*/theme = '"$GHOSTTY_THEME"'/' "$CONFIG_DIR/ghostty/config"
+
+# Alacritty (live_config_reload = true)
+# Replace the single uncommented import line inside the import array
+sed -i '' '/^import/,/^\]/{
+  s|^  "[^"]*\.toml"$|  "~/.config/alacritty/'"$ALACRITTY_IMPORT"'"|
+}' "$CONFIG_DIR/alacritty/alacritty.toml"
+sed -i '' 's/decorations_theme_variant = .*/decorations_theme_variant = "'"$ALACRITTY_DECORATIONS"'"/' "$CONFIG_DIR/alacritty/alacritty.toml"
+
+# tmux (re-source to reload catppuccin)
+sed -i '' "s/@catppuccin_flavor '.*'/@catppuccin_flavor '$TMUX_FLAVOR'/" "$CONFIG_DIR/tmux/tmux.conf"
+if command -v tmux &>/dev/null && tmux list-sessions &>/dev/null 2>&1; then
+  tmux set -g @catppuccin_flavor "$TMUX_FLAVOR" 2>/dev/null || true
+  tmux source "$CONFIG_DIR/tmux/tmux.conf" 2>/dev/null || true
+fi
+
+# Neovim (update running instances + persistent config via theme-mode file)
+for sock in /tmp/nvim.*/0; do
+  [[ -S "$sock" ]] && nvim --server "$sock" --remote-send "<Cmd>set background=$VIM_BG<CR>" 2>/dev/null || true
+done
+
+# Helix (takes effect on next launch)
+sed -i '' 's/^theme = .*/theme = "'"$HELIX_THEME"'"/' "$CONFIG_DIR/helix/config.toml"
+
+# K9s (takes effect on next launch)
+sed -i '' 's/skin: .*/skin: '"$K9S_SKIN"'/' "$CONFIG_DIR/k9s/config.yaml"
+
+# Taskwarrior (takes effect on next command)
+sed -i '' 's/^include .*\.theme$/include '"$TASK_THEME"'/' "$CONFIG_DIR/task/taskrc"
+
+# Fish (apply to running shells via universal variables)
+if command -v fish &>/dev/null; then
+  fish -c "fish_config theme choose '$FISH_THEME'" 2>/dev/null || true
+fi
+
+# Sketchybar (colours.sh reads theme-mode; just reload)
+if command -v sketchybar &>/dev/null && pgrep -q sketchybar; then
+  sketchybar --reload &>/dev/null &
+fi
+
+# Borders
+sed -i '' 's/active_color=.*/active_color='"$BORDER_ACTIVE"'/' "$CONFIG_DIR/borders/bordersrc"
+sed -i '' 's/inactive_color=.*/inactive_color='"$BORDER_INACTIVE"'/' "$CONFIG_DIR/borders/bordersrc"
+sed -i '' 's/background_color=.*/background_color='"$BORDER_BG"'/' "$CONFIG_DIR/borders/bordersrc"
+if pgrep -q borders; then
+  pkill borders
+  sleep 0.2
+  bash "$CONFIG_DIR/borders/bordersrc" &>/dev/null &
+  disown
+fi
+
+echo "✓ Theme set to: $MODE"

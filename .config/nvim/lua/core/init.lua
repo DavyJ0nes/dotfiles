@@ -4,7 +4,7 @@ require("core.autocmds")
 require("core.statusline")
 require("core.lazy")
 
-vim.cmd.colorscheme("tokyonight")
+vim.cmd.colorscheme("catppuccin")
 
 vim.lsp.enable({
 	"bashls",

@@ -17,8 +17,9 @@ background-opacity = 1
 background-blur-radius = 50
 alpha-blending = linear-corrected
 
-theme = nightfox.conf
+# theme = nightfox.conf
 # theme = dayfox.conf
+theme = catppuccin-mocha.conf
 
 cursor-style = block
 cursor-invert-fg-bg = true

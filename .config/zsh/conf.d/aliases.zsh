@@ -59,7 +59,6 @@ alias lg='eza --group --group-directories-first --long --git --git-ignore'
 alias inbox='nothelp today'
 alias start='nothelp start'
 alias stop='nothelp stop'
-alias log='nothelp log'
 alias today='nothelp today'
 alias yesterday='nothelp yesterday'
 alias tsync='task-sync'
@@ -116,6 +115,7 @@ alias gaf='git add -A; git commit -m "WIP: $(w3m whatthecommit.com | head -n 1)"
 alias gitdock='docker run -v "$PWD":/srv/app davyj0nes/git'
 alias ghstatus="curl -s https://www.githubstatus.com/api/v2/status.json | jq '{url: .page.url, status: .status.description}'"
 alias ghprstatus='gh pr view --json "statusCheckRollup" | jq '"'"'.statusCheckRollup[] | {"name": .name, "status": .status}'"'"''
+
 ghprme() {
   local owner repo
   owner=$(gh repo view --json owner --jq .owner.login)
@@ -140,6 +140,7 @@ ghprme() {
         done
   } | column -t -s $'\t'
 }
+
 ghprmerge() { gh pr merge "$1" --auto --squash }
 
 # ── Docker ────────────────────────────────────────────────────────────────────
@@ -182,6 +183,7 @@ alias klf='kubectl logs --follow'
 alias kaf='kubectl apply -f'
 alias kdf='kubectl delete -f'
 alias kex='kubectl exec -it'
+alias k9s='sofka'
 
 # ── Terraform ─────────────────────────────────────────────────────────────────
 alias tf='terraform'

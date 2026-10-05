@@ -44,3 +44,33 @@ autocmd("FileType", {
 		vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = ev.buf, silent = true })
 	end,
 })
+
+-- In markdown: gd opens URL under cursor in browser, falls back to LSP
+autocmd("FileType", {
+	group = augroup("markdown_gd_open", { clear = true }),
+	pattern = "markdown",
+	callback = function(ev)
+		vim.keymap.set("n", "gd", function()
+			local line = vim.api.nvim_get_current_line()
+			local col = vim.api.nvim_win_get_cursor(0)[2] + 1 -- 1-indexed
+
+			-- Check for markdown link [text](url) with a web URL under cursor
+			for s, url, e in line:gmatch("()%[.-%]%((.-)%)()" ) do
+				if col >= s and col < e and url:match("^https?://") then
+					vim.ui.open(url)
+					return
+				end
+			end
+
+			-- Check for raw URL under cursor via <cfile>
+			local cfile = vim.fn.expand("<cfile>")
+			if cfile:match("^https?://") then
+				vim.ui.open(cfile)
+				return
+			end
+
+			-- Fall back to LSP definition
+			Snacks.picker.lsp_definitions()
+		end, { buffer = ev.buf, silent = true, desc = "Open link or goto definition" })
+	end,
+})

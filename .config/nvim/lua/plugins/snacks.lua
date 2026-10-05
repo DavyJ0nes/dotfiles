@@ -77,7 +77,7 @@ return {
 
 		-- Diagnostics
 		{ "<leader>xw", function() Snacks.picker.diagnostics() end, desc = "Workspace Diagnostics" },
-		{ "<leader>xx", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
+		{ "<leader>xx", function() Snacks.picker.diagnostics_buffer({ layout = { preview = false } }) end, desc = "Buffer Diagnostics" },
 
 		-- LSP navigation
 		{ "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },

@@ -1,0 +1,70 @@
+readonly = true
+remember_sort = true
+mouse = true
+compact_mode = true
+default_namespace = "all"
+
+favorite_namespaces = ["argocd", "kube-system", "monitoring"]
+
+[skin]
+name = "catppuccin-mocha"
+
+[aliases]
+app = "applications.argoproj.io"
+appset = "applicationsets.argoproj.io"
+appproj = "appprojects.argoproj.io"
+
+# -- Pod view: sort by STATUS (single-column; multi-sort not supported) --------
+[views."v1/pods"]
+sort = "STATUS:asc"
+
+# -- Argo CD Application view: surface sync and health at a glance ------------
+[views."argoproj.io/v1alpha1/applications"]
+sort = "SYNC:asc"
+drill = { kind = "pods", labels = "app.kubernetes.io/instance={name}" }
+
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "HEALTH"
+path = "/status/health/status"
+
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "SYNC"
+path = "/status/sync/status"
+
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "REVISION"
+path = "/status/sync/revision"
+wide = true
+
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "REPO"
+path = "/spec/source/repoURL"
+wide = true
+
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "PATH"
+path = "/spec/source/path"
+wide = true
+
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "DEST-NS"
+path = "/spec/destination/namespace"
+
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "DEST-SRV"
+path = "/spec/destination/server"
+wide = true
+
+# -- Argo CD Application conditions for quick status --------------------------
+[[views."argoproj.io/v1alpha1/applications".columns]]
+name = "MESSAGE"
+path = "/status/operationState/message"
+wide = true
+
+# -- Argo CD ApplicationSet view ----------------------------------------------
+[views."argoproj.io/v1alpha1/applicationsets"]
+
+[[views."argoproj.io/v1alpha1/applicationsets".columns]]
+name = "STRATEGY"
+path = "/spec/strategy/type"
+

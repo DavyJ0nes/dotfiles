@@ -335,20 +335,24 @@ function update() {
   echo "$TO_UPDATE"
 }
 
-# ── Taskwarrior ───────────────────────────────────────────────────────────────
-function ttprio() {
-  if [[ $# -ne 2 ]]; then
-    echo "Usage: ttprio <id> <order>" >&2
+# ── trk (tasks) ───────────────────────────────────────────────────────────────
+# `t` alone lists tasks; otherwise it is `trk task`, e.g. `t show 3`.
+function t() {
+  if [[ $# -eq 0 ]]; then
+    trk task ls
+  else
+    trk task "$@"
+  fi
+}
+
+# Mark one or more tasks done: tdone 3 5 8
+function tdone() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: tdone <id>..." >&2
     return 1
   fi
-  local id=$1 ord=$2
-  if ! [[ $id =~ ^[0-9]+$ ]]; then
-    echo "ttprio: <id> must be a number (got '$id')" >&2
-    return 1
-  fi
-  if ! [[ $ord =~ ^-?[0-9]+$ ]]; then
-    echo "ttprio: <order> must be an integer (got '$ord')" >&2
-    return 1
-  fi
-  command task $id modify todayorder:$ord
+  local id
+  for id in "$@"; do
+    trk task update "$id" --status done || return
+  done
 }

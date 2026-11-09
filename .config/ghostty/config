@@ -41,6 +41,8 @@ keybind = global:ctrl+7=unbind
 keybind = global:ctrl+8=unbind
 keybind = global:ctrl+9=unbind
 keybind = global:ctrl+0=unbind
+keybind = cmd+t=unbind
+keybind = cmd+n=unbind
 
 # Enable desktop notifications on bell
 desktop-notifications = true

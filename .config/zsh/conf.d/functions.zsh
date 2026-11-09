@@ -190,9 +190,26 @@ function tasksesh() {
   fi
 }
 
+# ── Worktrees ─────────────────────────────────────────────────────────────────
+# Wraps bin/wt so `wt add` and `wt cd` move into the worktree, and `wt rm`
+# moves back to the main checkout if it removed the one you were in.
+function wt() {
+  local dir main
+  case "$1" in
+    add) dir=$(command wt "$@") && cd "$dir" ;;
+    cd)  dir=$(command wt pick) && [[ -n "$dir" ]] && cd "$dir" ;;
+    rm)
+      main=$(command wt main) || return
+      command wt "$@" && [[ ! -d "$PWD" ]] && cd "$main"
+      ;;
+    *)   command wt "$@" ;;
+  esac
+}
+
 # ── Jira → branch ─────────────────────────────────────────────────────────────
 # Pick a branch type, then pick (or type custom) a Jira ticket. Slugs the
-# summary and creates the branch as <type>/<TICKET>-<slug>.
+# summary and creates the branch as <type>/<TICKET>-<slug> in its own
+# worktree (see bin/wt), then moves into it.
 function jbranch() {
   local type ticket summary slug branch
   local types=(chore feat fix refactor docs test perf)
@@ -219,8 +236,8 @@ function jbranch() {
   slug=$(echo "$summary" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//' | cut -c1-50)
   branch="$type/$ticket-$slug"
 
-  if gum confirm "Create branch '$branch'?"; then
-    git checkout -b "$branch"
+  if gum confirm "Create worktree for '$branch'?"; then
+    wt add "$branch"
   fi
 }
 
@@ -252,6 +269,8 @@ Rules:
 - Body explains *why*, not *what* — wrap at 80 cols, max 4 lines
 - Output ONLY the message: no markdown fences, no preamble
 
+Contxt, read @~/go/src/github.com/davyj0nes/locker/context/engineering-values.md
+
 Writing style — assume an auditor will read this:
 - Be precise and factual; no hyperbole or marketing language
 - State the change neutrally; avoid 'cleanup', 'improvements', 'tweaks' — say
@@ -269,7 +288,7 @@ $diff"
 
   local -a omp_flags=(
     -p
-    --model anthropic/claude-sonnet-4-5
+    --model anthropic/claude-sonnet-5-5
     --system-prompt 'You are a git commit message generator. Output only the raw commit message text — no preamble, no explanation, no tool calls, no markdown fences.'
     --thinking off
     --no-tools --no-session --no-title --no-lsp --no-skills --no-rules
@@ -355,4 +374,16 @@ function tdone() {
   for id in "$@"; do
     trk task update "$id" --status done || return
   done
+}
+
+# Tag this tuios pane's agent with the task it works on: wip 107, wip TSRE-1052.
+# The dock's WIP pill counts agents with the same tag once. `wip` alone clears it.
+function wip() {
+  if [[ -z "$TUIOS_PANE_ID" ]]; then
+    echo "wip: not in a tuios pane" >&2
+    return 1
+  fi
+  local task="$1"
+  [[ "$task" =~ ^[0-9]+$ ]] && task="#$task"
+  tuios set-agent-meta task="$task"
 }

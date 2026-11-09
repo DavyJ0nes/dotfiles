@@ -27,9 +27,9 @@
   "nvim-dap-go": { "branch": "main", "commit": "b4421153ead5d726603b02743ea40cf26a51ed5f" },
   "nvim-dap-ui": { "branch": "master", "commit": "f7d75cca202b52a60c520ec7b1ec3414d6e77b0f" },
   "nvim-nio": { "branch": "master", "commit": "21f5324bfac14e22ba26553caf69ec76ae8a7662" },
-  "nvim-treesitter": { "branch": "main", "commit": "910fdf6f49e9dee7e7257c7d11a76b040fdfb9de" },
+  "nvim-treesitter": { "branch": "main", "commit": "1a4f47b03dfe92d28de7d5654c67327ef008c9e6" },
   "nvim-treesitter-context": { "branch": "master", "commit": "ed1cf48d5af252248c55f50b9427e8ce883a2c6b" },
-  "nvim-ts-autotag": { "branch": "main", "commit": "88c1453db4ba7dd24131086fe51fdf74e587d275" },
+  "nvim-ts-autotag": { "branch": "main", "commit": "d7220b55e16ed3c04e88086256def5d282429493" },
   "nvim-web-devicons": { "branch": "master", "commit": "5b9067899ee6a2538891573500e8fd6ff008440f" },
   "outline-treesitter-provider.nvim": { "branch": "main", "commit": "08d8f520fdf5a4eb795f251fe0a09488c5d8335f" },
   "outline.nvim": { "branch": "main", "commit": "ead1820d49c8e79ce89cab1c2c318981b695c9d2" },
@@ -39,7 +39,7 @@
   "render-markdown": { "branch": "main", "commit": "640a3ec6d538bad17c328be373c7cad0293d9589" },
   "roslyn.nvim": { "branch": "main", "commit": "bf1bd4e70bc7068d1b4aebf4ce03cc19a86615be" },
   "rustaceanvim": { "branch": "main", "commit": "9cb125de42c0256ed1bc1f9ded8d8f0381317a17" },
-  "schemastore.nvim": { "branch": "main", "commit": "5553e77b8628b7a08fc2a5135c17647f11d828ee" },
+  "schemastore.nvim": { "branch": "main", "commit": "a470cbcd112e717a8955efee3929bd59f7473c7b" },
   "snacks.nvim": { "branch": "main", "commit": "e6fd58c82f2f3fcddd3fe81703d47d6d48fc7b9f" },
   "supermaven-nvim": { "branch": "main", "commit": "07d20fce48a5629686aefb0a7cd4b25e33947d50" },
   "termim.nvim": { "branch": "main", "commit": "0bb39e30d2a1c05448f8eaeb9f5a09c742370490" },
@@ -54,5 +54,5 @@
   "vim-tmux-navigator": { "branch": "master", "commit": "85b8e5f60c1690cde57dbb66467ce39cd1b63343" },
   "which-key.nvim": { "branch": "main", "commit": "fcbf4eea17cb299c02557d576f0d568878e354a4" },
   "worktrees.nvim": { "branch": "main", "commit": "9682494e33b375feccf93412adf807eb15f36c1e" },
-  "zk-nvim": { "branch": "main", "commit": "ee30512f471ace6a1a228354ce63adcb9b445350" }
+  "zk-nvim": { "branch": "main", "commit": "2093138f4fabce994cf19403fca89d629f312ac9" }
 }

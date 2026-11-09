@@ -1,3 +1,4 @@
+fpath=(/Users/davy.jones/.local/share/zsh/site-functions $fpath)
 # ── Rust ──────────────────────────────────────────────────────────────────────
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 # ── UV (Python) ───────────────────────────────────────────────────────────────
@@ -18,11 +19,11 @@ command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # ── Google Cloud SDK ──────────────────────────────────────────────────────────
-# if [[ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]]; then
-#   source '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'
-#   autoload -Uz bashcompinit && bashcompinit
-#   source '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'
-# fi
+if [[ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]]; then
+  source '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'
+  autoload -Uz bashcompinit && bashcompinit
+  source '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'
+fi
 
 # ── opam (OCaml) ──────────────────────────────────────────────────────────────
 [[ -r "$HOME/.opam/opam-init/init.zsh" ]] && source "$HOME/.opam/opam-init/init.zsh" &>/dev/null
@@ -40,3 +41,11 @@ command -v atuin &>/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
 # ── zsh-syntax-highlighting (must be sourced last) ────────────────────────────
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 gpgconf --launch gpg-agent
+
+# -- access-gke kubeconfig (keeps kubectl context writes out of ~/.kube/config) --
+fpath=(/Users/davy.jones/.local/share/zsh/site-functions $fpath)
+
+# access-gke kubeconfig (keeps kubectl context writes out of ~/.kube/config)
+if [[ ":${KUBECONFIG:-}:" != *":$HOME/.kube/access-gke.yaml:"* ]]; then
+  export KUBECONFIG="$HOME/.kube/access-gke.yaml:${KUBECONFIG:-$HOME/.kube/config}"
+fi

@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+"""Capture a baseline of pull request outcomes for one GitHub repo.
+
+Writes three files to the output directory:
+  prs.json    one record per merged PR (raw data)
+  runs.json   push-to-main Terraform workflow runs (raw data)
+  summary.md  the metric table, with agent-assisted and human-only splits
+
+Run the same command with a later --until to compare two windows.
+Needs: gh (logged in), python3. No other dependencies.
+"""
+
+import argparse
+import datetime as dt
+import json
+import re
+import statistics
+import subprocess
+import sys
+from pathlib import Path
+
+PR_QUERY = """
+query($q: String!, $after: String) {
+  search(query: $q, type: ISSUE, first: 10, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      ... on PullRequest {
+        number title createdAt mergedAt body
+        author { login }
+        changesRequested: reviews(states: CHANGES_REQUESTED) { totalCount }
+        comments(last: 50) { nodes { author { login } body } }
+        commits(last: 100) {
+          nodes { commit {
+            message
+            checkSuites(first: 30) { nodes { conclusion } }
+          } }
+        }
+      }
+    }
+  }
+}
+"""
+
+PLAN_MARKER = "id=terraform_plan"
+TFLINT_ERROR_MARKER = "Fix all <b>Errors</b>"
+DESTROY_RE = re.compile(r"Plan: \d+ to add, \d+ to change, (\d+) to destroy")
+AGENT_RE = re.compile(r"Co-Authored-By: Claude|Generated with \[?Claude Code|posted by Claude Code", re.I)
+
+
+def gh(*args):
+    out = subprocess.run(["gh", *args], check=True, capture_output=True, text=True)
+    return out.stdout
+
+
+def fetch_prs(repo, since, until):
+    q = f"repo:{repo} is:pr is:merged base:main merged:{since}..{until}"
+    prs, after = [], None
+    while True:
+        args = ["api", "graphql", "-f", f"query={PR_QUERY}", "-f", f"q={q}"]
+        if after:
+            args += ["-f", f"after={after}"]
+        page = json.loads(gh(*args))["data"]["search"]
+        prs += [n for n in page["nodes"] if n]
+        print(f"  fetched {len(prs)} PRs", file=sys.stderr)
+        if not page["pageInfo"]["hasNextPage"]:
+            return prs
+        after = page["pageInfo"]["endCursor"]
+
+
+def fetch_runs(repo, since, until):
+    # The runs API returns at most 1000 results per query, so ask one week at a time.
+    runs, start = [], since
+    while start <= until:
+        end = min(start + dt.timedelta(days=6), until)
+        path = (f"repos/{repo}/actions/runs?branch=main&event=push"
+                f"&created={start}..{end}&per_page=100")
+        for line in gh("api", "--paginate", path, "--jq", ".workflow_runs[] | @json").splitlines():
+            r = json.loads(line)
+            if r["path"].startswith(".github/workflows/gcp_"):
+                runs.append({k: r[k] for k in ("id", "path", "conclusion", "created_at", "html_url")})
+        start = end + dt.timedelta(days=1)
+    print(f"  fetched {len(runs)} runs", file=sys.stderr)
+    return runs
+
+
+def is_bot(login):
+    return login is None or login.endswith("[bot]") or login in {"dependabot", "boots-rw"}
+
+
+def to_record(pr):
+    comments = pr["comments"]["nodes"]
+    commits = [c["commit"] for c in pr["commits"]["nodes"]]
+    plans = [c["body"] for c in comments if PLAN_MARKER in c["body"]]
+    destroys = [int(m) for body in plans for m in DESTROY_RE.findall(body)]
+    suites = [s["conclusion"] for c in commits for s in c["checkSuites"]["nodes"]]
+    text = pr["body"] + "".join(c["message"] for c in commits) + "".join(c["body"] for c in comments)
+    hours = (dt.datetime.fromisoformat(pr["mergedAt"]) - dt.datetime.fromisoformat(pr["createdAt"])).total_seconds() / 3600
+    return {
+        "number": pr["number"],
+        "title": pr["title"],
+        "author": (pr["author"] or {}).get("login"),
+        "merged_at": pr["mergedAt"],
+        "hours_to_merge": round(hours, 2),
+        "changes_requested": pr["changesRequested"]["totalCount"],
+        "has_plan": bool(plans),
+        "destroys": sum(destroys),
+        "tflint_errors": any(TFLINT_ERROR_MARKER in c["body"] for c in comments),
+        "clean_ci": "FAILURE" not in suites and "TIMED_OUT" not in suites,
+        "revert": pr["title"].lower().startswith("revert"),
+        "agent_assisted": bool(AGENT_RE.search(text)),
+    }
+
+
+def pct(part, whole):
+    return f"{part / whole:.0%} ({part}/{whole})" if whole else "n/a"
+
+
+def p90(values):
+    return statistics.quantiles(values, n=10)[-1] if len(values) >= 2 else (values[0] if values else 0)
+
+
+def metrics(prs):
+    planned = [p for p in prs if p["has_plan"]]
+    hours = [p["hours_to_merge"] for p in prs]
+    return {
+        "PRs merged": str(len(prs)),
+        "Clean CI rate": pct(sum(p["clean_ci"] for p in prs), len(prs)),
+        "Destroy rate (PRs with a plan)": pct(sum(p["destroys"] > 0 for p in planned), len(planned)),
+        "Reverts": str(sum(p["revert"] for p in prs)),
+        "Time to merge, median (h)": f"{statistics.median(hours):.1f}" if hours else "n/a",
+        "Time to merge, p90 (h)": f"{p90(hours):.1f}",
+    }
+
+
+def summary(repo, since, until, prs, runs, excluded):
+    agent = [p for p in prs if p["agent_assisted"]]
+    human = [p for p in prs if not p["agent_assisted"]]
+    cols = [metrics(prs), metrics(agent), metrics(human)]
+    failed = sum(r["conclusion"] == "failure" for r in runs)
+    lines = [
+        f"# PR baseline: {repo}",
+        "",
+        f"Window: {since} to {until} (merge date). Captured {dt.date.today()}.",
+        f"Excluded {excluded} PRs by bots (`[bot]` authors, dependabot, boots-rw).",
+        "",
+        "| Metric | All | Agent-assisted | Human-only |",
+        "|---|---|---|---|",
+        *[f"| {k} | {cols[0][k]} | {cols[1][k]} | {cols[2][k]} |" for k in cols[0]],
+        f"| Agent share | {pct(len(agent), len(prs))} | | |",
+        f"| Apply failure rate (push to main) | {pct(failed, len(runs))} | | |",
+        "",
+        "## Definitions",
+        "",
+        "- **Clean CI**: no check suite on any commit of the PR failed or timed out.",
+        "- **Destroy rate**: share of PRs with a plan comment where the plan destroys at least one resource. "
+        "The plan comment is updated in place, so this is the last plan before merge.",
+        "- **Revert**: the PR title starts with \"Revert\".",
+        "- **Agent-assisted**: a commit, the PR body or a PR comment has a Claude Code trailer or marker. "
+        "People can leave these out, so this is a lower bound.",
+        "- **Apply failure rate**: share of push-to-main runs of `gcp_*` workflows that ended in failure. "
+        "Includes failures with causes outside the PR, such as quotas and state locks.",
+        "",
+        "## Caveats",
+        "",
+        "- A destroy is not always a mistake. Read the PRs before you treat a change in this rate as good or bad.",
+        "- Report counts next to rates. A six-week window is small.",
+        "- Not measured: tflint errors (the comment does not survive in PR history) and "
+        "\"changes requested\" reviews (reviewers in this repo almost never use them).",
+        "- A revert made with the GitHub button has no Claude Code marker, so reverts count as human-only.",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--repo", default="epidemicsound/infra")
+    ap.add_argument("--days", type=int, default=90)
+    ap.add_argument("--until", type=dt.date.fromisoformat, default=dt.date.today())
+    ap.add_argument("--out", type=Path, default=Path("pr-baseline"))
+    args = ap.parse_args()
+
+    since = args.until - dt.timedelta(days=args.days - 1)
+    print(f"Window {since}..{args.until} for {args.repo}", file=sys.stderr)
+    raw = fetch_prs(args.repo, since, args.until)
+    prs = [to_record(p) for p in raw if not is_bot((p["author"] or {}).get("login"))]
+    runs = fetch_runs(args.repo, since, args.until)
+
+    args.out.mkdir(parents=True, exist_ok=True)
+    (args.out / "prs.json").write_text(json.dumps(prs, indent=2))
+    (args.out / "runs.json").write_text(json.dumps(runs, indent=2))
+    (args.out / "summary.md").write_text(summary(args.repo, since, args.until, prs, runs, len(raw) - len(prs)))
+    print(f"Wrote {args.out}/summary.md", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

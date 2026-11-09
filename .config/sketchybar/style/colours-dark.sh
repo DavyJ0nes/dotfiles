@@ -12,8 +12,8 @@ export MAGENTA=0xffcba6f7
 export GREY=0xff6c7086
 export TRANSPARENT=0x00000000
 export BG0=0xff1e1e2e
-export BG1=0x60313244
-export BG2=0x6045475a
+export BG1=0xff313244
+export BG2=0xff45475a
 
 # General bar colors
 export BAR_COLOR=$TRANSPARENT

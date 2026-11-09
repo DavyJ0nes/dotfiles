@@ -34,7 +34,6 @@ alias grepip="grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'"
 alias idea='goland'
 alias make='gmake'
 alias mux='tmuxinator'
-alias docker='podman'
 alias cat='bat'
 alias suggest='gh copilot suggest -t shell'
 alias btfix='sudo pkill bluetoothd'
@@ -57,7 +56,7 @@ alias lg='eza --group --group-directories-first --long --git --git-ignore'
 
 # ── Notes & Tasks ─────────────────────────────────────────────────────────────
 alias inbox='nothelp today'
-alias start='nothelp start'
+alias start='START_IT=1 claude "/start-it"'
 alias stop='nothelp stop'
 alias today='nothelp today'
 alias yesterday='nothelp yesterday'
@@ -82,6 +81,8 @@ alias tpersonal='trk task ls --label personal'
 alias tap='trk task add --label personal'
 alias twork='trk task ls --label work'
 alias taw='trk task add --label work'
+alias tawi='trk task add --label work --label inbox'
+alias tawt='trk task add --label work --label today'
 alias tlearn='trk task ls --label learning'
 alias tal='trk task add --label learning'
 alias tal-elixir='trk task add --label learning --project elixir'
@@ -186,12 +187,15 @@ alias kdf='kubectl delete -f'
 alias kex='kubectl exec -it'
 alias k9s='sofka'
 
+# ── Google Cloud (gcloud) ─────────────────────────────────────────────────────
+alias gx='gcloudctx'
+
 # ── Terraform ─────────────────────────────────────────────────────────────────
 alias tf='terraform'
 
 # ── Directory shortcuts ───────────────────────────────────────────────────────
 alias godavy="cd $GOPATH/src/github.com/davyj0nes"
-alias goplay="cd $GOPATH/src/github.com/playgroundtech"
+alias goepi="cd $GOPATH/src/github.com/epidemicsound"
 alias goconfig="cd $HOME/dotfiles/"
 alias gonotes="cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes"
 alias gozk="cd $HOME/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/notes/zk"

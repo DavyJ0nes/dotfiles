@@ -4,6 +4,11 @@
 # It's not necessary to copy all keys to your config.
 # If the key is missing in your config, "default-config.toml" will serve as a fallback
 
+# Config version for compatibility and deprecations
+# See: https://nikitabobko.github.io/AeroSpace/guide#config-version
+# Fallback value (if you omit the key): config-version = 1
+config-version = 2
+
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
@@ -52,6 +57,14 @@ key-mapping.preset = 'qwerty'
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Workspaces that stay alive even when empty.
+# Requires 'config-version = 2'.
+# Under config-version = 1 this list was inferred from the right hand side of the
+# keybindings below; v2 falls back to an empty array, so it must be explicit or
+# empty workspaces vanish from 'aerospace list-workspaces --all' (which
+# sketchybar/items/aerospace.sh iterates to build its workspace icons).
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', 'e', 'z']
 
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
@@ -197,7 +210,15 @@ if.app-id = 'company.thebrowser.Browser'
 run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
+if.app-id = 'io.island.Island'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
 if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace z'
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
 run = 'move-node-to-workspace z'
 
 [[on-window-detected]]

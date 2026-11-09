@@ -1,6 +1,11 @@
 local function git_root()
-	local result = vim.fn.systemlist("git rev-parse --show-toplevel")
-	return (vim.v.shell_error == 0 and result[1]) or vim.fn.getcwd()
+	local ok, result = pcall(function()
+		return vim.fn.systemlist("git rev-parse --show-toplevel")
+	end)
+	if ok and vim.v.shell_error == 0 and result[1] then
+		return result[1]
+	end
+	return vim.fn.getcwd()
 end
 
 return {
@@ -13,7 +18,7 @@ return {
 		{ "<leader>ef", function() Snacks.explorer.open({ cwd = git_root(), reveal = true }) end, desc = "Reveal Current File" },
 
 		-- Find / top-level
-		{ "<leader><space>", function() Snacks.picker.files({ cwd = git_root() }) end, desc = "Find Files" },
+		{ "<leader><space>", function() Snacks.picker.files({ cwd = git_root(), focus = "input", layout = "default" }) end, desc = "Find Files" },
 		{ "<leader>/", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
 		{ "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
 
@@ -40,7 +45,7 @@ return {
 		-- Find
 		{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
 		{ "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
-		{ "<leader>ff", function() Snacks.picker.files({ cwd = git_root() }) end, desc = "Find Files" },
+		{ "<leader>ff", function() Snacks.picker.files({ cwd = git_root(), focus = "input", layout = "default" }) end, desc = "Find Files" },
 		{ "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
 		{ "<leader>fr", function() Snacks.picker.recent({ cwd = git_root(), filter = { cwd = true } }) end, desc = "Recent Files" },
 

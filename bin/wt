@@ -1,0 +1,167 @@
+#!/bin/bash
+# wt - Git worktrees in one place per repo.
+#
+# A repo at   <parent>/<repo>
+# keeps its worktrees at   <parent>/worktrees/<repo>/<branch>
+# with "/" in the branch name turned into "-". For example:
+#   ~/go/src/github.com/epidemicsound/sound-orchestrator
+#   ~/go/src/github.com/epidemicsound/worktrees/sound-orchestrator/TSRE-1249-kms-key
+#
+# Commands that print a path print only the path on stdout, so shells and
+# Claude Code hooks can use it. Messages go to stderr.
+#
+# The zsh function `wt` wraps this script so `wt add` and `wt cd` change
+# directory. Claude Code calls `wt hook create|remove` from its worktree hooks.
+
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'EOF'
+Usage: wt <command>
+  add <branch> [base]   Make a worktree for <branch> and print its path.
+                        A new branch starts from [base], else origin's default branch.
+  rm [branch|path]      Remove a worktree (default: the current one).
+                        Deletes the branch if it is merged.
+  ls                    List worktrees.
+  pick                  Pick a worktree with fzf and print its path.
+  path <branch>         Print where <branch>'s worktree goes.
+  root                  Print the folder that holds this repo's worktrees.
+  main                  Print the main checkout's path.
+  hook create|remove    Claude Code WorktreeCreate/WorktreeRemove hook.
+EOF
+  exit 2
+}
+
+log() { echo "wt: $*" >&2; }
+die() { log "$*"; exit 1; }
+
+# The main checkout, even when run from inside a worktree.
+main_checkout() {
+  local common
+  common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) ||
+    die "not inside a git repo"
+  [[ $(basename "$common") == .git ]] || die "bare repos are not supported: $common"
+  dirname "$common"
+}
+
+worktree_root() {
+  local main
+  main=$(main_checkout)
+  echo "$(dirname "$main")/worktrees/$(basename "$main")"
+}
+
+worktree_path() {
+  echo "$(worktree_root)/${1//\//-}"
+}
+
+# The path of the worktree that has <branch> checked out, if any.
+existing_worktree() {
+  git worktree list --porcelain | awk -v ref="refs/heads/$1" '
+    /^worktree / { path = substr($0, 10) }
+    $0 == "branch " ref { print path; exit }'
+}
+
+default_base() {
+  local head
+  head=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null) ||
+    die "origin/HEAD is not set; pass a base, or run: git remote set-head origin --auto"
+  git fetch --quiet origin "${head#origin/}" >&2 || log "fetch failed, using local $head"
+  echo "$head"
+}
+
+cmd_add() {
+  local branch="${1:?Usage: wt add <branch> [base]}" base="${2:-}" path existing
+  existing=$(existing_worktree "$branch")
+  if [[ -n $existing ]]; then
+    log "$branch is already checked out at $existing"
+    echo "$existing"
+    return
+  fi
+
+  path=$(worktree_path "$branch")
+  [[ -e $path ]] && die "$path exists but is not a worktree for $branch"
+  mkdir -p "$(dirname "$path")"
+
+  if git show-ref --verify --quiet "refs/heads/$branch"; then
+    git worktree add "$path" "$branch" >&2
+  elif git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+    git fetch --quiet origin "$branch" >&2
+    git worktree add --track -b "$branch" "$path" "origin/$branch" >&2
+  else
+    [[ -n $base ]] || base=$(default_base)
+    git worktree add --no-track -b "$branch" "$path" "$base" >&2
+  fi
+  echo "$path"
+}
+
+# Delete <branch> if git or GitHub says it is merged. Squash merges only
+# show up as merged on GitHub.
+delete_if_merged() {
+  local branch="$1"
+  if git branch -d "$branch" >/dev/null 2>&1; then
+    log "deleted branch $branch"
+  elif command -v gh >/dev/null &&
+    [[ -n $(gh pr list --head "$branch" --state merged --json number -q '.[].number' 2>/dev/null) ]]; then
+    git branch -D "$branch" >/dev/null
+    log "deleted branch $branch (pull request merged)"
+  else
+    log "kept branch $branch: not merged"
+  fi
+}
+
+cmd_rm() {
+  local target="${1:-}" path branch main
+  main=$(main_checkout)
+  if [[ -z $target ]]; then
+    path=$(git rev-parse --show-toplevel)
+  elif [[ -d $target ]]; then
+    path=$(cd "$target" && pwd -P)
+  else
+    path=$(existing_worktree "$target")
+    [[ -n $path ]] || die "no worktree for branch $target"
+  fi
+  [[ $path != "$main" ]] || die "will not remove the main checkout"
+
+  branch=$(git -C "$path" symbolic-ref --quiet --short HEAD || true)
+  git -C "$main" worktree remove "$path" >&2
+  log "removed $path"
+  if [[ -n $branch ]]; then (cd "$main" && delete_if_merged "$branch"); fi
+  rmdir "$(dirname "$path")" 2>/dev/null || true
+}
+
+cmd_pick() {
+  git worktree list | fzf --prompt "worktree> " --select-1 | awk '{print $1}'
+}
+
+# Claude Code worktree hooks. The JSON input arrives on stdin.
+# Claude gives a slug such as bold-oak-a3f2, so its branch is claude/<slug>.
+# The hook replaces Claude's own git logic, so .worktreeinclude is not used.
+cmd_hook() {
+  local input name path
+  input=$(cat)
+  case "${1:-}" in
+    create)
+      name=$(jq -r '.name' <<<"$input")
+      cd "$(jq -r '.cwd' <<<"$input")"
+      cmd_add "claude/$name"
+      ;;
+    remove)
+      path=$(jq -r '.worktree_path' <<<"$input")
+      cd "$path"
+      cmd_rm "$path"
+      ;;
+    *) usage ;;
+  esac
+}
+
+case "${1:-}" in
+  add) shift; cmd_add "$@" ;;
+  rm) shift; cmd_rm "$@" ;;
+  ls) git worktree list ;;
+  pick) cmd_pick ;;
+  path) worktree_path "${2:?Usage: wt path <branch>}" ;;
+  root) worktree_root ;;
+  main) main_checkout ;;
+  hook) shift; cmd_hook "$@" ;;
+  *) usage ;;
+esac

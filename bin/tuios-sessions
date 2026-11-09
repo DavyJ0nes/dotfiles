@@ -1,0 +1,37 @@
+#!/bin/bash
+# tuios-sessions - numbered session picker for tuios (bound to prefix+s)
+#
+# Press a number to jump to that session, made in its folder if missing.
+# s or enter fuzzy-finds every session, anything else closes.
+
+# key  session   folder
+SESSIONS=(
+  "1 epidemic $HOME/go/src/github.com/epidemicsound"
+  "2 learning $HOME/go/src/github.com/davyj0nes"
+  "0 personal $HOME/dotfiles"
+)
+
+for entry in "${SESSIONS[@]}"; do
+  read -r key name _ <<<"$entry"
+  marker=" "
+  [ "$name" = "${TUIOS_SESSION:-}" ] && marker="*"
+  printf '  %s %s  %s\n' "$marker" "$key" "$name"
+done
+printf '\n    s  all sessions\n'
+
+read -rsn1 choice
+
+case "$choice" in
+  s | "")
+    # No jq: it is a mise shim, and mise can fail in the popup's folder
+    name=$(tuios ls --json | sed -n 's/^    "name": "\(.*\)",$/\1/p' | fzf --no-sort --prompt 'session: ') || exit 0
+    exec tuios switch-session "$name" >/dev/null
+    ;;
+esac
+
+for entry in "${SESSIONS[@]}"; do
+  read -r key name dir <<<"$entry"
+  if [ "$choice" = "$key" ]; then
+    exec tuios switch-session --create --cwd "$dir" "$name" >/dev/null
+  fi
+done

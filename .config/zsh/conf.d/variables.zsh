@@ -21,13 +21,13 @@ export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 # Terminal
-export TERM=alacritty
+export TERM=tmux-256color
 
 # Go
 export GOPRIVATE="github.com/einride/*,github.com/playgroundtech/*"
 
 # Github
-export GITHUB_TOKEN="$(gh auth token)"
+# export GITHUB_TOKEN="$(gh auth token)"
 # export MISE_GITHUB_TOKEN="$GITHUB_TOKEN"
 
 # Erlang/Elixir
@@ -47,6 +47,7 @@ export ZK_NOTEBOOK_DIR="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Docume
 
 # Kubernetes
 export DO='--dry-run=client -o yaml'
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Testcontainers
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock

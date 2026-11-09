@@ -1,0 +1,74 @@
+#!/bin/bash
+# tuios-main - tuios port of the tmuxinator "main" layout
+# (.config/tmuxinator/main.yml). tmux windows become tuios workspaces.
+#
+# Attaches if the session already exists, otherwise builds it first.
+# TUIOS_SERVER=<name> targets a separate daemon (handy for testing).
+
+set -euo pipefail
+
+SESSION="${1:-main}"
+NOTES="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+CONFIG="$HOME/dotfiles/.config"
+
+t() { tuios ${TUIOS_SERVER:+--server "$TUIOS_SERVER"} "$@"; }
+
+# Open a pane on a workspace and type a command into its shell, so zsh
+# aliases (vi, ttoday) work and the pane stays a shell when it exits
+pane() {
+  local name=$1 ws=$2 cwd=$3 cmd=${4:-}
+  t new-window "$name" -s "$SESSION" --workspace "$ws" --cwd "$cwd" >/dev/null
+  [ -n "$cmd" ] && t send-text -s "$SESSION" -w "$name" "$cmd"$'\n'
+  return 0
+}
+
+build() {
+  t new "$SESSION" --detach --cwd "$HOME" >/dev/null
+  local first
+  first=$(t list-windows -s "$SESSION" --json | jq -r '.windows[0].window_id')
+
+  # 1: notes, vi over today's tasks
+  pane notes-vi 1 "$NOTES" vi
+  pane notes-today 1 "$NOTES" ttoday
+  t run-command -s "$SESSION" CloseWindow "$first" >/dev/null || true
+
+  # 2: prs
+  pane prs 2 "$HOME" "gh dash"
+
+  # 3: config, vi with a shell underneath
+  pane config-vi 3 "$CONFIG" vi
+  pane config-shell 3 "$CONFIG"
+
+  t set-workspace-name -s "$SESSION" 1 notes >/dev/null
+  t set-workspace-name -s "$SESSION" 2 prs >/dev/null
+  t set-workspace-name -s "$SESSION" 3 config >/dev/null
+}
+
+# Layout commands need a client attached, so wait for one first
+arrange() {
+  for _ in $(seq 50); do
+    t list-clients --json | jq -e --arg s "$SESSION" 'any(.[]; .session == $s)' >/dev/null && break
+    sleep 0.2
+  done
+  # A workspace only lays out while it is showing, so visit each in turn
+  local ws
+  for ws in 3 2 1; do
+    t run-command -s "$SESSION" SwitchWorkspace "$ws" >/dev/null
+    sleep 0.3
+    [ "$ws" = 2 ] || t run-command -s "$SESSION" ArrangePanes even-vertical "$ws" >/dev/null
+    sleep 0.3
+    if [ "$ws" = 3 ]; then
+      # Squash the config shell to a few rows, like the tmux layout
+      t run-command -s "$SESSION" FocusWindow config-shell >/dev/null
+      for _ in $(seq 8); do t run-command -s "$SESSION" resize_height_shrink >/dev/null; done
+      t run-command -s "$SESSION" FocusWindow config-vi >/dev/null
+    fi
+  done
+  t run-command -s "$SESSION" FocusWindow notes-vi >/dev/null
+}
+
+if ! t ls 2>/dev/null | grep -q "│ $SESSION "; then
+  build
+  arrange >/dev/null 2>&1 &
+fi
+exec tuios ${TUIOS_SERVER:+--server "$TUIOS_SERVER"} attach "$SESSION"

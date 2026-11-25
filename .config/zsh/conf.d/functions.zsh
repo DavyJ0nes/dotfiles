@@ -269,7 +269,8 @@ Rules:
 - Body explains *why*, not *what* — wrap at 80 cols, max 4 lines
 - Output ONLY the message: no markdown fences, no preamble
 
-Contxt, read @~/go/src/github.com/davyj0nes/locker/context/engineering-values.md
+Context (my engineering values):
+$(cat ~/.claude/context/engineering-values.md 2>/dev/null)
 
 Writing style — assume an auditor will read this:
 - Be precise and factual; no hyperbole or marketing language
@@ -286,16 +287,19 @@ Writing style — assume an auditor will read this:
 --- DIFF ---
 $diff"
 
-  local -a omp_flags=(
+  local -a claude_flags=(
     -p
-    --model anthropic/claude-sonnet-5-5
+    --model claude-sonnet-5-5
     --system-prompt 'You are a git commit message generator. Output only the raw commit message text — no preamble, no explanation, no tool calls, no markdown fences.'
-    --thinking off
-    --no-tools --no-session --no-title --no-lsp --no-skills --no-rules
+    --effort low
+    --tools ''
+    --no-session-persistence
+    --disable-slash-commands
+    --strict-mcp-config
   )
-  msg=$(omp "${omp_flags[@]}" "$prompt")
+  msg=$(printf '%s' "$prompt" | claude "${claude_flags[@]}")
   if [[ -z "$msg" ]]; then
-    echo "ai-commit: omp returned no output." >&2
+    echo "ai-commit: claude returned no output." >&2
     return 1
   fi
 
